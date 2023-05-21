@@ -1,20 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StatusBar } from 'react-native';
+import { Routes } from '@/src/routes';
+import { Background } from '@/src/components/Background';
+import * as NavigationBar from 'expo-navigation-bar';
+import { theme } from "@/src/global/styles/theme";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    NavigationBar.setBackgroundColorAsync(theme.colors.nav);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    return (
+        <Background>
+            <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+            <Routes />
+        </Background>
+    );
+}

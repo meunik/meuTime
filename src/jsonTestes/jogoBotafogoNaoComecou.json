@@ -1,0 +1,229 @@
+{
+    "tournament": {
+        "name": "Brasileiro Série A",
+        "slug": "brasileiro-serie-a",
+        "category": {
+            "name": "Brazil",
+            "slug": "brazil",
+            "sport": {
+                "name": "Football",
+                "slug": "football",
+                "id": 1
+            },
+            "id": 13,
+            "flag": "brazil",
+            "alpha2": "BR"
+        },
+        "uniqueTournament": {
+            "name": "Brasileiro Série A",
+            "slug": "brasileiro-serie-a",
+            "primaryColorHex": "#C7FF00",
+            "secondaryColorHex": "#969696",
+            "category": {
+                "name": "Brazil",
+                "slug": "brazil",
+                "sport": {
+                    "name": "Football",
+                    "slug": "football",
+                    "id": 1
+                },
+                "id": 13,
+                "flag": "brazil",
+                "alpha2": "BR"
+            },
+            "userCount": 244544,
+            "id": 325,
+            "country": {},
+            "hasEventPlayerStatistics": true,
+            "crowdsourcingEnabled": false,
+            "hasPerformanceGraphFeature": true,
+            "displayInverseHomeAwayTeams": false
+        },
+        "priority": 320,
+        "competitionType": 1,
+        "id": 83
+    },
+    "season": {
+        "name": "Brasileiro Série A 2023",
+        "year": "2023",
+        "editor": false,
+        "seasonCoverageInfo": {},
+        "id": 48982
+    },
+    "roundInfo": {
+        "round": 7
+    },
+    "customId": "iOslO",
+    "status": {
+        "code": 0,
+        "description": "Not started",
+        "type": "notstarted"
+    },
+    "winnerCode": 0,
+    "venue": {
+        "city": {
+            "name": "Rio de Janeiro"
+        },
+        "stadium": {
+            "name": "Estádio Nilton Santos",
+            "capacity": 46831
+        },
+        "id": 13224,
+        "country": {
+            "alpha2": "BR",
+            "name": "Brazil"
+        }
+    },
+    "referee": {
+        "name": "Braulio Da Silva Machado",
+        "slug": "braulio-da-silva-machado",
+        "yellowCards": 893,
+        "redCards": 30,
+        "yellowRedCards": 23,
+        "games": 156,
+        "sport": {
+            "name": "Football",
+            "slug": "football",
+            "id": 1
+        },
+        "id": 554152,
+        "country": {
+            "alpha2": "BR",
+            "name": "Brazil"
+        }
+    },
+    "homeTeam": {
+        "name": "Botafogo",
+        "slug": "botafogo",
+        "shortName": "Botafogo",
+        "gender": "M",
+        "sport": {
+            "name": "Football",
+            "slug": "football",
+            "id": 1
+        },
+        "userCount": 62023,
+        "manager": {
+            "name": "Luís Castro",
+            "slug": "luis-castro",
+            "shortName": "L. Castro",
+            "id": 343613,
+            "country": {
+                "alpha2": "PT",
+                "name": "Portugal"
+            }
+        },
+        "venue": {
+            "city": {
+                "name": "Rio de Janeiro"
+            },
+            "stadium": {
+                "name": "Estádio Nilton Santos",
+                "capacity": 46831
+            },
+            "id": 13224,
+            "country": {
+                "alpha2": "BR",
+                "name": "Brazil"
+            }
+        },
+        "foundationDate": {},
+        "nameCode": "BOT",
+        "disabled": false,
+        "national": false,
+        "type": 0,
+        "id": 1958,
+        "country": {
+            "alpha2": "BR",
+            "name": "Brazil"
+        },
+        "subTeams": [],
+        "fullName": "Botafogo",
+        "teamColors": {
+            "primary": "#000000",
+            "secondary": "#ffffff",
+            "text": "#ffffff"
+        },
+        "foundationDateTimestamp": -2382652800
+    },
+    "awayTeam": {
+        "name": "Fluminense",
+        "slug": "fluminense",
+        "shortName": "Fluminense",
+        "gender": "M",
+        "sport": {
+            "name": "Football",
+            "slug": "football",
+            "id": 1
+        },
+        "userCount": 89519,
+        "manager": {
+            "name": "Fernando Diniz",
+            "slug": "fernando-diniz",
+            "shortName": "F. Diniz",
+            "id": 789746,
+            "country": {
+                "alpha2": "BR",
+                "name": "Brazil"
+            }
+        },
+        "venue": {
+            "city": {
+                "name": "Rio de Janeiro"
+            },
+            "stadium": {
+                "name": "Estádio do Maracanã",
+                "capacity": 78838
+            },
+            "id": 686,
+            "country": {
+                "alpha2": "BR",
+                "name": "Brazil"
+            }
+        },
+        "foundationDate": {},
+        "nameCode": "FLU",
+        "disabled": false,
+        "national": false,
+        "type": 0,
+        "id": 1961,
+        "country": {
+            "alpha2": "BR",
+            "name": "Brazil"
+        },
+        "subTeams": [],
+        "fullName": "Fluminense",
+        "teamColors": {
+            "primary": "#660000",
+            "secondary": "#006633",
+            "text": "#006633"
+        },
+        "foundationDateTimestamp": -2128550400
+    },
+    "homeScore": {},
+    "awayScore": {},
+    "time": {},
+    "changes": {
+        "changeTimestamp": 0
+    },
+    "hasGlobalHighlights": false,
+    "detailId": 1,
+    "id": 11067444,
+    "defaultPeriodCount": 2,
+    "defaultPeriodLength": 45,
+    "startTimestamp": 1684618200,
+    "slug": "fluminense-botafogo",
+    "finalResultOnly": false,
+    "hasBet365LiveStream": true,
+    "bet365ExcludedCountryCodes": [
+        "BR",
+        "IR",
+        "GR",
+        "RU",
+        "CH",
+        "CA"
+    ],
+    "fanRatingEvent": false,
+    "seasonStatisticsType": "overall",
+    "showTotoPromo": true
+}
