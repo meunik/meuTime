@@ -6,6 +6,7 @@ import moment from 'moment';
 import * as NavigationBar from 'expo-navigation-bar';
 import { styles } from "./styles";
 import { theme } from "@/src/global/styles/theme";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export function Jogos() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
@@ -162,6 +163,17 @@ export function Jogos() {
             <View style={styles.timesUltimoJogo}>
 
                 <View style={styles.timeCasa}>
+                    <View style={styles.cartaoVermelhoContainer}>
+                        {jogo.homeRedCards && (() => {
+                            const items = [];
+                            for (let i = 0; i < jogo.homeRedCards; i++) {
+                                items.push(
+                                    <Icon name="card" size={10} color="#e35c47" style={styles.cartaoVermelho} />
+                                );
+                            }
+                            return items;
+                        })()}
+                    </View>
                     <Text style={styles.txtTime}>{jogo.homeTeam.nameCode}</Text>
                     <Image style={styles.imgLista} resizeMode="center" source={{ uri: `${urlBase}team/${jogo.homeTeam.id}/image` }} />
                     <Text style={styles.txtTime}>{jogo.homeScore.display}</Text>
@@ -173,6 +185,17 @@ export function Jogos() {
                     <Text style={styles.txtTime}>{jogo.awayScore.display}</Text>
                     <Image style={styles.imgLista} resizeMode="center" source={{ uri: `${urlBase}team/${jogo.awayTeam.id}/image` }} />
                     <Text style={styles.txtTime}>{jogo.awayTeam.nameCode}</Text>
+                    <View style={styles.cartaoVermelhoContainer}>
+                        {jogo.awayRedCards && (() => {
+                        const items = [];
+                        for (let i = 0; i < jogo.awayRedCards; i++) {
+                            items.push(
+                                <Icon name="card" size={10} color="#e35c47" style={styles.cartaoVermelho} />
+                            );
+                        }
+                        return items;
+                        })()}
+                    </View>
                 </View>
 
             </View>

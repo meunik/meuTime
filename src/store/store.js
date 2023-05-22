@@ -20,6 +20,7 @@ async function request(url, param) {
 export const evento = async (id) => {
     try {
         // id = '11067460';
+        // id = '11067435';
         const response = await api.get(`${urlEventos}${id}`);
         // console.log(response.data.event);
         return (response.data) ? response.data.event : null;

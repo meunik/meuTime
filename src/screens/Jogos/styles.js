@@ -118,4 +118,11 @@ export const styles = StyleSheet.create({
     contentContainerStyle: {
         paddingBottom: theme.contentContainerStyle.paddingBottom,
     },
+    cartaoVermelho: {
+        transform: [{ rotate: '90deg'}]
+    },
+    cartaoVermelhoContainer: {
+        flexDirection: 'row',
+        gap: -1,
+    },
 })
