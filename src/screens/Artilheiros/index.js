@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
-import { Text, View, Image, FlatList } from 'react-native';
+import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
 import { brasileiraoArtilheiros } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
@@ -19,13 +19,20 @@ export function Artilheiros({ route }) {
     const params = route.params;
 
     const [artilheiros, setArtilheiros] = useState(null);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const fetchDataArtilheiro = async () => {
+        setArtilheiros(await brasileiraoArtilheiros());
+        setRefreshing(false);
+    };
+
+    const onRefresh = () => {
+        setRefreshing(true);
+        fetchDataArtilheiro();
+    };
 
     useEffect(() => {
-        const fetchDataTabela = async () => {
-            setArtilheiros(await brasileiraoArtilheiros());
-        };
-
-        fetchDataTabela();
+        fetchDataArtilheiro();
     }, []);
 
     const renderArtihleiro = ({ item, index }) => (
@@ -81,6 +88,12 @@ export function Artilheiros({ route }) {
                 data={artilheiros && artilheiros}
                 renderItem={renderArtihleiro}
                 keyExtractor={(item) => item.player.id.toString()}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
             />
         </View>
     );

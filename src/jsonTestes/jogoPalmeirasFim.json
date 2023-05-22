@@ -1,0 +1,235 @@
+{
+    "awayScore": {
+        "current": 0,
+        "display": 0,
+        "normaltime": 0,
+        "period1": 0,
+        "period2": 0
+    },
+    "awayTeam": {
+        "country": {
+            "alpha2": "BR",
+            "name": "Brazil"
+        },
+        "disabled": false,
+        "foundationDate": {},
+        "foundationDateTimestamp": -1746748800,
+        "fullName": "Palmeiras",
+        "gender": "M",
+        "id": 1963,
+        "manager": {
+            "country": [Object
+            ],
+            "id": 784709,
+            "name": "Abel Ferreira",
+            "shortName": "A. Ferreira",
+            "slug": "abel-ferreira"
+        },
+        "name": "Palmeiras",
+        "nameCode": "PAL",
+        "national": false,
+        "shortName": "Palmeiras",
+        "slug": "palmeiras",
+        "sport": {
+            "id": 1,
+            "name": "Football",
+            "slug": "football"
+        },
+        "subTeams": [],
+        "teamColors": {
+            "primary": "#339966",
+            "secondary": "#336633",
+            "text": "#336633"
+        },
+        "type": 0,
+        "userCount": 189436,
+        "venue": {
+            "city": [Object
+            ],
+            "country": [Object
+            ],
+            "id": 15699,
+            "stadium": [Object
+            ]
+        }
+    },
+    "bet365ExcludedCountryCodes": [
+        "BR",
+        "IR",
+        "GR",
+        "RU",
+        "CH",
+        "CA"
+    ],
+    "changes": {
+        "changeTimestamp": 1684634297,
+        "changes": [
+            "status.code",
+            "status.description",
+            "status.type",
+            "homeScore.period2",
+            "homeScore.normaltime",
+            "awayScore.period2",
+            "awayScore.normaltime",
+            "time.currentPeriodStart",
+            "status.code",
+            "status.description",
+            "time.currentPeriodStart"
+        ]
+    },
+    "currentPeriodStartTimestamp": 1684634295,
+    "customId": "nOstO",
+    "defaultPeriodCount": 2,
+    "defaultPeriodLength": 45,
+    "detailId": 1,
+    "fanRatingEvent": false,
+    "finalResultOnly": false,
+    "hasBet365LiveStream": true,
+    "hasEventPlayerHeatMap": true,
+    "hasEventPlayerStatistics": true,
+    "hasGlobalHighlights": false,
+    "hasXg": true,
+    "homeScore": {
+        "current": 0,
+        "display": 0,
+        "normaltime": 0,
+        "period1": 0,
+        "period2": 0
+    },
+    "homeTeam": {
+        "country": {
+            "alpha2": "BR",
+            "name": "Brazil"
+        },
+        "disabled": false,
+        "foundationDate": {},
+        "foundationDateTimestamp": -1821398400,
+        "fullName": "Santos",
+        "gender": "M",
+        "id": 1968,
+        "manager": {
+            "country": [Object
+            ],
+            "id": 789461,
+            "name": "Odair Hellmann",
+            "shortName": "O. Hellmann",
+            "slug": "odair-hellmann"
+        },
+        "name": "Santos",
+        "nameCode": "SAN",
+        "national": false,
+        "shortName": "Santos",
+        "slug": "santos",
+        "sport": {
+            "id": 1,
+            "name": "Football",
+            "slug": "football"
+        },
+        "subTeams": [],
+        "teamColors": {
+            "primary": "#ffffff",
+            "secondary": "#ffffff",
+            "text": "#ffffff"
+        },
+        "type": 0,
+        "userCount": 79370,
+        "venue": {
+            "city": [Object
+            ],
+            "country": [Object
+            ],
+            "id": 810,
+            "stadium": [Object
+            ]
+        }
+    },
+    "id": 11067450,
+    "referee": {
+        "country": {
+            "alpha2": "BR",
+            "name": "Brazil"
+        },
+        "games": 248,
+        "id": 243495,
+        "name": "Raphael Claus",
+        "redCards": 37,
+        "slug": "claus-raphael",
+        "sport": {
+            "id": 1,
+            "name": "Football",
+            "slug": "football"
+        },
+        "yellowCards": 1129,
+        "yellowRedCards": 20
+    },
+    "roundInfo": {
+        "round": 7
+    },
+    "season": {
+        "editor": false,
+        "id": 48982,
+        "name": "Brasileiro Série A 2023",
+        "seasonCoverageInfo": {},
+        "year": "2023"
+    },
+    "seasonStatisticsType": "overall",
+    "showTotoPromo": true,
+    "slug": "santos-palmeiras",
+    "startTimestamp": 1684627200,
+    "status": {
+        "code": 100,
+        "description": "Ended",
+        "type": "finished"
+    },
+    "time": {
+        "currentPeriodStartTimestamp": 1684634295,
+        "injuryTime1": 5,
+        "injuryTime2": 5
+    },
+    "tournament": {
+        "category": {
+            "alpha2": "BR",
+            "flag": "brazil",
+            "id": 13,
+            "name": "Brazil",
+            "slug": "brazil",
+            "sport": []
+        },
+        "competitionType": 1,
+        "id": 83,
+        "name": "Brasileiro Série A",
+        "priority": 320,
+        "slug": "brasileiro-serie-a",
+        "uniqueTournament": {
+            "category": [Object
+            ],
+            "country": [Object
+            ],
+            "crowdsourcingEnabled": false,
+            "displayInverseHomeAwayTeams": false,
+            "hasEventPlayerStatistics": true,
+            "hasPerformanceGraphFeature": true,
+            "id": 325,
+            "name": "Brasileiro Série A",
+            "primaryColorHex": "#C7FF00",
+            "secondaryColorHex": "#969696",
+            "slug": "brasileiro-serie-a",
+            "userCount": 244526
+        }
+    },
+    "venue": {
+        "city": {
+            "name": "Santos"
+        },
+        "country": {
+            "alpha2": "BR",
+            "name": "Brazil"
+        },
+        "id": 810,
+        "stadium": {
+            "capacity": 16798,
+            "name": "Urbano Caldeira"
+        }
+    },
+    "winnerCode": 3
+}

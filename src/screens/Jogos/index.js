@@ -37,15 +37,15 @@ export function Jogos() {
         setJogo(jogoAgora);
         setJogoAnteriorSeguinte(jogoUltimoProx);
 
-        // if (0 < jogoUltimoProx.previousEvent.status.code < 100) {
-        //     const interval = setInterval(async () => {
-        //         const jogoAtualizado = await evento(jogoAgora.id);
-        //         setJogo(jogoAtualizado);
-        //         if ((jogoAtualizado.status.code == 0)||(jogoAtualizado.status.code == 100)) {
-        //             clearInterval(interval);
-        //         }
-        //     }, 1000);
-        // }
+        if (jogoUltimoProx.previousEvent.status.type == 'inprogress') {
+            const interval = setInterval(async () => {
+                const jogoAtualizado = await evento(jogoAgora.id);
+                setJogo(jogoAtualizado);
+                if (jogoAtualizado.status.type != 'inprogress') {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
 
         setRefreshing(false);
     };
@@ -64,6 +64,7 @@ export function Jogos() {
             <View style={styles.topo}>
                 <Text style={{ ...styles.txtcampeonato, color: item.tournament.uniqueTournament.secondaryColorHex }}>
                     {item.tournament.uniqueTournament.name}
+                    {(item.tournament.id == 83)?` - ${item.roundInfo.round}ª Rodada`:''}
                 </Text>
             </View>
 
@@ -114,16 +115,41 @@ export function Jogos() {
 
         const timeDiff = `${diffInMinutes.toString().padStart(2, '0')}:${diffInSeconds.toString().padStart(2, '0')}`; // Formata a diferença no formato mm:ss
 
-        // console.log(timeDiff);
+        let tempo;
+        let acrescimos;
 
         switch (jogo.status.code) {
-            case 6: return `1º ${timeDiff}`;
-            case 7: return `2º ${timeDiff}`;
-            case 31: return 'Intervalo';
-            case 100: return 'Encerrado';
+            // primeiro tempo
+            case 6:
+                acrescimos = ((diffInMinutes > 45) && jogo.time.injuryTime1) ?` +${jogo.time.injuryTime1}`:'';
+                tempo = `1º ${timeDiff}${acrescimos}`;
+                break;
+            
+            // segundo tempo
+            case 7:
+                acrescimos = ((diffInMinutes > 45) && jogo.time.injuryTime2) ?` +${jogo.time.injuryTime2}`:'';
+                tempo = `2º ${timeDiff}${acrescimos}`;
+                break;
+
+            // case 100:
+            //     acrescimos = ((diffInMinutes > 45) && jogo.time.injuryTime3) ?` +${jogo.time.injuryTime3}`:'';
+            //     tempo = `P1º ${timeDiff}${acrescimos}`;
+            //     break;
+
+            // case 100:
+            //     acrescimos = ((diffInMinutes > 45) && jogo.time.injuryTime4) ?` +${jogo.time.injuryTime4}`:'';
+            //     tempo = `P2º ${timeDiff}${acrescimos}`;
+            //     break;
+
+            case 31: tempo = 'Intervalo'; break;
+            case 100: tempo = 'Encerrado'; break;
         
-            default: return '00:00';
+            default: tempo = '00:00'; break;
         }
+
+        // console.log(timeDiff);
+        // console.log(tempo);
+        return tempo;
     };
 
     const jogoAtivo = () => (
@@ -138,13 +164,13 @@ export function Jogos() {
                 <View style={styles.timeCasa}>
                     <Text style={styles.txtTime}>{jogo.homeTeam.nameCode}</Text>
                     <Image style={styles.imgLista} resizeMode="center" source={{ uri: `${urlBase}team/${jogo.homeTeam.id}/image` }} />
-                    <Text style={styles.txtTime}>{jogo.homeScore.current}</Text>
+                    <Text style={styles.txtTime}>{jogo.homeScore.display}</Text>
                 </View>
 
                 <Text style={styles.txtX}>x</Text>
 
                 <View style={styles.timeVisitante}>
-                    <Text style={styles.txtTime}>{jogo.awayScore.current}</Text>
+                    <Text style={styles.txtTime}>{jogo.awayScore.display}</Text>
                     <Image style={styles.imgLista} resizeMode="center" source={{ uri: `${urlBase}team/${jogo.awayTeam.id}/image` }} />
                     <Text style={styles.txtTime}>{jogo.awayTeam.nameCode}</Text>
                 </View>
