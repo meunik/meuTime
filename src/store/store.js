@@ -1,40 +1,37 @@
-import { api, url, urlBase, urlBrasileirao, urlEventos } from '@/src/store/api';
+import { api, urlTime, urlBase, urlBrasileirao, urlEventos } from '@/src/store/api';
 
-export const time = async () => await request('', 'team');
-export const img = async () => await request('image', '');
-export const jogosDepois = async () => await request('events/next/0', 'events');
-export const jogosAntes = async () => await request('events/last/0', 'events');
-export const torneios = async () => await request('unique-tournaments', 'uniqueTournaments');
-export const jogadores = async () => await request('players', 'players');
+export const time = async (id) => await request(id, '', 'team');
+export const img = async (id) => await request(id, 'image', '');
+export const jogosDepois = async (id) => await request(id, 'events/next/0', 'events');
+export const jogosAntes = async (id) => await request(id, 'events/last/0', 'events');
+export const torneios = async (id) => await request(id, 'unique-tournaments', 'uniqueTournaments');
+export const jogadores = async (id) => await request(id, 'players', 'players');
 
-async function request(url, param) {
+async function request(id, url, param) {
     try {
-        const response = await api.get(url);
+        const response = await api.get(`${id}/${url}`);
         return (response.data) ? response.data[param] : null;
     } catch (error) {
-        console.error(error);
+        console.error(error, 'request: '+url);
         return null;
     }
 }
 
 export const evento = async (id) => {
     try {
-        // id = '11067460';
-        // id = '11067435';
         const response = await api.get(`${urlEventos}${id}`);
-        // console.log(response.data.event);
         return (response.data) ? response.data.event : null;
     } catch (error) {
-        console.error(error);
+        console.error(error, 'evento');
         return null;
     }
 }
 export const proximoJogo = async (id) => {
     try {
-        const response = await api.get(`${url}near-events`);
+        const response = await api.get(`${id}/near-events`);
         return (response.data) ? response.data : null;
     } catch (error) {
-        console.error(error);
+        console.error(error, 'proximoJogo');
         return null;
     }
 }
@@ -51,7 +48,7 @@ async function requestCampeonatoBrasileirao(url, param, first = false) {
             return (response.data) ? response.data[param] : null;
         }
     } catch (error) {
-        console.error(error);
+        console.error(error, 'requestCampeonatoBrasileirao');
         return null;
     }
 }
@@ -61,7 +58,7 @@ export const copaDoBrasil = async (id) => {
         const response = await api.get(`https://api.sofascore.com/api/v1/unique-tournament/373/season/48876/cuptrees`);
         return (response.data) ? response.data : null;
     } catch (error) {
-        console.error(error);
+        console.error(error, 'copaDoBrasil');
         return null;
     }
 }

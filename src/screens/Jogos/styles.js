@@ -2,6 +2,14 @@ import { StyleSheet } from "react-native";
 import { theme } from "@/src/global/styles/theme";
 
 export const styles = StyleSheet.create({
+    // container(meuTime) {
+    //     return {
+    //         flex: 1,
+    //         paddingTop: (Platform.OS === 'ios') ? 0 : 10,
+    //         backgroundColor: (meuTime) ? meuTime.teamColors.primary : theme.colors.fundo,
+    //         paddingHorizontal: 20,
+    //     }
+    // },
     container: {
         flex: 1,
         paddingTop: (Platform.OS === 'ios') ? 0 : 10,

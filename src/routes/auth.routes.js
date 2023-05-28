@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { time } from '@/src/store/store';
-import { View, Text, Image, useWindowDimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { View, Text, Image, FlatList, TouchableHighlight, useWindowDimensions } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
-import { url } from '@/src/store/api';
+import { setMeuTime } from '@/src/store/action';
+import { time } from '@/src/store/store';
+import { url, urlTime } from '@/src/store/api';
 import { Jogos } from "@/src/screens/Jogos";
 import { Tabela } from "@/src/screens/Tabela";
 import { styles } from "./styles";
@@ -10,6 +13,7 @@ import { theme } from "@/src/global/styles/theme";
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { Artilheiros } from "@/src/screens/Artilheiros";
+import { Times } from "@/src/screens/Times";
 
 const FirstRoute = () => (
     <Jogos />
@@ -25,10 +29,18 @@ const renderScene = SceneMap({
 });
 
 export function AuthRoutes() {
+	const navigation = useNavigation();
     const { Navigator, Screen, Group } = createStackNavigator();
     const layout = useWindowDimensions();
 
-    const [meuTime, setMeuTime] = useState(null);
+    const meuTime = useSelector(state => state.meuTime);
+    const dispatch = useDispatch();
+    
+    const [showOptions, setShowOptions] = useState(false);
+    const toggleOptions = () => {
+        setShowOptions(!showOptions);
+    };
+
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
         { key: 'first', title: 'Jogos' },
@@ -37,22 +49,25 @@ export function AuthRoutes() {
 
     useEffect(() => {
         const fetchData = async () => {
-            setMeuTime(await time());
+            const fetchedTime = await time(meuTime.id);
+            dispatch(setMeuTime(fetchedTime));
         };
 
         fetchData();
-    }, []);
+    }, [dispatch]);
 
     const renderTabBar = props => (
         <View style={styles.container}>
-            <View style={styles.logo}>
-                <Image
-                    style={styles.img}
-                    resizeMode="center"
-                    source={{ uri: `${url}image` }}
-                />
-                <Text style={styles.txtLogo}>{meuTime && meuTime.name}</Text>
-            </View>
+            <TouchableHighlight onPress={() => navigation.navigate('Times')} underlayColor="transparent">
+                <View style={styles.logo}>
+                    <Image
+                        style={styles.img}
+                        resizeMode="center"
+                        source={{ uri: `${urlTime}${meuTime && meuTime.id}/image` }}
+                    />
+                    <Text style={styles.txtLogo}>{meuTime && meuTime.name}</Text>
+                </View>
+            </TouchableHighlight>
             <TabBar
                 {...props}
                 labelStyle={styles.labelStyle}
@@ -96,6 +111,10 @@ export function AuthRoutes() {
                 <Screen
                     name="Artilheiros"
                     component={Artilheiros}
+                />
+                <Screen
+                    name="Times"
+                    component={Times}
                 />
             </Group>
         </Navigator>

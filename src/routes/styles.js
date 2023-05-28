@@ -47,4 +47,17 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: theme.font.size[5],
     },
+    optionsContainer: {
+        position: 'absolute',
+        bottom: 70,
+        left: 0,
+        right: 0,
+        borderRadius: 5,
+        backgroundColor: 'white',
+        padding: 10,
+        zIndex: 1,
+    },
+    contentContainerStyle: {
+        // paddingBottom: theme.contentContainerStyle.paddingBottom,
+    },
 })

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
 import { jogosDepois, proximoJogo, evento } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
@@ -8,31 +10,26 @@ import { styles } from "./styles";
 import { theme } from "@/src/global/styles/theme";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { setCarregarJogos } from '@/src/store/action';
+
 export function Jogos() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
+
+	const navigation = useNavigation();
+    const route = useRoute();
+    const dispatch = useDispatch();
+
+    const meuTime = useSelector(state => state.meuTime);
+    const carregarJogos = useSelector(state => state.carregarJogos);
 
     const [jogo, setJogo] = useState(null);
     const [futurosJogos, setFuturosJogos] = useState(null);
     const [jogoAnteriorSeguinte, setJogoAnteriorSeguinte] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
 
-    // const fetchData = async () => {
-    //     const proximosJogos = await jogosDepois();
-    //     const jogoAgora = await evento(proximosJogos[0].id);
-    //     setFuturosJogos(proximosJogos);
-    //     setJogo(await evento(proximosJogos[0].id));
-    //     setRefreshing(false);
-    // };
-
-    // const [teste, setTeste] = useState(0);
-    // const executeAfterOneMinute = () => {
-    //     console.log("Função executada após um minuto");
-    // };
-    // setTimeout(executeAfterOneMinute, 10000);
-
     const fetchData = async () => {
-        const jogosFuturos = await jogosDepois();
-        const jogoUltimoProx = await proximoJogo();
+        const jogosFuturos = await jogosDepois(meuTime.id);
+        const jogoUltimoProx = await proximoJogo(meuTime.id);
         const jogoAgora = await evento(jogoUltimoProx.previousEvent.id);
         setFuturosJogos(jogosFuturos);
         setJogo(jogoAgora);
@@ -55,10 +52,14 @@ export function Jogos() {
         setRefreshing(true);
         fetchData();
     };
-
+    
     useEffect(() => {
-        fetchData();
-    }, []);
+        if (carregarJogos) {
+            setRefreshing(true);
+            fetchData();
+            dispatch(setCarregarJogos(false))
+        }
+    }, [carregarJogos, navigation]);
 
     const renderItem = ({ item, index }) => (
         <View style={styles.lista}>
@@ -168,7 +169,7 @@ export function Jogos() {
                             const items = [];
                             for (let i = 0; i < jogo.homeRedCards; i++) {
                                 items.push(
-                                    <Icon name="card" size={10} color="#e35c47" style={styles.cartaoVermelho} />
+                                    <Icon key={'homeRedCards'+i} name="card" size={10} color="#e35c47" style={styles.cartaoVermelho} />
                                 );
                             }
                             return items;
@@ -190,7 +191,7 @@ export function Jogos() {
                         const items = [];
                         for (let i = 0; i < jogo.awayRedCards; i++) {
                             items.push(
-                                <Icon name="card" size={10} color="#e35c47" style={styles.cartaoVermelho} />
+                                <Icon key={'awayRedCards'+i} name="card" size={10} color="#e35c47" style={styles.cartaoVermelho} />
                             );
                         }
                         return items;
