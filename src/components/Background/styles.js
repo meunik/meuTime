@@ -6,5 +6,5 @@ export const styles = StyleSheet.create({
         flex: 1,
         paddingTop: (Platform.OS === 'ios') ? 50 : 40,
         backgroundColor: theme.colors.fundo
-    }
+    },
 })

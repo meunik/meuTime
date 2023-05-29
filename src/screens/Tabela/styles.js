@@ -61,8 +61,8 @@ export const styles = StyleSheet.create({
     infoArtilheiros: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10,
-        gap: 10,
+        // padding: 10,
+        // gap: 10,
     },
     imgCampeonato: {
         height: 50,
@@ -153,5 +153,8 @@ export const styles = StyleSheet.create({
     },
     contentContainerStyle: {
         paddingBottom: theme.contentContainerStyle.paddingBottom,
+    },
+    linksContainer: {
+        gap: 10,
     },
 })

@@ -10,8 +10,8 @@ export const listaTimes = [
         id: 1958,
         teamColors: {
             primary: "#000000",
-            secondary: "#ffffff",
-            text: "#ffffff"
+            secondary: "#d0d0d0",
+            text: "#000000"
         }
     },
     {
@@ -93,9 +93,9 @@ export const listaTimes = [
         nameCode: "FLA",
         id: 5981,
         teamColors: {
-            primary: "#ff0000",
-            secondary: "#000000",
-            text: "#000000"
+            primary: "#000000",
+            secondary: "#590000",
+            text: "#ffffff"
         }
     },
     {

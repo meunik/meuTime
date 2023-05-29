@@ -13,3 +13,7 @@ export const setCarregarJogos = (carregarJogos) => ({
     type: 'SET_CARREGAR_JOGOS',
     payload: carregarJogos,
 });
+export const setIntervalo = (intervalo) => ({
+    type: 'SET_INTERVALO',
+    payload: intervalo,
+});

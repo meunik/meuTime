@@ -53,6 +53,25 @@ async function requestCampeonatoBrasileirao(url, param, first = false) {
     }
 }
 
+export const brasileiraoJogosDepois = async (num = 0) => {
+    try {
+        const response = await api.get(`${urlBrasileirao}events/next/${num}`);
+        return (response.data) ? response.data : null;
+    } catch (error) {
+        console.error(error, 'brasileiraoJogosDepois');
+        return null;
+    }
+}
+export const brasileiraoJogosAntes = async (num = 0) => {
+    try {
+        const response = await api.get(`${urlBrasileirao}events/last/${num}`);
+        return (response.data) ? response.data : null;
+    } catch (error) {
+        console.error(error, 'brasileiraoJogosAntes');
+        return null;
+    }
+}
+
 export const copaDoBrasil = async (id) => {
     try {
         const response = await api.get(`https://api.sofascore.com/api/v1/unique-tournament/373/season/48876/cuptrees`);

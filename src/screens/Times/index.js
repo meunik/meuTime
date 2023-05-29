@@ -7,6 +7,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
 import { urlTime } from '@/src/store/api';
 import { brasileiraoArtilheiros } from '@/src/store/store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { setMeuTime, setCarregarJogos } from '@/src/store/action';
 
@@ -31,10 +32,11 @@ export function Times({ route }) {
     const dispatch = useDispatch();
 
     const renderOpcoes = ({ item, index }) => (
-        <BaseButton onPress={() => {
-            dispatch(setMeuTime(item))
-            dispatch(setCarregarJogos(true))
-            navigation.navigate('inicial')
+        <BaseButton onPress={async () => {
+            dispatch(setMeuTime(item));
+            dispatch(setCarregarJogos(true));
+            await AsyncStorage.setItem('@meuTime', JSON.stringify(item));
+            navigation.navigate('inicial');
         }}>
             <View style={styles.lista}>
                 <Image

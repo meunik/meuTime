@@ -5,12 +5,15 @@ export const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 16,
+        justifyContent: 'space-evenly',
+        paddingHorizontal: 5,
         paddingBottom: 12,
         backgroundColor: theme.colors.nav,
+        // backgroundColor: '#590000',
         borderRadius: 10,
         position: 'absolute',
+        left: 3,
+        right: 3,
         bottom: -10,
         alignSelf: 'center',
     },
@@ -21,11 +24,11 @@ export const styles = StyleSheet.create({
         color: '#fff',
     },
     navContainer: {
-        width: 200,
+        width: 170,
         backgroundColor: 'transparent',
         elevation: 0,
         shadowOpacity: 0,
-        borderRadius: 50,
+        borderRadius: 10,
     },
     ativo: {
         backgroundColor: '#000',
@@ -45,7 +48,7 @@ export const styles = StyleSheet.create({
     txtLogo: {
         color: theme.colors.texto.nav,
         fontWeight: 'bold',
-        fontSize: theme.font.size[5],
+        fontSize: theme.font.size[4],
     },
     optionsContainer: {
         position: 'absolute',

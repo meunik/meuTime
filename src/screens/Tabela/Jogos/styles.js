@@ -33,6 +33,16 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[100],
         fontSize: theme.font.size[6],
     },
+    txtInfo: {
+        color: theme.colors.texto[300],
+        fontSize: theme.font.size[4],
+    },
+    info: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        gap: 10,
+    },
     img: {
         height: 50,
         width: 50,

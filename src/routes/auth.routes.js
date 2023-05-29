@@ -3,16 +3,20 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, Text, Image, FlatList, TouchableHighlight, useWindowDimensions } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setMeuTime } from '@/src/store/action';
 import { time } from '@/src/store/store';
 import { url, urlTime } from '@/src/store/api';
+
 import { Jogos } from "@/src/screens/Jogos";
 import { Tabela } from "@/src/screens/Tabela";
 import { styles } from "./styles";
 import { theme } from "@/src/global/styles/theme";
 
 import { createStackNavigator } from '@react-navigation/stack';
-import { Artilheiros } from "@/src/screens/Artilheiros";
+import { Artilheiros as BrasileiraoArtilheiros } from "@/src/screens/Tabela/Artilheiros";
+import { Jogos as BrasileiraoJogos } from "@/src/screens/Tabela/Jogos";
 import { Times } from "@/src/screens/Times";
 
 const FirstRoute = () => (
@@ -47,15 +51,6 @@ export function AuthRoutes() {
         { key: 'second', title: 'Tabela' },
     ]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const fetchedTime = await time(meuTime.id);
-            dispatch(setMeuTime(fetchedTime));
-        };
-
-        fetchData();
-    }, [dispatch]);
-
     const renderTabBar = props => (
         <View style={styles.container}>
             <TouchableHighlight onPress={() => navigation.navigate('Times')} underlayColor="transparent">
@@ -65,7 +60,7 @@ export function AuthRoutes() {
                         resizeMode="center"
                         source={{ uri: `${urlTime}${meuTime && meuTime.id}/image` }}
                     />
-                    <Text style={styles.txtLogo}>{meuTime && meuTime.name}</Text>
+                    <Text style={styles.txtLogo}>{meuTime && meuTime.shortName}</Text>
                 </View>
             </TouchableHighlight>
             <TabBar
@@ -109,8 +104,12 @@ export function AuthRoutes() {
                 }}
             >
                 <Screen
-                    name="Artilheiros"
-                    component={Artilheiros}
+                    name="BrasileiraoJogos"
+                    component={BrasileiraoJogos}
+                />
+                <Screen
+                    name="BrasileiraoArtilheiros"
+                    component={BrasileiraoArtilheiros}
                 />
                 <Screen
                     name="Times"

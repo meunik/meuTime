@@ -9,8 +9,11 @@ import * as NavigationBar from 'expo-navigation-bar';
 import { styles } from "./styles";
 import { theme } from "@/src/global/styles/theme";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useFocusEffect } from '@react-navigation/native';
 
-import { setCarregarJogos } from '@/src/store/action';
+import { setCarregarJogos, setIntervalo } from '@/src/store/action';
+
+import { tempoJogo } from "@/src/Utils/TempoJogo";
 
 export function Jogos() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
@@ -21,6 +24,7 @@ export function Jogos() {
 
     const meuTime = useSelector(state => state.meuTime);
     const carregarJogos = useSelector(state => state.carregarJogos);
+    const intervalo = useSelector(state => state.intervalo);
 
     const [jogo, setJogo] = useState(null);
     const [futurosJogos, setFuturosJogos] = useState(null);
@@ -43,7 +47,9 @@ export function Jogos() {
                     clearInterval(interval);
                 }
             }, 1000);
+            dispatch(setIntervalo(interval))
         }
+        clearInterval(intervalo);
 
         setRefreshing(false);
     };
@@ -102,57 +108,6 @@ export function Jogos() {
 
         </View>
     );
-
-    const tempoJogo = (jogo) => {
-        const inicio = jogo.time.currentPeriodStartTimestamp;
-
-        const now = moment();
-        const currentPeriodStart = moment.unix(inicio); // Converte o timestamp para um objeto Moment
-
-        const diff = now.diff(currentPeriodStart);
-        const duration = moment.duration(diff); // Calcula a diferença em milissegundos
-
-        const diffInMinutes = Math.floor(duration.asMinutes()); // Obtém a diferença em minutos
-        const diffInSeconds = Math.floor(duration.asSeconds() % 60); // Obtém a diferença em segundos
-
-        const timeDiff = `${diffInMinutes.toString().padStart(2, '0')}:${diffInSeconds.toString().padStart(2, '0')}`; // Formata a diferença no formato mm:ss
-
-        let tempo;
-        let acrescimos;
-
-        switch (jogo.status.code) {
-            // primeiro tempo
-            case 6:
-                acrescimos = ((diffInMinutes > 45) && jogo.time.injuryTime1) ?` +${jogo.time.injuryTime1}`:'';
-                tempo = `1º ${timeDiff}${acrescimos}`;
-                break;
-            
-            // segundo tempo
-            case 7:
-                acrescimos = ((diffInMinutes > 45) && jogo.time.injuryTime2) ?` +${jogo.time.injuryTime2}`:'';
-                tempo = `2º ${timeDiff}${acrescimos}`;
-                break;
-
-            // case 100:
-            //     acrescimos = ((diffInMinutes > 45) && jogo.time.injuryTime3) ?` +${jogo.time.injuryTime3}`:'';
-            //     tempo = `P1º ${timeDiff}${acrescimos}`;
-            //     break;
-
-            // case 100:
-            //     acrescimos = ((diffInMinutes > 45) && jogo.time.injuryTime4) ?` +${jogo.time.injuryTime4}`:'';
-            //     tempo = `P2º ${timeDiff}${acrescimos}`;
-            //     break;
-
-            case 31: tempo = 'Intervalo'; break;
-            case 100: tempo = 'Encerrado'; break;
-        
-            default: tempo = '00:00'; break;
-        }
-
-        // console.log(timeDiff);
-        // console.log(tempo);
-        return tempo;
-    };
 
     const jogoAtivo = () => (
         <View style={styles.jogoRolando}>

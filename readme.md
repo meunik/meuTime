@@ -4,4 +4,4 @@
 
 Um app feito com React Native parar acompanhar informações básicas e cotidianas sobre o meu time.
 
-Ultima versão do APK: [MeuTime.apk](https://expo.dev/artifacts/eas/uqiWyMMoEuevMmSPKEmWvr.apk)
+Ultima versão do APK: [MeuTime.apk](https://expo.dev/artifacts/eas/5aL37v6zxHyRofH8rcG7vA.apk)
