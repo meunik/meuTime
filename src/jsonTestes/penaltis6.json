@@ -1,0 +1,253 @@
+{
+    "tournament": {
+        "name": "UEFA Europa League",
+        "slug": "uefa-europa-league",
+        "category": {
+            "name": "Europe",
+            "slug": "europe",
+            "sport": {
+                "name": "Football",
+                "slug": "football",
+                "id": 1
+            },
+            "id": 1465,
+            "flag": "europe"
+        },
+        "uniqueTournament": {
+            "name": "UEFA Europa League",
+            "slug": "uefa-europa-league",
+            "secondaryColorHex": "#f37d25",
+            "category": {
+                "name": "Europe",
+                "slug": "europe",
+                "sport": {
+                    "name": "Football",
+                    "slug": "football",
+                    "id": 1
+                },
+                "id": 1465,
+                "flag": "europe"
+            },
+            "userCount": 586337,
+            "id": 679,
+            "country": {},
+            "hasEventPlayerStatistics": true,
+            "crowdsourcingEnabled": false,
+            "hasPerformanceGraphFeature": false,
+            "displayInverseHomeAwayTeams": false
+        },
+        "priority": 460,
+        "competitionType": 2,
+        "id": 10909
+    },
+    "season": {
+        "name": "UEFA Europa League 22/23",
+        "year": "22/23",
+        "editor": false,
+        "seasonCoverageInfo": {},
+        "id": 44509
+    },
+    "roundInfo": {
+        "round": 29,
+        "name": "Final",
+        "slug": "final",
+        "cupRoundType": 1
+    },
+    "customId": "cebsIgb",
+    "status": {
+        "code": 50,
+        "description": "Penalties",
+        "type": "inprogress"
+    },
+    "winnerCode": 0,
+    "venue": {
+        "city": {
+            "name": "Budapest"
+        },
+        "stadium": {
+            "name": "Puskás Aréna",
+            "capacity": 67215
+        },
+        "id": 31484,
+        "country": {
+            "alpha2": "HU",
+            "name": "Hungary"
+        }
+    },
+    "referee": {
+        "name": "Anthony Taylor",
+        "slug": "taylor-anthony",
+        "yellowCards": 1760,
+        "redCards": 47,
+        "yellowRedCards": 33,
+        "games": 459,
+        "sport": {
+            "name": "Football",
+            "slug": "football",
+            "id": 1
+        },
+        "id": 69853,
+        "country": {
+            "alpha2": "EN",
+            "name": "England"
+        }
+    },
+    "homeTeam": {
+        "name": "Sevilla",
+        "slug": "sevilla",
+        "shortName": "Sevilla",
+        "gender": "M",
+        "sport": {
+            "name": "Football",
+            "slug": "football",
+            "id": 1
+        },
+        "userCount": 268600,
+        "manager": {
+            "name": "Jose Luis Mendilibar",
+            "slug": "jose-luis-mendilibar",
+            "shortName": "J. L. Mendilibar",
+            "id": 785131,
+            "country": {
+                "alpha2": "ES",
+                "name": "Spain"
+            }
+        },
+        "venue": {
+            "city": {
+                "name": "Seville"
+            },
+            "stadium": {
+                "name": "Ramón Sánchez Pizjuán",
+                "capacity": 45500
+            },
+            "id": 730,
+            "country": {
+                "alpha2": "ES",
+                "name": "Spain"
+            }
+        },
+        "foundationDate": {},
+        "nameCode": "SEV",
+        "disabled": false,
+        "national": false,
+        "type": 0,
+        "id": 2833,
+        "country": {
+            "alpha2": "ES",
+            "name": "Spain"
+        },
+        "subTeams": [],
+        "fullName": "Sevilla",
+        "teamColors": {
+            "primary": "#ffffff",
+            "secondary": "#cc1020",
+            "text": "#cc1020"
+        },
+        "foundationDateTimestamp": -2522448000
+    },
+    "awayTeam": {
+        "name": "Roma",
+        "slug": "roma",
+        "shortName": "Roma",
+        "gender": "M",
+        "sport": {
+            "name": "Football",
+            "slug": "football",
+            "id": 1
+        },
+        "userCount": 395004,
+        "manager": {
+            "name": "José Mourinho",
+            "slug": "jose-mourinho",
+            "shortName": "J. Mourinho",
+            "id": 53418,
+            "country": {
+                "alpha2": "PT",
+                "name": "Portugal"
+            }
+        },
+        "venue": {
+            "city": {
+                "name": "Rome"
+            },
+            "stadium": {
+                "name": "Stadio Olimpico",
+                "capacity": 72698
+            },
+            "id": 870,
+            "country": {
+                "alpha2": "IT",
+                "name": "Italy"
+            }
+        },
+        "foundationDate": {},
+        "nameCode": "ROM",
+        "disabled": false,
+        "national": false,
+        "type": 0,
+        "id": 2702,
+        "country": {
+            "alpha2": "IT",
+            "name": "Italy"
+        },
+        "subTeams": [],
+        "fullName": "Roma",
+        "teamColors": {
+            "primary": "#990000",
+            "secondary": "#eaca15",
+            "text": "#eaca15"
+        },
+        "foundationDateTimestamp": -1343433600
+    },
+    "homeScore": {
+        "current": 4,
+        "display": 4,
+        "period1": 0,
+        "period2": 1,
+        "normaltime": 1,
+        "overtime": 0
+    },
+    "awayScore": {
+        "current": 2,
+        "display": 2,
+        "period1": 1,
+        "period2": 0,
+        "normaltime": 1,
+        "overtime": 0
+    },
+    "time": {
+        "injuryTime1": 7,
+        "injuryTime2": 6,
+        "injuryTime3": 2,
+        "injuryTime4": 6,
+        "currentPeriodStartTimestamp": 1685570205
+    },
+    "changes": {
+        "changes": [
+            "homeScore.current",
+            "homeScore.display",
+            "awayScore.current",
+            "awayScore.display"
+        ],
+        "changeTimestamp": 1685570470
+    },
+    "hasGlobalHighlights": false,
+    "hasXg": true,
+    "hasEventPlayerStatistics": true,
+    "hasEventPlayerHeatMap": true,
+    "detailId": 1,
+    "crowdsourcingDataDisplayEnabled": false,
+    "id": 11292198,
+    "defaultPeriodCount": 2,
+    "defaultPeriodLength": 45,
+    "currentPeriodStartTimestamp": 1685570205,
+    "startTimestamp": 1685559600,
+    "slug": "sevilla-roma",
+    "lastPeriod": "penalties",
+    "finalResultOnly": false,
+    "cupMatchesInRound": 1,
+    "fanRatingEvent": false,
+    "seasonStatisticsType": "overall",
+    "showTotoPromo": false
+}

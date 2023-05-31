@@ -30,18 +30,22 @@ export function tempoJogo(jogo) {
             tempo = `2º ${timeDiff}${acrescimos}`;
             break;
 
-        // case 100:
-        //     acrescimos = ((diffInMinutes > 45) && jogo.time.injuryTime3) ?` +${jogo.time.injuryTime3}`:'';
-        //     tempo = `P1º ${timeDiff}${acrescimos}`;
-        //     break;
+        case 41:
+            acrescimos = ((diffInMinutes > 45) && jogo.time.injuryTime3) ?` +${jogo.time.injuryTime3}`:'';
+            tempo = `P1º ${timeDiff}${acrescimos}`;
+            break;
 
-        // case 100:
-        //     acrescimos = ((diffInMinutes > 45) && jogo.time.injuryTime4) ?` +${jogo.time.injuryTime4}`:'';
-        //     tempo = `P2º ${timeDiff}${acrescimos}`;
-        //     break;
+        case 42:
+            acrescimos = ((diffInMinutes > 45) && jogo.time.injuryTime4) ?` +${jogo.time.injuryTime4}`:'';
+            tempo = `P2º ${timeDiff}${acrescimos}`;
+            break;
 
         case 31: tempo = 'Intervalo'; break;
+        case 32: tempo = 'Espera para Prorrogação'; break;
+        case 33: tempo = 'Intervalo Prorrogação'; break;
+        case 34: tempo = 'Penaltis'; break;
         case 100: tempo = 'Encerrado'; break;
+        case 120: tempo = 'Encerrado'; break;
     
         default:
             tempo = moment.unix(jogo.startTimestamp).format('DD/MM/YYYY')+' - '+moment.unix(jogo.startTimestamp).format('HH:mm');

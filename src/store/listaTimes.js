@@ -1,7 +1,8 @@
 /**
  * ATENÇÃO: CORES SETADAS MANUALMENTE
  */
-export const listaTimes = [
+
+export const listaTimesBrasileirao = [
     {
         name: "Botafogo",
         slug: "botafogo",
@@ -242,4 +243,253 @@ export const listaTimes = [
             text: "#009966"
         }
     }
+];
+
+export const listaTimesLaliga = [
+    {
+        name: "Barcelona",
+        slug: "barcelona",
+        shortName: "Barcelona",
+        nameCode: "FCB",
+        id: 2817,
+        teamColors: {
+            primary: "#154284",
+            secondary: "#9d1009",
+            text: "#9d1009"
+        }
+    },
+    {
+        name: "Real Madrid",
+        slug: "real-madrid",
+        shortName: "Real Madrid",
+        nameCode: "RMA",
+        id: 2829,
+        teamColors: {
+            primary: "#ffffff",
+            secondary: "#004996",
+            text: "#004996"
+        }
+    },
+    {
+        name: "Atlético Madrid",
+        slug: "atletico-madrid",
+        shortName: "Atl. Madrid",
+        nameCode: "ATM",
+        id: 2836,
+        teamColors: {
+            primary: "#ffffff",
+            secondary: "#c40000",
+            text: "#c40000"
+        }
+    },
+    {
+        name: "Real Sociedad",
+        slug: "real-sociedad",
+        shortName: "Real Sociedad",
+        nameCode: "RSO",
+        id: 2824,
+        teamColors: {
+            primary: "#ffffff",
+            secondary: "#0077c7",
+            text: "#0077c7"
+        }
+    },
+    {
+        name: "Villarreal",
+        slug: "villarreal",
+        shortName: "Villarreal",
+        nameCode: "VIL",
+        id: 2819,
+        teamColors: {
+            primary: "#ffff00",
+            secondary: "#013765",
+            text: "#013765"
+        }
+    },
+    {
+        name: "Real Betis",
+        slug: "real-betis",
+        shortName: "Betis",
+        nameCode: "RBB",
+        id: 2816,
+        teamColors: {
+            primary: "#ffffff",
+            secondary: "#006633",
+            text: "#006633"
+        }
+    },
+    {
+        name: "Athletic Club",
+        slug: "athletic-club",
+        shortName: "Athletic Club",
+        nameCode: "ATH",
+        id: 2825,
+        teamColors: {
+            primary: "#aa0000",
+            secondary: "#ffffff",
+            text: "#ffffff"
+        }
+    },
+    {
+        name: "Osasuna",
+        slug: "osasuna",
+        shortName: "Osasuna",
+        nameCode: "OSA",
+        id: 2820,
+        teamColors: {
+            primary: "#cc0000",
+            secondary: "#14213d",
+            text: "#14213d"
+        }
+    },
+    {
+        name: "Girona",
+        slug: "girona",
+        shortName: "Girona",
+        nameCode: "GIR",
+        id: 24264,
+        teamColors: {
+            primary: "#ffffff",
+            secondary: "#ff0000",
+            text: "#ff0000"
+        }
+    },
+    {
+        name: "Rayo Vallecano",
+        slug: "rayo-vallecano",
+        shortName: "Rayo Vallecano",
+        nameCode: "RVC",
+        id: 2818,
+        teamColors: {
+            primary: "#ffffff",
+            secondary: "#ffffff",
+            text: "#ffffff"
+        }
+    },
+    {
+        name: "Sevilla",
+        slug: "sevilla",
+        shortName: "Sevilla",
+        nameCode: "SEV",
+        id: 2833,
+        teamColors: {
+            primary: "#ffffff",
+            secondary: "#cc1020",
+            text: "#cc1020"
+        }
+    },
+    {
+        name: "Mallorca",
+        slug: "mallorca",
+        shortName: "Mallorca",
+        nameCode: "MAL",
+        id: 2826,
+        teamColors: {
+            primary: "#cc0000",
+            secondary: "#000000",
+            text: "#000000"
+        }
+    },
+    {
+        name: "Cádiz",
+        slug: "cadiz",
+        shortName: "Cádiz",
+        nameCode: "CAD",
+        id: 4488,
+        teamColors: {
+            primary: "#ffff00",
+            secondary: "#001d43",
+            text: "#001d43"
+        }
+    },
+    {
+        name: "Getafe",
+        slug: "getafe",
+        shortName: "Getafe",
+        nameCode: "GET",
+        id: 2859,
+        teamColors: {
+            primary: "#00369e",
+            secondary: "#ffffff",
+            text: "#ffffff"
+        }
+    },
+    {
+        name: "Valencia",
+        slug: "valencia",
+        shortName: "Valencia",
+        nameCode: "VCF",
+        id: 2828,
+        teamColors: {
+            primary: "#ffffff",
+            secondary: "#000000",
+            text: "#000000"
+        }
+    },
+    {
+        name: "Almería",
+        slug: "almeria",
+        shortName: "Almería",
+        nameCode: "ALM",
+        id: 2858,
+        teamColors: {
+            primary: "#ff0000",
+            secondary: "#ffffff",
+            text: "#ffffff"
+        }
+    },
+    {
+        name: "Celta Vigo",
+        slug: "celta-vigo",
+        shortName: "Celta",
+        nameCode: "RCC",
+        id: 2821,
+        teamColors: {
+            primary: "#6cace4",
+            secondary: "#ffffff",
+            text: "#ffffff"
+        }
+    },
+    {
+        name: "Real Valladolid",
+        slug: "real-valladolid",
+        shortName: "Real Valladolid",
+        nameCode: "VLL",
+        id: 2831,
+        teamColors: {
+            primary: "#ffffff",
+            secondary: "#663399",
+            text: "#663399"
+        }
+    },
+    {
+        name: "Espanyol",
+        slug: "espanyol",
+        shortName: "Espanyol",
+        nameCode: "ESP",
+        id: 2814,
+        teamColors: {
+            primary: "#ffffff",
+            secondary: "#1369d2",
+            text: "#1369d2"
+        }
+    },
+    {
+        name: "Elche",
+        slug: "elche",
+        shortName: "Elche",
+        nameCode: "ELC",
+        id: 2846,
+        teamColors: {
+            primary: "#ffffff",
+            secondary: "#336600",
+            text: "#336600"
+        }
+    }
+];
+
+
+export const listaTimes = [
+    ...listaTimesBrasileirao,
+    ...listaTimesLaliga,
 ];

@@ -108,12 +108,24 @@ export function Jogos() {
 
         </View>
     );
+    // console.log(jogo);
+
+    const tituloJogo = (jogo) => {
+        const campeonato = jogo.tournament.uniqueTournament.name;
+        console.log(jogo);
+        switch (jogo.roundInfo?.cupRoundType) {
+            case 1: return `${campeonato} - ${jogo.roundInfo.name}`;
+            case 8: return `${campeonato} - Oitavas de final`;
+        
+            default: return `${campeonato} - ${jogo.roundInfo.round}ª Rodada`;
+        }
+    };
 
     const jogoAtivo = () => (
         <View style={styles.jogoRolando}>
             <View style={styles.topo}>
                 <Text style={{ color: jogo.tournament.uniqueTournament.secondaryColorHex, ...styles.txtcampeonato }}>
-                    {`${jogo.tournament.uniqueTournament.name} - ${jogo.roundInfo.round}ª Rodada`}
+                    {tituloJogo(jogo)}
                 </Text>
             </View>
             <View style={styles.timesUltimoJogo}>

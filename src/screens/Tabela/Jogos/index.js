@@ -1,11 +1,12 @@
+
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
-import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
+import { Text, View, Image, FlatList, RefreshControl, StyleSheet } from 'react-native';
 import { brasileiraoJogosDepois, brasileiraoJogosAntes } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import * as NavigationBar from 'expo-navigation-bar';
-import { styles } from "./styles";
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { theme } from "@/src/global/styles/theme";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -31,34 +32,44 @@ export function Jogos() {
     const [passadoJogos, setPassadoJogos] = useState(null);
     const [todosJogos, setTodosJogos] = useState(null);
 
+    // const [jogos, setJogos] = useState(null);
+
     const [refreshing, setRefreshing] = useState(false);
 
-    const fetchData = async () => {
-        const jogosFuturos = await brasileiraoJogosDepois();
-        const jogosPassado = await brasileiraoJogosAntes();
-        
-        setFuturosJogos(jogosFuturos.events);
-        setPassadoJogos(jogosPassado.events);
-        setTodosJogos([
-            ...jogosPassado.events,
-            ...jogosFuturos.events,
-        ]);
+    const [tabs, setTabs] = useState([]);
 
-        let jogos = {};
-        if (todosJogos) {
-            todosJogos.forEach(jogo => {
+    const fetchData = async () => {
+        try {
+            const jogosFuturos = await brasileiraoJogosDepois();
+            const jogosPassado = await brasileiraoJogosAntes();
+            const jogosTodos = [
+                ...jogosPassado.events,
+                ...jogosFuturos.events,
+            ];
+
+            let jogosPorRodadas = {};
+            jogosTodos.forEach(jogo => {
                 const round = jogo.roundInfo.round;
                 
-                if (!jogos[round]) {
-                    jogos[round] = [];
+                if (!jogosPorRodadas[round]) {
+                    jogosPorRodadas[round] = [];
                 }
-                
-                jogos[round].push(jogo);
+    
+                jogosPorRodadas[round].push(jogo);
             });
-        }
-        // console.log(todosJogos);
-        // console.log(jogos);
 
+            // console.log(jogosPorRodadas);
+            // console.log(jogosTodos);
+            const formattedTabs = Object.keys(jogosPorRodadas).map((itens, index) => ({
+                key: `${itens}`,
+                title: `Rodada ${itens}`,
+                content: jogosPorRodadas[itens],
+            }));
+            console.log(formattedTabs);
+            setTabs(formattedTabs);
+        } catch (error) {
+            console.error(error);
+        }
         setRefreshing(false);
     };
 
@@ -72,13 +83,10 @@ export function Jogos() {
         fetchData();
     }, []);
 
+    const [index, setIndex] = useState(0);
+
     const renderItem = ({item}) => (
         <View style={styles.lista}>
-            <View style={styles.topo}>
-                <Text style={{ color: item.tournament.uniqueTournament.secondaryColorHex, ...styles.txtcampeonato }}>
-                    {`${item.tournament.uniqueTournament.name} - ${item.roundInfo.round}ª Rodada`}
-                </Text>
-            </View>
             <View style={styles.timesUltimoJogo}>
 
                 <View style={styles.timeCasa}>
@@ -124,26 +132,236 @@ export function Jogos() {
         </View>
     );
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.info}>
-                {route.params && <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${route.params.campeonato.uniqueTournament.id}/image/dark` }} />}
-                <View>
-                    <Text style={styles.txtInfo}>{route.params && route.params.campeonatoNome}</Text>
+    const Rodadas = ({jogos, rodada}) => {
+        return (
+            <View style={styles.container}>
+                <View style={styles.info}>
+                    <Text style={styles.txtInfo}>{rodada}</Text>
                 </View>
+                <FlatList
+                    contentContainerStyle={styles.contentContainerStyle}
+                    data={jogos}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id.toString()}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
+                />
             </View>
-            <FlatList
-                contentContainerStyle={styles.contentContainerStyle}
-                data={todosJogos}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id.toString()}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />
-                }
+        )
+    };
+
+    const renderScene = SceneMap(
+        Object.fromEntries(
+            tabs.map((tab) => {
+                return [
+                    tab.key,
+                    () => <Rodadas jogos={tab.content} rodada={tab.title} />,
+                ]
+            })
+        )
+    );
+
+    const handleIndexChange = (newIndex) => {
+        setIndex(newIndex);
+    };
+
+    const renderTabBar = props => (
+        <View style={styles.containerNav}>
+            <TabBar
+                {...props}
+                labelStyle={styles.labelStyle}
+                indicatorStyle={styles.ativo}
+                style={styles.navContainer}
             />
         </View>
     );
+    console.log('---------');
+    // console.log(tabs);
+
+    return (
+        <View style={styles.container}>
+            {tabs &&
+            <TabView
+                navigationState={{ index, routes: tabs }}
+                renderScene={renderScene}
+                // onIndexChange={handleIndexChange}
+                onIndexChange={setIndex}
+                renderTabBar={() => null}
+            />}
+        </View>
+    );
 }
+
+export const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: (Platform.OS === 'ios') ? 0 : 10,
+        backgroundColor: theme.colors.fundo,
+        // backgroundColor: theme.colors.background(),
+        // backgroundColor: '#000000d9',
+        // paddingHorizontal: 20,
+    },
+
+    containerNav: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        paddingHorizontal: 5,
+        paddingBottom: 12,
+        backgroundColor: theme.colors.nav,
+        // backgroundColor: '#590000',
+        borderRadius: 10,
+        position: 'absolute',
+        left: 3,
+        right: 3,
+        bottom: -10,
+        alignSelf: 'center',
+    },
+    labelStyle: {
+        color: theme.colors.texto.nav,
+    },
+    navContainer: {
+        width: 170,
+        backgroundColor: 'transparent',
+        elevation: 0,
+        shadowOpacity: 0,
+        borderRadius: 10,
+    },
+    ativo: {
+        backgroundColor: '#000',
+        alignSelf: 'center',
+    },
+
+    txtLogo: {
+        color: theme.colors.texto[100],
+        fontSize: theme.font.size[7],
+    },
+    txtData: {
+        color: theme.colors.texto[200],
+        fontSize: theme.font.size[1],
+    },
+    txtTempo: {
+        color: theme.colors.texto[200],
+        fontSize: theme.font.size[1],
+    },
+    txtX: {
+        color: theme.colors.texto[300],
+    },
+    txtcampeonato: {
+        color: theme.colors.texto[200],
+        fontSize: theme.font.size[1],
+    },
+    txtTime: {
+        color: theme.colors.texto[100],
+        fontSize: theme.font.size[6],
+    },
+    txtInfo: {
+        color: theme.colors.texto[300],
+        fontSize: theme.font.size[4],
+    },
+    info: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        gap: 10,
+    },
+    img: {
+        height: 50,
+        width: 50,
+    },
+    logo: {
+        paddingVertical: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 20,
+    },
+    lista: {
+        // borderColor: '#ffffff0d',
+        borderColor: 'transparent',
+        paddingVertical: 10,
+        borderTopWidth: 0.5,
+        borderBottomWidth: 0.5,
+    },
+    topo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 5,
+    },
+    rodape: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 5,
+    },
+    jogo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        // gap: 10,
+    },
+    campeonato: {
+        height: 60,
+        width: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    imgCampeonato: {
+        height: 50,
+        width: 50,
+    },
+    jogoRolando: {
+        height: 100,
+        paddingBottom: 10,
+    },
+    timesUltimoJogo: {
+        height: 60,
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 5,
+    },
+    times: {
+        width: '100%',
+        position: 'absolute',
+        height: 60,
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 5,
+    },
+    timeCasa: {
+        width: '45%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        fontSize: 20,
+        gap: 5,
+    },
+    timeVisitante: {
+        width: '45%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5,
+    },
+    imgLista: {
+        height: 40,
+        width: 40,
+    },
+    contentContainerStyle: {
+        paddingBottom: theme.contentContainerStyle.paddingBottom,
+    },
+    cartaoVermelho: {
+        transform: [{ rotate: '90deg'}]
+    },
+    cartaoVermelhoContainer: {
+        flexDirection: 'row',
+        gap: -1,
+    },
+})
