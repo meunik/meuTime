@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[300],
         fontSize: theme.font.size[4],
         paddingVertical: 10,
+        textAlign: 'center',
     },
     lista: {
         flexDirection: 'row',

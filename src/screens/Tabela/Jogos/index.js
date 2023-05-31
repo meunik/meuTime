@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
 import { brasileiraoJogosDepois, brasileiraoJogosAntes } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
@@ -12,7 +12,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 
 export function Jogos() {
-    NavigationBar.setBackgroundColorAsync(theme.colors.fundo);
+    useFocusEffect(() => {
+        NavigationBar.setBackgroundColorAsync(theme.colors.fundo);
+
+        return () => {
+            NavigationBar.setBackgroundColorAsync(theme.colors.nav);
+        };
+    });
 
 	const navigation = useNavigation();
     const route = useRoute();

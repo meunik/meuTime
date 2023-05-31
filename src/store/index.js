@@ -1,6 +1,9 @@
 // store.js
 import { createStore } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+
 import { listaTimes } from "./listaTimes";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Defina os tipos de ações
 const SET_TIME = 'SET_TIME';
@@ -10,18 +13,7 @@ const SET_INTERVALO = 'SET_INTERVALO';
 
 // Defina o estado inicial
 const initialState = {
-    meuTime: {
-        name: "Botafogo",
-        slug: "botafogo",
-        shortName: "Botafogo",
-        nameCode: "BOT",
-        id: 1958,
-        teamColors: {
-            primary: "#000000",
-            secondary: "#ffffff",
-            text: "#ffffff"
-        }
-    },
+    meuTime: null,
     listaTimes: listaTimes,
     carregarJogos: true,
     intervalo: null,
@@ -38,7 +30,13 @@ const reducer = (state = initialState, action) => {
     }
 };
 
-// Crie a store
-const store = createStore(reducer);
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  blacklist: ['carregarJogos', 'intervalo'],
+};
 
-export default store;
+const persistedReducer = persistReducer(persistConfig, reducer);
+
+export const store = createStore(persistedReducer);
+export const persistor = persistStore(store);

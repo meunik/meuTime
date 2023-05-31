@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
         fontSize: theme.font.size[4],
     },
     txtLink: {
-        color: theme.colors.texto.link,
+        color: theme.colors.texto.btn,
         fontSize: theme.font.size[2],
     },
     txtInfoPontos: {
@@ -52,17 +52,27 @@ export const styles = StyleSheet.create({
             color: cor,
         }
     },
+    btn: {
+        // backgroundColor: '#343a40',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // borderColor: '#ffffff0d',
+        borderWidth: 0.5,
+        borderColor: '#ffffff',
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 50,
+    },
     info: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10,
+        paddingHorizontal: 10,
+        paddingBottom: 5,
         gap: 10,
     },
     infoArtilheiros: {
         flexDirection: 'row',
         alignItems: 'center',
-        // padding: 10,
-        // gap: 10,
     },
     imgCampeonato: {
         height: 50,
@@ -71,7 +81,9 @@ export const styles = StyleSheet.create({
     listaInfo: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10,
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        paddingBottom: 5,
     },
     lista: {
         flexDirection: 'row',
@@ -102,9 +114,9 @@ export const styles = StyleSheet.create({
         let cor = '#333';
         if (item.promotion) {
             switch (item.promotion.id) {
-                case 20: cor = '#45a1f3'; break;
-                case 19: cor = '#004fd9'; break;
-                case 21: cor = '#3bb552'; break;
+                case 19: cor = '#004fd9'; break; // Libertadores
+                case 20: cor = '#45a1f3'; break; // Pré-Libertadores
+                case 21: cor = '#3bb552'; break; // Sulamericana
                 case 3: cor = '#ef5158'; break;
             
                 default: cor = '#333'; break;
@@ -155,6 +167,6 @@ export const styles = StyleSheet.create({
         paddingBottom: theme.contentContainerStyle.paddingBottom,
     },
     linksContainer: {
-        gap: 10,
+        gap: 5,
     },
 })

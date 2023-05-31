@@ -9,7 +9,6 @@ import * as NavigationBar from 'expo-navigation-bar';
 import { styles } from "./styles";
 import { theme } from "@/src/global/styles/theme";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useFocusEffect } from '@react-navigation/native';
 
 import { setCarregarJogos, setIntervalo } from '@/src/store/action';
 
@@ -31,10 +30,11 @@ export function Jogos() {
     const [jogoAnteriorSeguinte, setJogoAnteriorSeguinte] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
 
-    const fetchData = async () => {
-        const jogosFuturos = await jogosDepois(meuTime.id);
-        const jogoUltimoProx = await proximoJogo(meuTime.id);
-        const jogoAgora = await evento(jogoUltimoProx.previousEvent.id);
+    async function fetchData() {
+        const jogosFuturos = await jogosDepois(meuTime?.id);
+        const jogoUltimoProx = await proximoJogo(meuTime?.id);
+        const jogoAgora = await evento(jogoUltimoProx?.previousEvent?.id);
+
         setFuturosJogos(jogosFuturos);
         setJogo(jogoAgora);
         setJogoAnteriorSeguinte(jogoUltimoProx);
@@ -65,7 +65,7 @@ export function Jogos() {
             fetchData();
             dispatch(setCarregarJogos(false))
         }
-    }, [carregarJogos, navigation]);
+    }, [carregarJogos]);
 
     const renderItem = ({ item, index }) => (
         <View style={styles.lista}>

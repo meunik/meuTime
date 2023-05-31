@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { View, Text, Image, FlatList, TouchableHighlight, useWindowDimensions } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setMeuTime } from '@/src/store/action';
 import { time } from '@/src/store/store';
 import { url, urlTime } from '@/src/store/api';
@@ -38,7 +37,6 @@ export function AuthRoutes() {
     const layout = useWindowDimensions();
 
     const meuTime = useSelector(state => state.meuTime);
-    const dispatch = useDispatch();
     
     const [showOptions, setShowOptions] = useState(false);
     const toggleOptions = () => {
@@ -74,7 +72,7 @@ export function AuthRoutes() {
 
     return (
         <Navigator
-            initialRouteName="inicial"
+            initialRouteName={(meuTime)?"inicial":"Times"}
             screenOptions={({ route }) => ({
                 headerShown: (route.name == 'Id') ? true : false,
                 headerLeft: false,

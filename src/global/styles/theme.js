@@ -1,18 +1,10 @@
-import { useSelector, useDispatch } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
 
 export const theme = {
     colors: {
         // fundo: '#121212',
-        async background() {
-            
-            const fetchedTime = await AsyncStorage.getItem('@meuTime');
-            const meuTime = JSON.parse(fetchedTime);
-            // const meuTime = useSelector(state => state.meuTime);
-            // console.log(meuTime);
-            // return '#fff';
-            // return '#0A1F14';
-            // return '#00000050';
+        background() {
+            const meuTime = useSelector(state => state.meuTime);
             return (meuTime) ? meuTime.teamColors.primary : '#000';
         },
         fundo: '#000',
@@ -24,6 +16,7 @@ export const theme = {
             300: '#969696',
             nav: '#000',
             link: '#8ab4f8',
+            btn: '#fff',
             tempo: '#3bb552',
         },
     },
@@ -50,14 +43,11 @@ export function theme2() {
 
     return {
         colors: {
-            // fundo: '#121212',
-            background(meuTime) {
-                // console.log(meuTime);
-                // return '#fff';
-                // return '#0A1F14';
-                // return '#00000050';
-                return (meuTime) ? meuTime.teamColors.primary : '#000';
-            },
+            // async background() {
+            //     const fetchedTime = await AsyncStorage.getItem('@meuTime');
+            //     const meuTime = JSON.parse(fetchedTime);
+            //     return (meuTime) ? meuTime.teamColors.primary : '#000';
+            // },
             fundo: '#000',
             // nav: '#55A655',
             nav: '#d0d0d0',

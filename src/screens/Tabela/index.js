@@ -58,7 +58,7 @@ export function Tabela() {
                         {tabela && <BaseButton onPress={() => navigation.navigate('BrasileiraoArtilheiros', {
                             campeonatoNome: tabela.name,
                             campeonato: tabela.tournament,
-                        })} underlayColor>
+                        })} style={styles.btn}>
                             <View style={styles.infoArtilheiros}>
                                 <Text style={styles.txtLink}>Ver Artilheiros</Text>
                             </View>
@@ -66,7 +66,7 @@ export function Tabela() {
                         {tabela && <BaseButton onPress={() => navigation.navigate('BrasileiraoJogos', {
                             campeonatoNome: tabela.name,
                             campeonato: tabela.tournament,
-                        })} underlayColor>
+                        })} style={styles.btn}>
                             <View style={styles.infoArtilheiros}>
                                 <Text style={styles.txtLink}>Jogos</Text>
                             </View>
