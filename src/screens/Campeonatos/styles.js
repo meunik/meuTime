@@ -20,6 +20,11 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[300],
         fontSize: theme.font.size[4],
     },
+    txtPlaceholder: {
+        color: theme.colors.texto[300],
+        fontSize: theme.font.size[4],
+        margin: 10,
+    },
     txtLink: {
         color: theme.colors.texto.btn,
         fontSize: theme.font.size[2],
@@ -53,20 +58,15 @@ export const styles = StyleSheet.create({
         }
     },
     btn: {
-        // borderWidth: 0.5,
-        // borderColor: '#ffffff20',
-        // borderRadius: 10,
-        // backgroundColor: '#ffffff30',
-        flexDirection: 'row',
+        // backgroundColor: '#343a40',
         // justifyContent: 'center',
-        alignItems: 'center',
+        // alignItems: 'center',
+        // borderColor: '#ffffff0d',
+        borderWidth: 0.5,
+        borderColor: '#ffffff',
         paddingVertical: 5,
-        // paddingHorizontal: 15,
-        borderRadius: 10,
-    },
-    linksContainer: {
-        paddingVertical: 5,
-        // gap: 5,
+        paddingHorizontal: 10,
+        borderRadius: 50,
     },
     infoSelect: {
         flexDirection: 'row',
@@ -106,7 +106,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 10,
-        paddingTop: 5,
+        paddingBottom: 5,
     },
     lista: {
         flexDirection: 'row',
@@ -188,5 +188,8 @@ export const styles = StyleSheet.create({
     },
     contentContainerStyle: {
         paddingBottom: theme.contentContainerStyle.paddingBottom,
+    },
+    linksContainer: {
+        gap: 5,
     },
 })

@@ -9,7 +9,7 @@ import { time } from '@/src/store/store';
 import { url, urlTime } from '@/src/store/api';
 
 import { Jogos } from "@/src/screens/Jogos";
-import { Tabela } from "@/src/screens/Tabela";
+import { Campeonatos } from "@/src/screens/Campeonatos";
 import { styles } from "./styles";
 import { theme } from "@/src/global/styles/theme";
 
@@ -23,7 +23,7 @@ const FirstRoute = () => (
 );
 
 const SecondRoute = () => (
-    <Tabela />
+    <Campeonatos />
 );
 
 const renderScene = SceneMap({

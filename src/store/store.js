@@ -81,3 +81,18 @@ export const copaDoBrasil = async (id) => {
         return null;
     }
 }
+export const cariocao = async () => await requestCampeonatoCarioca('standings/total', 'standings', true);
+
+async function requestCampeonatoCarioca(url, param, first = false) {
+    try {
+        const response = await api.get(urlCariocao + url);
+        if (first) {
+            return (response.data) ? response.data[param][0] : null;
+        } else {
+            return (response.data) ? response.data[param] : null;
+        }
+    } catch (error) {
+        console.error(error, 'requestCampeonatoCariocao');
+        return null;
+    }
+}

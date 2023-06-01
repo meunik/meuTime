@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { BaseButton } from "react-native-gesture-handler";
-import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
+import { View, Text, Image, FlatList, RefreshControl } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 import { theme } from "@/src/global/styles/theme";
 import { brasileirao } from '@/src/store/store';
@@ -52,25 +52,21 @@ export function Tabela() {
     return (
         <View style={styles.container}>
             <View>
-                <View style={styles.info}>
-                    {tabela && <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${tabela.tournament.uniqueTournament.id}/image/dark` }} />}
-                    <Text style={styles.txtInfo}>{tabela && tabela.name}</Text>
-                </View>
                 <View style={styles.listaInfo}>
                     <View style={styles.linksContainer}>
                         {tabela && <BaseButton onPress={() => navigation.navigate('BrasileiraoArtilheiros', {
                             campeonatoNome: tabela.name,
                             campeonato: tabela.tournament,
-                        })} style={styles.btn}>
-                            <View style={styles.infoArtilheiros}>
+                        })}>
+                            <View style={styles.btn}>
                                 <Text style={styles.txtLink}>Ver Artilheiros</Text>
                             </View>
                         </BaseButton>}
                         {tabela && <BaseButton onPress={() => navigation.navigate('BrasileiraoJogos', {
                             campeonatoNome: tabela.name,
                             campeonato: tabela.tournament,
-                        })} style={styles.btn}>
-                            <View style={styles.infoArtilheiros}>
+                        })}>
+                            <View style={styles.btn}>
                                 <Text style={styles.txtLink}>Jogos</Text>
                             </View>
                         </BaseButton>}

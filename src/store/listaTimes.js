@@ -488,8 +488,23 @@ export const listaTimesLaliga = [
     }
 ];
 
+export const listaSelecoes = [
+    {
+        name: "Brazil",
+        slug: "brazil",
+        shortName: "Brazil",
+        nameCode: "BRA",
+        national: true,
+        id: 4748,
+        teamColors: {
+            primary: "#ffff00",
+            secondary: "#009933",
+            text: "#009933"
+        }
+    },
+];
+
 
 export const listaTimes = [
     ...listaTimesBrasileirao,
-    ...listaTimesLaliga,
 ];
