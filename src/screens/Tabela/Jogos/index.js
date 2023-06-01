@@ -58,14 +58,11 @@ export function Jogos() {
                 jogosPorRodadas[round].push(jogo);
             });
 
-            // console.log(jogosPorRodadas);
-            // console.log(jogosTodos);
             const formattedTabs = Object.keys(jogosPorRodadas).map((itens, index) => ({
                 key: `${itens}`,
                 title: `Rodada ${itens}`,
                 content: jogosPorRodadas[itens],
             }));
-            console.log(formattedTabs);
             setTabs(formattedTabs);
         } catch (error) {
             console.error(error);
@@ -179,8 +176,6 @@ export function Jogos() {
             />
         </View>
     );
-    console.log('---------');
-    // console.log(tabs);
 
     return (
         <View style={styles.container}>

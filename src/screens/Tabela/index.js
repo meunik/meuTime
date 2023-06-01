@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { BaseButton } from "react-native-gesture-handler";
 import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
+import * as NavigationBar from 'expo-navigation-bar';
+import { theme } from "@/src/global/styles/theme";
 import { brasileirao } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 
 export function Tabela() {
+    NavigationBar.setBackgroundColorAsync(theme.colors.nav);
 
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);

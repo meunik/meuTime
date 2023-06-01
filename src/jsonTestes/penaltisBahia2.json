@@ -1,0 +1,238 @@
+{
+    "tournament": {
+        "name": "Copa do Brasil",
+        "slug": "copa-do-brasil",
+        "category": {
+            "name": "Brazil",
+            "slug": "brazil",
+            "sport": {
+                "name": "Football",
+                "slug": "football",
+                "id": 1
+            },
+            "id": 13,
+            "flag": "brazil",
+            "alpha2": "BR"
+        },
+        "uniqueTournament": {
+            "name": "Copa do Brasil",
+            "slug": "copa-do-brasil",
+            "primaryColorHex": "#34a348",
+            "secondaryColorHex": "#f2ba1c",
+            "category": {
+                "name": "Brazil",
+                "slug": "brazil",
+                "sport": {
+                    "name": "Football",
+                    "slug": "football",
+                    "id": 1
+                },
+                "id": 13,
+                "flag": "brazil",
+                "alpha2": "BR"
+            },
+            "userCount": 124697,
+            "id": 373,
+            "country": {},
+            "hasEventPlayerStatistics": false,
+            "crowdsourcingEnabled": false,
+            "hasPerformanceGraphFeature": false,
+            "displayInverseHomeAwayTeams": false
+        },
+        "priority": 0,
+        "competitionType": 2,
+        "id": 283
+    },
+    "season": {
+        "name": "Copa do Brasil 2023",
+        "year": "2023",
+        "editor": false,
+        "id": 48876
+    },
+    "roundInfo": {
+        "round": 5,
+        "name": "Round of 16",
+        "slug": "round-of-16",
+        "cupRoundType": 8
+    },
+    "customId": "fOstO",
+    "status": {
+        "code": 50,
+        "description": "Penalties",
+        "type": "inprogress"
+    },
+    "winnerCode": 0,
+    "aggregatedWinnerCode": 1,
+    "attendance": 34980,
+    "referee": {
+        "name": "Bruno Arleu de Araujo",
+        "slug": "bruno-arleu-de-araujo",
+        "yellowCards": 666,
+        "redCards": 17,
+        "yellowRedCards": 10,
+        "games": 124,
+        "sport": {
+            "name": "Football",
+            "slug": "football",
+            "id": 1
+        },
+        "id": 785273,
+        "country": {
+            "alpha2": "BR",
+            "name": "Brazil"
+        }
+    },
+    "homeTeam": {
+        "name": "Bahia",
+        "slug": "bahia",
+        "shortName": "Bahia",
+        "gender": "M",
+        "sport": {
+            "name": "Football",
+            "slug": "football",
+            "id": 1
+        },
+        "userCount": 52878,
+        "manager": {
+            "name": "Renato Paiva",
+            "slug": "renato-paiva",
+            "shortName": "R. Paiva",
+            "id": 791116,
+            "country": {
+                "alpha2": "PT",
+                "name": "Portugal"
+            }
+        },
+        "venue": {
+            "city": {
+                "name": "Salvador"
+            },
+            "stadium": {
+                "name": "Arena Fonte Nova",
+                "capacity": 51614
+            },
+            "id": 11969,
+            "country": {
+                "alpha2": "BR",
+                "name": "Brazil"
+            }
+        },
+        "foundationDate": {},
+        "nameCode": "BAH",
+        "disabled": false,
+        "national": false,
+        "type": 0,
+        "id": 1955,
+        "country": {
+            "alpha2": "BR",
+            "name": "Brazil"
+        },
+        "subTeams": [],
+        "fullName": "Bahia",
+        "teamColors": {
+            "primary": "#ffffff",
+            "secondary": "#333399",
+            "text": "#333399"
+        },
+        "foundationDateTimestamp": -1230768000
+    },
+    "awayTeam": {
+        "name": "Santos",
+        "slug": "santos",
+        "shortName": "Santos",
+        "gender": "M",
+        "sport": {
+            "name": "Football",
+            "slug": "football",
+            "id": 1
+        },
+        "userCount": 79277,
+        "manager": {
+            "name": "Odair Hellmann",
+            "slug": "odair-hellmann",
+            "shortName": "O. Hellmann",
+            "id": 789461,
+            "country": {
+                "alpha2": "BR",
+                "name": "Brazil"
+            }
+        },
+        "venue": {
+            "city": {
+                "name": "Santos"
+            },
+            "stadium": {
+                "name": "Urbano Caldeira",
+                "capacity": 16798
+            },
+            "id": 810,
+            "country": {
+                "alpha2": "BR",
+                "name": "Brazil"
+            }
+        },
+        "foundationDate": {},
+        "nameCode": "SAN",
+        "disabled": false,
+        "national": false,
+        "type": 0,
+        "id": 1968,
+        "country": {
+            "alpha2": "BR",
+            "name": "Brazil"
+        },
+        "subTeams": [],
+        "fullName": "Santos",
+        "teamColors": {
+            "primary": "#ffffff",
+            "secondary": "#ffffff",
+            "text": "#ffffff"
+        },
+        "foundationDateTimestamp": -1821398400
+    },
+    "homeScore": {
+        "current": 5,
+        "display": 5,
+        "period1": 0,
+        "period2": 1,
+        "aggregated": 5
+    },
+    "awayScore": {
+        "current": 4,
+        "display": 4,
+        "period1": 0,
+        "period2": 1,
+        "aggregated": 4
+    },
+    "time": {
+        "injuryTime1": 7,
+        "injuryTime2": 7,
+        "currentPeriodStartTimestamp": 1685578217
+    },
+    "changes": {
+        "changes": [
+            "homeScore.aggregated",
+            "awayScore.aggregated",
+            "homeScore.aggregated",
+            "awayScore.aggregated"
+        ],
+        "changeTimestamp": 1685578817
+    },
+    "hasGlobalHighlights": false,
+    "hasEventPlayerStatistics": true,
+    "hasEventPlayerHeatMap": true,
+    "detailId": 1,
+    "crowdsourcingDataDisplayEnabled": false,
+    "id": 11256869,
+    "defaultPeriodCount": 2,
+    "defaultPeriodLength": 45,
+    "currentPeriodStartTimestamp": 1685578217,
+    "previousLegEventId": 11256849,
+    "startTimestamp": 1685570400,
+    "slug": "santos-bahia",
+    "lastPeriod": "penalties",
+    "finalResultOnly": false,
+    "cupMatchesInRound": 2,
+    "fanRatingEvent": false,
+    "showTotoPromo": false
+}

@@ -8,11 +8,10 @@ import moment from 'moment';
 import * as NavigationBar from 'expo-navigation-bar';
 import { styles } from "./styles";
 import { theme } from "@/src/global/styles/theme";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { setCarregarJogos, setIntervalo } from '@/src/store/action';
 
-import { tempoJogo } from "@/src/Utils/TempoJogo";
+import { jogoAtivo } from "@/src/components/Jogo";
 
 export function Jogos() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
@@ -108,75 +107,11 @@ export function Jogos() {
 
         </View>
     );
-    // console.log(jogo);
-
-    const tituloJogo = (jogo) => {
-        const campeonato = jogo.tournament.uniqueTournament.name;
-        console.log(jogo);
-        switch (jogo.roundInfo?.cupRoundType) {
-            case 1: return `${campeonato} - ${jogo.roundInfo.name}`;
-            case 8: return `${campeonato} - Oitavas de final`;
-        
-            default: return `${campeonato} - ${jogo.roundInfo.round}ª Rodada`;
-        }
-    };
-
-    const jogoAtivo = () => (
-        <View style={styles.jogoRolando}>
-            <View style={styles.topo}>
-                <Text style={{ color: jogo.tournament.uniqueTournament.secondaryColorHex, ...styles.txtcampeonato }}>
-                    {tituloJogo(jogo)}
-                </Text>
-            </View>
-            <View style={styles.timesUltimoJogo}>
-
-                <View style={styles.timeCasa}>
-                    <View style={styles.cartaoVermelhoContainer}>
-                        {jogo.homeRedCards && (() => {
-                            const items = [];
-                            for (let i = 0; i < jogo.homeRedCards; i++) {
-                                items.push(
-                                    <Icon key={'homeRedCards'+i} name="card" size={10} color="#e35c47" style={styles.cartaoVermelho} />
-                                );
-                            }
-                            return items;
-                        })()}
-                    </View>
-                    <Text style={styles.txtTime}>{jogo.homeTeam.nameCode}</Text>
-                    <Image style={styles.imgLista} resizeMode="center" source={{ uri: `${urlBase}team/${jogo.homeTeam.id}/image` }} />
-                    <Text style={styles.txtTime}>{jogo.homeScore.display}</Text>
-                </View>
-
-                <Text style={styles.txtX}>x</Text>
-
-                <View style={styles.timeVisitante}>
-                    <Text style={styles.txtTime}>{jogo.awayScore.display}</Text>
-                    <Image style={styles.imgLista} resizeMode="center" source={{ uri: `${urlBase}team/${jogo.awayTeam.id}/image` }} />
-                    <Text style={styles.txtTime}>{jogo.awayTeam.nameCode}</Text>
-                    <View style={styles.cartaoVermelhoContainer}>
-                        {jogo.awayRedCards && (() => {
-                        const items = [];
-                        for (let i = 0; i < jogo.awayRedCards; i++) {
-                            items.push(
-                                <Icon key={'awayRedCards'+i} name="card" size={10} color="#e35c47" style={styles.cartaoVermelho} />
-                            );
-                        }
-                        return items;
-                        })()}
-                    </View>
-                </View>
-
-            </View>
-            <View style={styles.rodape}>
-                <Text style={styles.txtTempo}>{tempoJogo(jogo)}</Text>
-            </View>
-        </View>
-    );
 
     return (
         <View style={styles.container}>
             <View>
-                {jogo && jogoAtivo()}
+                {jogo && jogoAtivo({jogo})}
             </View>
             <FlatList
                 contentContainerStyle={styles.contentContainerStyle}

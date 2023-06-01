@@ -41,9 +41,10 @@ export function tempoJogo(jogo) {
             break;
 
         case 31: tempo = 'Intervalo'; break;
-        case 32: tempo = 'Espera para Prorrogação'; break;
+        case 32: tempo = 'Prorrogação'; break;
         case 33: tempo = 'Intervalo Prorrogação'; break;
         case 34: tempo = 'Penaltis'; break;
+        case 50: tempo = 'Penaltis'; break;
         case 100: tempo = 'Encerrado'; break;
         case 120: tempo = 'Encerrado'; break;
     
