@@ -11,6 +11,8 @@ import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/Feather';
 
 import { Tabela } from "@/src/screens/Tabela/index";
+import { Carioca } from "@/src/screens/Carioca/index";
+import { Sulamericana } from "@/src/screens/Sulamericana/index";
 
 export function Campeonatos() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
@@ -79,6 +81,8 @@ export function Campeonatos() {
         if (torneio) {
             switch (torneio.id) {
                 case 325: return <Tabela />;
+                case 92: return <Carioca />;
+                case 480: return <Sulamericana />;
             
                 default: return null;
             }

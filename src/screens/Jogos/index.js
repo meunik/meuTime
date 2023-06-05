@@ -11,7 +11,7 @@ import { theme } from "@/src/global/styles/theme";
 
 import { setCarregarJogos, setIntervalo } from '@/src/store/action';
 
-import { jogoAtivo } from "@/src/components/Jogo";
+import { JogoAtivo } from "@/src/components/Jogo";
 
 export function Jogos() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
@@ -107,11 +107,12 @@ export function Jogos() {
 
         </View>
     );
+    console.log(jogo);
 
     return (
         <View style={styles.container}>
             <View>
-                {jogo && jogoAtivo({jogo})}
+                {jogo && <JogoAtivo jogo={jogo}/>}
             </View>
             <FlatList
                 contentContainerStyle={styles.contentContainerStyle}

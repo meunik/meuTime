@@ -81,23 +81,26 @@ export const styles = StyleSheet.create({
         height: 50,
         width: 50,
     },
-    jogoRolando: {
-        height: 100,
-        paddingBottom: 10,
+    jogoRolando(valor) {
+        return {
+            height: valor?valor:100,
+            paddingBottom: 10,
+        };
     },
-    placarPenaltis: {
-        position: 'absolute',
-        top: 57,
-        right: 0,
-        left: 0,
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 5,
+    placarPenaltis(valor) {
+        return {
+            position: 'absolute',
+            top: ((valor?valor:100)/2)+7,
+            right: 0,
+            left: 0,
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 5,
+        }
     },
     timesUltimoJogo: {
-        height: 50,
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
@@ -115,7 +118,7 @@ export const styles = StyleSheet.create({
         gap: 5,
     },
     timeCasa: {
-        width: '45%',
+        width: '20%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
@@ -123,14 +126,16 @@ export const styles = StyleSheet.create({
         gap: 5,
     },
     timeVisitante: {
-        width: '45%',
+        width: '20%',
         flexDirection: 'row',
         alignItems: 'center',
         gap: 5,
     },
-    imgLista: {
-        height: 40,
-        width: 40,
+    imgLista(valor) {
+        return {
+            height: (valor)?valor:40,
+            width: (valor)?valor:40,
+        }
     },
     contentContainerStyle: {
         paddingBottom: theme.contentContainerStyle.paddingBottom,

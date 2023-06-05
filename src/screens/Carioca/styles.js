@@ -140,6 +140,10 @@ export const styles = StyleSheet.create({
                 case 19: cor = '#004fd9'; break; // Libertadores
                 case 20: cor = '#45a1f3'; break; // Pré-Libertadores
                 case 21: cor = '#3bb552'; break; // Sulamericana
+
+                case 6: cor = (item.position == 1) ? '#dbb234' : '#004fd9'; break; // Semifinalistas Carioca
+                case 35: cor = '#3bb552'; break; // Taça Rio
+
                 case 3: cor = '#ef5158'; break; // Rebaixamento
             
                 default: cor = '#333'; break;
@@ -154,7 +158,15 @@ export const styles = StyleSheet.create({
             alignItems: 'center',
         }
     },
-    bolinhaLiberta: {
+    bolinhaCampeao: {
+        backgroundColor: '#dbb234',
+        borderRadius: 50,
+        width: 6,
+        height: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bolinhaSemifinalista: {
         backgroundColor: '#004fd9',
         borderRadius: 50,
         width: 6,
@@ -162,15 +174,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    bolinhaPreLiberta: {
-        backgroundColor: '#45a1f3',
-        borderRadius: 50,
-        width: 6,
-        height: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    bolinhaSula: {
+    bolinhaTacaRio: {
         backgroundColor: '#3bb552',
         borderRadius: 50,
         width: 6,

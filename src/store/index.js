@@ -34,9 +34,9 @@ const reducer = (state = initialState, action) => {
 };
 
 const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-  blacklist: ['carregarJogos', 'intervalo', 'listaTimes'],
+    key: 'root',
+    storage: AsyncStorage,
+    blacklist: ['carregarJogos', 'intervalo', 'listaTimes'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

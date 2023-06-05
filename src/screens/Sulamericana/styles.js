@@ -4,31 +4,39 @@ import { theme } from "@/src/global/styles/theme";
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: (Platform.OS === 'ios') ? 0 : 10,
         backgroundColor: theme.colors.fundo,
     },
-    txt: {
-        color: theme.colors.texto[100],
-        fontSize: theme.font.size[4],
+    containerNav: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        paddingHorizontal: 5,
+        paddingBottom: 12,
+        backgroundColor: theme.colors.nav,
+        borderRadius: 10,
+        position: 'absolute',
+        left: 3,
+        right: 3,
+        bottom: -10,
+        alignSelf: 'center',
     },
-    txtPontos: {
-        color: theme.colors.texto[100],
-        fontSize: theme.font.size[1],
-        textAlign: 'center',
-        width: 15,
+    labelStyle: {
+        color: theme.colors.texto.nav,
     },
-    txtInfo: {
-        color: theme.colors.texto[300],
-        fontSize: theme.font.size[4],
+    navContainer: {
+        width: 170,
+        backgroundColor: 'transparent',
+        elevation: 0,
+        shadowOpacity: 0,
+        borderRadius: 10,
     },
-    txtLink: {
-        color: theme.colors.texto.btn,
-        fontSize: theme.font.size[2],
+    ativo: {
+        backgroundColor: '#000',
+        alignSelf: 'center',
     },
-    txtInfoPontos: {
-        color: theme.colors.texto[300],
-        fontSize: theme.font.size[1],
-        textAlign: 'center',
-        width: 15,
+    contentContainerStyle: {
+        paddingBottom: theme.contentContainerStyle.paddingBottom,
     },
     txtLegenda: {
         color: theme.colors.texto[300],
@@ -52,54 +60,36 @@ export const styles = StyleSheet.create({
             color: cor,
         }
     },
-    btn: {
-        // borderWidth: 0.5,
-        // borderColor: '#ffffff20',
-        // borderRadius: 10,
-        // backgroundColor: '#ffffff30',
-        flexDirection: 'row',
-        // justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: 5,
-        // paddingHorizontal: 15,
-        borderRadius: 10,
+    txt: {
+        color: theme.colors.texto[100],
+        fontSize: theme.font.size[4],
+    },
+    txtPontos: {
+        color: theme.colors.texto[100],
+        fontSize: theme.font.size[1],
+        textAlign: 'center',
+        width: 15,
+    },
+    txtInfo: {
+        color: theme.colors.texto[300],
+        fontSize: theme.font.size[4],
+    },
+    txtInfoPontos: {
+        color: theme.colors.texto[300],
+        fontSize: theme.font.size[1],
+        textAlign: 'center',
+        width: 15,
     },
     linksContainer: {
         paddingVertical: 5,
         // gap: 5,
     },
-    infoSelect: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 5,
-        gap: 10,
-    },
     info: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
         gap: 10,
-    },
-    infoContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderWidth: 0.5,
-        borderColor: '#ffffff20',
-        borderRadius: 10,
-        paddingHorizontal: 5,
-        marginHorizontal: 5,
-        paddingVertical: 5,
-    },
-    chevronDown: {
-        marginRight: 5,
-    },
-    infoArtilheiros: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    imgCampeonato: {
-        height: 50,
-        width: 50,
     },
     listaInfo: {
         flexDirection: 'row',
@@ -116,9 +106,6 @@ export const styles = StyleSheet.create({
         borderTopWidth: 0.5,
         borderBottomWidth: 0.5,
         paddingHorizontal: 10,
-    },
-    listContainer: {
-      flex: 1,
     },
     time: {
         flexDirection: 'row',
@@ -137,10 +124,8 @@ export const styles = StyleSheet.create({
         let cor = '#333';
         if (item.promotion) {
             switch (item.promotion.id) {
-                case 19: cor = '#004fd9'; break; // Libertadores
-                case 20: cor = '#45a1f3'; break; // Pré-Libertadores
-                case 21: cor = '#3bb552'; break; // Sulamericana
-                case 3: cor = '#ef5158'; break; // Rebaixamento
+                case 6: cor = '#004fd9'; break; // Oistavas da final
+                case 14: cor = '#45a1f3'; break; // Playoffs Oistavas da final
             
                 default: cor = '#333'; break;
             }
@@ -154,7 +139,7 @@ export const styles = StyleSheet.create({
             alignItems: 'center',
         }
     },
-    bolinhaLiberta: {
+    bolinhaOitavas: {
         backgroundColor: '#004fd9',
         borderRadius: 50,
         width: 6,
@@ -162,31 +147,12 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    bolinhaPreLiberta: {
+    bolinhaPlayoffsOitavas: {
         backgroundColor: '#45a1f3',
         borderRadius: 50,
         width: 6,
         height: 6,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    bolinhaSula: {
-        backgroundColor: '#3bb552',
-        borderRadius: 50,
-        width: 6,
-        height: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    bolinhaRebaixados: {
-        backgroundColor: '#ef5158',
-        borderRadius: 50,
-        width: 6,
-        height: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    contentContainerStyle: {
-        paddingBottom: theme.contentContainerStyle.paddingBottom,
     },
 })

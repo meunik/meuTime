@@ -1,4 +1,10 @@
-import { api, urlTime, urlBase, urlBrasileirao, urlEventos } from '@/src/store/api';
+import {
+    api,
+    urlEventos,
+    urlBrasileirao,
+    urlCariocao,
+    urlSulamericana,
+} from '@/src/store/api';
 
 export const time = async (id) => await request(id, '', 'team');
 export const img = async (id) => await request(id, 'image', '');
@@ -81,8 +87,9 @@ export const copaDoBrasil = async (id) => {
         return null;
     }
 }
-export const cariocao = async () => await requestCampeonatoCarioca('standings/total', 'standings', true);
 
+export const cariocao = async () => await requestCampeonatoCarioca('standings/total', 'standings', true);
+export const cariocaoMataMata = async () => await requestCampeonatoCarioca('cuptrees/structured', 'cupTrees');
 async function requestCampeonatoCarioca(url, param, first = false) {
     try {
         const response = await api.get(urlCariocao + url);
@@ -93,6 +100,27 @@ async function requestCampeonatoCarioca(url, param, first = false) {
         }
     } catch (error) {
         console.error(error, 'requestCampeonatoCariocao');
+        return null;
+    }
+}
+
+export const copaSulamericana = async () => await requestCampeonatoSulamericana('standings/total', 'standings');
+async function requestCampeonatoSulamericana(url, param) {
+    try {
+        const response = await api.get(urlSulamericana + url);
+        return (response.data) ? response.data[param] : null;
+    } catch (error) {
+        console.error(error, 'requestCampeonatoSulamericana');
+        return null;
+    }
+}
+
+export const europaLeague = async () => {
+    try {
+        const response = await api.get('https://api.sofascore.com/api/v1/unique-tournament/679/season/44509/cuptrees/structured');
+        return (response.data) ? response.data['cupTrees'] : null;
+    } catch (error) {
+        console.error(error, 'europaLeague');
         return null;
     }
 }

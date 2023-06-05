@@ -12,7 +12,7 @@ import { Background } from '@/src/components/Background';
 import { theme } from "@/src/global/styles/theme";
 
 export default function App() {
-    NavigationBar.setBackgroundColorAsync(theme.colors.nav);
+    // NavigationBar.setBackgroundColorAsync(theme.colors.nav);
 
     return (
         <Provider store={store}>
