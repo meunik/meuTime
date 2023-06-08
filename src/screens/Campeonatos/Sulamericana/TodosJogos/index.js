@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Text, View, Image, FlatList, RefreshControl, StyleSheet } from 'react-native';
-import { copaDoBrasilJogosDepois, copaDoBrasilJogosAntes } from '@/src/store/store';
+import { sulamericanaJogosDepois, sulamericanaJogosAntes } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
@@ -13,15 +13,23 @@ import { Lista } from "@/src/components/Lista";
 
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 
-export function Jogos() {
+export function TodosJogos() {
+    useFocusEffect(() => {
+        setBackgroundColorAsync(theme.colors.fundo);
+
+        return () => {
+            setBackgroundColorAsync(theme.colors.nav);
+        };
+    });
+
     const [refreshing, setRefreshing] = useState(false);
     const [tabs, setTabs] = useState([]);
     const [index, setIndex] = useState(0);
 
     const fetchData = async () => {
         try {
-            const jogosFuturos = await copaDoBrasilJogosDepois();
-            const jogosPassado = await copaDoBrasilJogosAntes();
+            const jogosFuturos = await sulamericanaJogosDepois();
+            const jogosPassado = await sulamericanaJogosAntes();
 
             let jogosTodos = [
                 ...jogosPassado.events,
@@ -40,10 +48,10 @@ export function Jogos() {
 
     const stringRodada = (valor) => {
         switch (valor) {
-            case '5': return 'Oitavas de Final';
-            case '27': return 'Quartas de Final';
+            // case '5': return 'Oitavas de Final';
+            // case '27': return 'Quartas de Final';
         
-            default: return `${valor}ª Fase`;
+            default: return `Rodada ${valor}`;
         }
     }
 
@@ -136,6 +144,12 @@ export function Jogos() {
                     <Text style={styles.txtInfo}>{rodada}</Text>
                     {(index != tabs.length - 1) && <Icon name="chevron-right" size={30} color="#969696" style={styles.setasDoreita} />}
                 </View>
+                
+                {/* <Lista
+                    data={jogos && jogos}
+                    renderItem={renderItem}
+                    contentContainerStyle={styles.contentContainerStyle}
+                /> */}
                 <FlatList
                     contentContainerStyle={styles.contentContainerStyle}
                     data={jogos}
@@ -164,7 +178,7 @@ export function Jogos() {
     );
 
     const recursiva = async (page, jogosTodos) => {
-        const anteriorRodada = await copaDoBrasilJogosAntes(page);
+        const anteriorRodada = await sulamericanaJogosAntes(page);
         let addJogos = [
             ...anteriorRodada.events,
             ...jogosTodos,
@@ -277,6 +291,7 @@ export const styles = StyleSheet.create({
         gap: 20,
     },
     lista: {
+        // backgroundColor: 'red',
         // borderColor: '#ffffff0d',
         borderColor: 'transparent',
         paddingVertical: 10,

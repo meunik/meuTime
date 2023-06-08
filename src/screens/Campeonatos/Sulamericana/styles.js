@@ -35,7 +35,29 @@ export const styles = StyleSheet.create({
         backgroundColor: '#000',
         alignSelf: 'center',
     },
+    btn: {
+        borderWidth: 0.5,
+        borderColor: '#ffffff20',
+        borderRadius: 10,
+        // backgroundColor: '#ffffff30',
+        // flexDirection: 'row',
+        // justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 5,
+        // paddingHorizontal: 15,
+        borderRadius: 10,
+    },
+    linksContainer: {
+        padding: 10,
+        // gap: 5,
+    },
+    txtLink: {
+        color: theme.colors.texto.btn,
+        fontSize: theme.font.size[2],
+    },
     contentContainerStyle: {
+        // flex: 1,
+        flexGrow: 1,
         paddingBottom: theme.contentContainerStyle.paddingBottom,
     },
     txtLegenda: {
@@ -79,10 +101,6 @@ export const styles = StyleSheet.create({
         fontSize: theme.font.size[1],
         textAlign: 'center',
         width: 15,
-    },
-    linksContainer: {
-        paddingVertical: 5,
-        // gap: 5,
     },
     info: {
         flexDirection: 'row',

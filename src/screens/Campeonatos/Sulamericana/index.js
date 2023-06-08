@@ -2,16 +2,21 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
-import { Text, View, Image, FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { BaseButton } from "react-native-gesture-handler";
+import { Text, View, Image, FlatList, RefreshControl, ScrollView } from 'react-native';
 import { copaSulamericana } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import * as NavigationBar from 'expo-navigation-bar';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { theme } from "@/src/global/styles/theme";
 import { styles } from "./styles";
+import { Lista } from "@/src/components/Lista";
+import { TodosJogos } from "./TodosJogos";
 
 export function Sulamericana() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
+
+	const navigation = useNavigation();
 
     const [refreshing, setRefreshing] = useState(false);
     const [tabs, setTabs] = useState([]);
@@ -42,8 +47,8 @@ export function Sulamericana() {
         fetchData();
     }, []);
 
-    const renderItem = ({item}) => (
-        <View style={styles.lista}>
+    const renderItem = (item, index) => (
+        <View key={index} style={styles.lista}>
             <View style={styles.time}>
                 <View style={styles.posicao(item)}>
                     <Text style={styles.txtPosicao(item)}>{item.position}</Text>
@@ -93,18 +98,8 @@ export function Sulamericana() {
                         </View>
                     </View>
                 </View>
-                <FlatList
-                    contentContainerStyle={styles.contentContainerStyle}
-                    data={jogos}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                        />
-                    }
-                />
+                
+                <Lista data={jogos && jogos} renderItem={renderItem} />
             </View>
         )
     };
@@ -120,31 +115,43 @@ export function Sulamericana() {
         )
     );
 
-    const handleIndexChange = (newIndex) => {
-        setIndex(newIndex);
-    };
-
-    const renderTabBar = props => (
-        <View style={styles.containerNav}>
-            <TabBar
-                {...props}
-                labelStyle={styles.labelStyle}
-                indicatorStyle={styles.ativo}
-                style={styles.navContainer}
-            />
-        </View>
-    );
-
     return (
-        <View style={styles.container}>
+        <ScrollView
+            style={{flex: 1}}
+            contentContainerStyle={styles.contentContainerStyle}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />
+            }
+        >
+            <View style={styles.linksContainer}>
+                <BaseButton onPress={() => navigation.navigate('SulamericanaJogos')}>
+                    <View style={styles.btn}>
+                        <Text style={styles.txtLink}>Jogos</Text>
+                    </View>
+                </BaseButton>
+            </View>
             {tabs &&
             <TabView
                 navigationState={{ index, routes: tabs }}
                 renderScene={renderScene}
-                // onIndexChange={handleIndexChange}
                 onIndexChange={setIndex}
                 renderTabBar={() => null}
+                style={{flex: 1}}
             />}
-        </View>
+            {/* <View style={styles.container}>
+                {tabs &&
+                <TabView
+                    navigationState={{ index, routes: tabs }}
+                    renderScene={renderScene}
+                    onIndexChange={setIndex}
+                    renderTabBar={() => null}
+                />}
+
+                <TodosJogos />
+            </View> */}
+        </ScrollView>
     );
 }

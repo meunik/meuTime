@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
         color: '#fff',
     },
     navContainer: {
-        width: 170,
+        width: 188,
         backgroundColor: 'transparent',
         elevation: 0,
         shadowOpacity: 0,
