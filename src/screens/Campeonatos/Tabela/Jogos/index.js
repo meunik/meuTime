@@ -1,23 +1,24 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Text, View, Image, FlatList, RefreshControl, StyleSheet } from 'react-native';
 import { brasileiraoJogosDepois, brasileiraoJogosAntes } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
-import * as NavigationBar from 'expo-navigation-bar';
+import { setBackgroundColorAsync } from 'expo-navigation-bar';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { theme } from "@/src/global/styles/theme";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Lista } from "@/src/components/Lista";
 
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 
 export function Jogos() {
     useFocusEffect(() => {
-        NavigationBar.setBackgroundColorAsync(theme.colors.fundo);
+        setBackgroundColorAsync(theme.colors.fundo);
 
         return () => {
-            NavigationBar.setBackgroundColorAsync(theme.colors.nav);
+            setBackgroundColorAsync(theme.colors.nav);
         };
     });
 
@@ -29,46 +30,58 @@ export function Jogos() {
     const intervalo = useSelector(state => state.intervalo);
 
     const [futurosJogos, setFuturosJogos] = useState(null);
+    const [futurosJogosPage, setFuturosJogosPage] = useState(0);
     const [passadoJogos, setPassadoJogos] = useState(null);
+    const [passadoJogosPage, setPassadoJogosPage] = useState(0);
     const [todosJogos, setTodosJogos] = useState(null);
 
     // const [jogos, setJogos] = useState(null);
 
     const [refreshing, setRefreshing] = useState(false);
-
     const [tabs, setTabs] = useState([]);
+    const [index, setIndex] = useState(0);
 
     const fetchData = async () => {
         try {
             const jogosFuturos = await brasileiraoJogosDepois();
             const jogosPassado = await brasileiraoJogosAntes();
+            setFuturosJogos(jogosFuturos);
+            setPassadoJogos(jogosPassado);
+
             const jogosTodos = [
                 ...jogosPassado.events,
                 ...jogosFuturos.events,
             ];
 
-            let jogosPorRodadas = {};
-            jogosTodos.forEach(jogo => {
-                const round = jogo.roundInfo.round;
-                
-                if (!jogosPorRodadas[round]) {
-                    jogosPorRodadas[round] = [];
-                }
-    
-                jogosPorRodadas[round].push(jogo);
-            });
-
-            const formattedTabs = Object.keys(jogosPorRodadas).map((itens, index) => ({
-                key: `${itens}`,
-                title: `Rodada ${itens}`,
-                content: jogosPorRodadas[itens],
-            }));
-            setTabs(formattedTabs);
+            setTodosJogos(jogosTodos);
+            formatar(jogosTodos);
+            setIndex(3);
         } catch (error) {
             console.error(error);
         }
         setRefreshing(false);
     };
+
+    const formatar = (jogosTodos) => {
+        let jogosPorRodadas = {};
+        jogosTodos.forEach(jogo => {
+            const round = jogo.roundInfo.round;
+            
+            if (!jogosPorRodadas[round]) {
+                jogosPorRodadas[round] = [];
+            }
+
+            jogosPorRodadas[round].push(jogo);
+        });
+
+        const formattedTabs = Object.keys(jogosPorRodadas).map((itens, index) => ({
+            key: `${itens}`,
+            title: `Rodada ${itens}`,
+            content: jogosPorRodadas[itens],
+        }));
+
+        setTabs(formattedTabs);
+    }
 
     const onRefresh = () => {
         setRefreshing(true);
@@ -80,54 +93,54 @@ export function Jogos() {
         fetchData();
     }, []);
 
-    const [index, setIndex] = useState(0);
+    const renderItem = ({item}) => {
+        return (
+            <View style={styles.lista}>
+                <View style={styles.timesUltimoJogo}>
 
-    const renderItem = ({item}) => (
-        <View style={styles.lista}>
-            <View style={styles.timesUltimoJogo}>
+                    <View style={styles.timeCasa}>
+                        <View style={styles.cartaoVermelhoContainer}>
+                            {item.homeRedCards && (() => {
+                                const items = [];
+                                for (let i = 0; i < item.homeRedCards; i++) {
+                                    items.push(
+                                        <Icon key={'homeRedCards'+i} name="card" size={10} color="#e35c47" style={styles.cartaoVermelho} />
+                                    );
+                                }
+                                return items;
+                            })()}
+                        </View>
+                        <Text style={styles.txtTime}>{item.homeTeam.nameCode}</Text>
+                        <Image style={styles.imgLista} resizeMode="center" source={{ uri: `${urlBase}team/${item.homeTeam.id}/image` }} />
+                        <Text style={styles.txtTime}>{item.homeScore.display}</Text>
+                    </View>
 
-                <View style={styles.timeCasa}>
-                    <View style={styles.cartaoVermelhoContainer}>
-                        {item.homeRedCards && (() => {
+                    <Text style={styles.txtX}>x</Text>
+
+                    <View style={styles.timeVisitante}>
+                        <Text style={styles.txtTime}>{item.awayScore.display}</Text>
+                        <Image style={styles.imgLista} resizeMode="center" source={{ uri: `${urlBase}team/${item.awayTeam.id}/image` }} />
+                        <Text style={styles.txtTime}>{item.awayTeam.nameCode}</Text>
+                        <View style={styles.cartaoVermelhoContainer}>
+                            {item.awayRedCards && (() => {
                             const items = [];
-                            for (let i = 0; i < item.homeRedCards; i++) {
+                            for (let i = 0; i < item.awayRedCards; i++) {
                                 items.push(
-                                    <Icon key={'homeRedCards'+i} name="card" size={10} color="#e35c47" style={styles.cartaoVermelho} />
+                                    <Icon key={'awayRedCards'+i} name="card" size={10} color="#e35c47" style={styles.cartaoVermelho} />
                                 );
                             }
                             return items;
-                        })()}
+                            })()}
+                        </View>
                     </View>
-                    <Text style={styles.txtTime}>{item.homeTeam.nameCode}</Text>
-                    <Image style={styles.imgLista} resizeMode="center" source={{ uri: `${urlBase}team/${item.homeTeam.id}/image` }} />
-                    <Text style={styles.txtTime}>{item.homeScore.display}</Text>
+
                 </View>
-
-                <Text style={styles.txtX}>x</Text>
-
-                <View style={styles.timeVisitante}>
-                    <Text style={styles.txtTime}>{item.awayScore.display}</Text>
-                    <Image style={styles.imgLista} resizeMode="center" source={{ uri: `${urlBase}team/${item.awayTeam.id}/image` }} />
-                    <Text style={styles.txtTime}>{item.awayTeam.nameCode}</Text>
-                    <View style={styles.cartaoVermelhoContainer}>
-                        {item.awayRedCards && (() => {
-                        const items = [];
-                        for (let i = 0; i < item.awayRedCards; i++) {
-                            items.push(
-                                <Icon key={'awayRedCards'+i} name="card" size={10} color="#e35c47" style={styles.cartaoVermelho} />
-                            );
-                        }
-                        return items;
-                        })()}
-                    </View>
+                <View style={styles.rodape}>
+                    <Text style={styles.txtTempo}>{tempoJogo(item)}</Text>
                 </View>
-
             </View>
-            <View style={styles.rodape}>
-                <Text style={styles.txtTempo}>{tempoJogo(item)}</Text>
-            </View>
-        </View>
-    );
+        )
+    };
 
     const Rodadas = ({jogos, rodada}) => {
         return (
@@ -162,29 +175,50 @@ export function Jogos() {
         )
     );
 
-    const handleIndexChange = (newIndex) => {
-        setIndex(newIndex);
+    const chamaAnterior = async () => {
+        setRefreshing(true);
+        const anteriorRodada = await brasileiraoJogosAntes(passadoJogosPage+1);
+        setPassadoJogosPage(passadoJogosPage+1);
+        setPassadoJogos(anteriorRodada);
+        const jogosTodos = [
+            ...anteriorRodada.events,
+            ...todosJogos,
+        ];
+        setTodosJogos(jogosTodos);
+        formatar(jogosTodos);
+        setRefreshing(false);
     };
 
-    const renderTabBar = props => (
-        <View style={styles.containerNav}>
-            <TabBar
-                {...props}
-                labelStyle={styles.labelStyle}
-                indicatorStyle={styles.ativo}
-                style={styles.navContainer}
-            />
-        </View>
-    );
+    const chamaProxima = async () => {
+        setRefreshing(true);
+        const proximaRodada = await brasileiraoJogosDepois(futurosJogosPage+1);
+        setFuturosJogosPage(futurosJogosPage+1);
+        setFuturosJogos(proximaRodada);
+        const jogosTodos = [
+            ...todosJogos,
+            ...proximaRodada.events,
+        ];
+        setTodosJogos(jogosTodos);
+        formatar(jogosTodos);
+        setRefreshing(false);
+    };
+
+    const changeIndex = (i) => {
+        if ((futurosJogos?.hasNextPage) && (tabs.length - 1 == i)) {
+            chamaProxima();
+        }
+        if ((passadoJogos?.hasNextPage) && (i == 0)) {
+            chamaAnterior();
+        }
+    };
 
     return (
         <View style={styles.container}>
             {tabs &&
             <TabView
-                navigationState={{ index, routes: tabs }}
+                navigationState={{ index: (index)?index:3, routes: tabs }}
                 renderScene={renderScene}
-                // onIndexChange={handleIndexChange}
-                onIndexChange={setIndex}
+                onIndexChange={changeIndex}
                 renderTabBar={() => null}
             />}
         </View>

@@ -107,7 +107,7 @@ export function Jogos() {
 
         </View>
     );
-    console.log(jogo);
+    // console.log(jogo);
 
     return (
         <View style={styles.container}>

@@ -4,113 +4,49 @@ import {
     urlBrasileirao,
     urlCariocao,
     urlSulamericana,
+    urlCopaDoBrasil,
 } from '@/src/store/api';
 
-export const time = async (id) => await request(id, '', 'team');
-export const img = async (id) => await request(id, 'image', '');
-export const jogosDepois = async (id) => await request(id, 'events/next/0', 'events');
-export const jogosAntes = async (id) => await request(id, 'events/last/0', 'events');
-export const torneios = async (id) => await request(id, 'unique-tournaments', 'uniqueTournaments');
-export const jogadores = async (id) => await request(id, 'players', 'players');
+export const time = async(id)=> await request(`${id}`, 'team');
+export const img = async(id)=> await request(`${id}/image`);
+export const jogosDepois = async(id)=> await request(`${id}/events/next/0`, 'events');
+export const jogosAntes = async(id)=> await request(`${id}/events/last/0`, 'events');
+export const torneios = async(id)=> await request(`${id}/unique-tournaments`, 'uniqueTournaments');
+export const jogadores = async(id)=> await request(`${id}/players`, 'players');
 
-async function request(id, url, param) {
-    try {
-        const response = await api.get(`${id}/${url}`);
-        return (response.data) ? response.data[param] : null;
-    } catch (error) {
-        console.error(error, 'request: '+url);
-        return null;
-    }
-}
+export const proximoJogo = async(id)=> await request(`${id}/near-events`);
+export const evento = async(id)=> await request(`${urlEventos}${id}`, 'event');
 
-export const evento = async (id) => {
-    try {
-        const response = await api.get(`${urlEventos}${id}`);
-        return (response.data) ? response.data.event : null;
-    } catch (error) {
-        console.error(error, 'evento');
-        return null;
-    }
-}
-export const proximoJogo = async (id) => {
-    try {
-        const response = await api.get(`${id}/near-events`);
-        return (response.data) ? response.data : null;
-    } catch (error) {
-        console.error(error, 'proximoJogo');
-        return null;
-    }
-}
+export const brasileirao = async()=> await request(`${urlBrasileirao}standings/total`, 'standings', true);
+export const brasileiraoArtilheiros = async()=> await request(`${urlBrasileirao}statistics?limit=100&order=-goals&group=attack`, 'results');
+export const brasileiraoJogosDepois = async(num=0)=> await request(`${urlBrasileirao}events/next/${num}`);
+export const brasileiraoJogosAntes = async(num=0)=> await request(`${urlBrasileirao}events/last/${num}`);
 
-export const brasileirao = async () => await requestCampeonatoBrasileirao('standings/total', 'standings', true);
-export const brasileiraoArtilheiros = async () => await requestCampeonatoBrasileirao('statistics?limit=100&order=-goals&group=attack', 'results');
+export const cariocao = async()=> await request(`${urlCariocao}standings/total`, 'standings', true);
+export const cariocaoMataMata = async()=> await request(`${urlCariocao}cuptrees/structured`, 'cupTrees');
 
-async function requestCampeonatoBrasileirao(url, param, first = false) {
+export const copaDoBrasil = async()=> await request(`${urlCopaDoBrasil}cuptrees/structured`, 'cupTrees', true);
+export const copaDoBrasilJogos = async()=> await request(`${urlCopaDoBrasil}cuptrees`, 'cupTrees');
+export const copaDoBrasilJogosDepois = async(num=0)=> await request(`${urlCopaDoBrasil}events/next/${num}`);
+export const copaDoBrasilJogosAntes = async(num=0)=> await request(`${urlCopaDoBrasil}events/last/${num}`);
+
+export const copaSulamericana = async()=> await request(`${urlSulamericana}standings/total`, 'standings');
+export const sulamericanaJogosDepois = async(num=0)=> await request(`${urlSulamericana}events/next/${num}`);
+export const sulamericanaJogosAntes = async(num=0)=> await request(`${urlSulamericana}events/last/${num}`);
+
+async function request(url, param = null, first = false) {
     try {
-        const response = await api.get(urlBrasileirao + url);
-        if (first) {
-            return (response.data) ? response.data[param][0] : null;
-        } else {
-            return (response.data) ? response.data[param] : null;
+        const response = await api.get(url);
+        const data = response.data;
+        if (data) {
+            if (first && param) return data[param][0];
+
+            return (param) ? data[param] : data;
         }
-    } catch (error) {
-        console.error(error, 'requestCampeonatoBrasileirao');
-        return null;
-    }
-}
 
-export const brasileiraoJogosDepois = async (num = 0) => {
-    try {
-        const response = await api.get(`${urlBrasileirao}events/next/${num}`);
-        return (response.data) ? response.data : null;
-    } catch (error) {
-        console.error(error, 'brasileiraoJogosDepois');
         return null;
-    }
-}
-export const brasileiraoJogosAntes = async (num = 0) => {
-    try {
-        const response = await api.get(`${urlBrasileirao}events/last/${num}`);
-        return (response.data) ? response.data : null;
     } catch (error) {
-        console.error(error, 'brasileiraoJogosAntes');
-        return null;
-    }
-}
-
-export const copaDoBrasil = async (id) => {
-    try {
-        const response = await api.get(`https://api.sofascore.com/api/v1/unique-tournament/373/season/48876/cuptrees`);
-        return (response.data) ? response.data : null;
-    } catch (error) {
-        console.error(error, 'copaDoBrasil');
-        return null;
-    }
-}
-
-export const cariocao = async () => await requestCampeonatoCarioca('standings/total', 'standings', true);
-export const cariocaoMataMata = async () => await requestCampeonatoCarioca('cuptrees/structured', 'cupTrees');
-async function requestCampeonatoCarioca(url, param, first = false) {
-    try {
-        const response = await api.get(urlCariocao + url);
-        if (first) {
-            return (response.data) ? response.data[param][0] : null;
-        } else {
-            return (response.data) ? response.data[param] : null;
-        }
-    } catch (error) {
-        console.error(error, 'requestCampeonatoCariocao');
-        return null;
-    }
-}
-
-export const copaSulamericana = async () => await requestCampeonatoSulamericana('standings/total', 'standings');
-async function requestCampeonatoSulamericana(url, param) {
-    try {
-        const response = await api.get(urlSulamericana + url);
-        return (response.data) ? response.data[param] : null;
-    } catch (error) {
-        console.error(error, 'requestCampeonatoSulamericana');
+        console.error(error, url);
         return null;
     }
 }

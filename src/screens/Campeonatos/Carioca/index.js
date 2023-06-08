@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { BaseButton } from "react-native-gesture-handler";
-import { View, Text, Image, ScrollView, FlatList, RefreshControl } from 'react-native';
-import { cariocao, cariocaoMataMata, europaLeague } from '@/src/store/store';
+import { View, Text, Image, ScrollView, RefreshControl } from 'react-native';
+import { cariocao, cariocaoMataMata } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import { Lista } from "@/src/components/Lista";
@@ -17,7 +16,6 @@ export function Carioca() {
     const fetchDataTabela = async () => {
         setTabela(await cariocao());
         setMataMata(await cariocaoMataMata());
-        // setMataMata(await europaLeague());
         setRefreshing(false);
     };
 

@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector, useDispatch } from 'react-redux';
-import { View, Text, Image, FlatList, TouchableHighlight, useWindowDimensions } from 'react-native';
+import { useSelector } from 'react-redux';
+import { View, Text, Image, TouchableHighlight, useWindowDimensions } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import { setMeuTime } from '@/src/store/action';
-import { time } from '@/src/store/store';
-import { url, urlTime } from '@/src/store/api';
+import { urlTime } from '@/src/store/api';
+import { styles } from "./styles";
 
 import { Jogos } from "@/src/screens/Jogos";
 import { Campeonatos } from "@/src/screens/Campeonatos";
-import { styles } from "./styles";
-import { theme } from "@/src/global/styles/theme";
-
-import { createStackNavigator } from '@react-navigation/stack';
-import { Artilheiros as BrasileiraoArtilheiros } from "@/src/screens/Tabela/Artilheiros";
-import { Jogos as BrasileiraoJogos } from "@/src/screens/Tabela/Jogos";
+import { Artilheiros as BrasileiraoArtilheiros } from "@/src/screens/Campeonatos/Tabela/Artilheiros";
+import { Jogos as BrasileiraoJogos } from "@/src/screens/Campeonatos/Tabela/Jogos";
 import { Times } from "@/src/screens/Times";
 
 const FirstRoute = () => (

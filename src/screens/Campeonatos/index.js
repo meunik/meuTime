@@ -10,9 +10,10 @@ import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/Feather';
 
-import { Tabela } from "@/src/screens/Tabela/index";
-import { Carioca } from "@/src/screens/Carioca/index";
-import { Sulamericana } from "@/src/screens/Sulamericana/index";
+import { Tabela } from "@/src/screens/Campeonatos/Tabela/index";
+import { Carioca } from "@/src/screens/Campeonatos/Carioca/index";
+import { Sulamericana } from "@/src/screens/Campeonatos/Sulamericana/index";
+import { CopaDoBrasil } from "@/src/screens/Campeonatos/CopaDoBrasil/index";
 
 export function Campeonatos() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
@@ -38,8 +39,9 @@ export function Campeonatos() {
     };
 
     useEffect(() => {
+        setRefreshing(true);
         fetchDataTabela();
-    }, []);
+    }, [meuTime]);
 
     const [isViewVisible, setIsViewVisible] = useState(false);
     const [animation] = useState(new Animated.Value(0));
@@ -83,8 +85,13 @@ export function Campeonatos() {
                 case 325: return <Tabela />;
                 case 92: return <Carioca />;
                 case 480: return <Sulamericana />;
+                case 373: return <CopaDoBrasil />;
             
-                default: return null;
+                default: return (
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={styles.txtInfo}>Indisponível no momento</Text>
+                    </View>
+                );
             }
         }
         return null;
