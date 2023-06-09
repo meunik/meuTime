@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Text, View, Image, FlatList, RefreshControl, StyleSheet } from 'react-native';
-import { copaDoBrasilJogosDepois, copaDoBrasilJogosAntes } from '@/src/store/store';
+import { copaDoBrasilJogosDepois, copaDoBrasilJogosAntes, copaDoBrasilRodada } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
@@ -14,14 +14,17 @@ import { Lista } from "@/src/components/Lista";
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 
 export function CopaDoBrasil() {
-    const [refreshing, setRefreshing] = useState(false);
+    const [refreshing, setRefreshing] = useState(true);
     const [tabs, setTabs] = useState([]);
     const [index, setIndex] = useState(0);
+    const [rodada, setRodada] = useState(0);
+    const [fim, setFim] = useState(false);
 
-    const fetchData = async () => {
+    const fetchData = async (refresh = false) => {
         try {
             const jogosFuturos = await copaDoBrasilJogosDepois();
             const jogosPassado = await copaDoBrasilJogosAntes();
+            setRodada(await copaDoBrasilRodada());
 
             let jogosTodos = [
                 ...jogosPassado.events,
@@ -31,11 +34,14 @@ export function CopaDoBrasil() {
             if (jogosPassado?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos);
             
             formatar(jogosTodos);
-            setIndex(3);
+            if (refresh) {
+                setRefreshing(false);
+            } else {
+                setIndex(1);
+            }
         } catch (error) {
             console.error(error);
         }
-        setRefreshing(false);
     };
 
     const stringRodada = (valor) => {
@@ -71,7 +77,7 @@ export function CopaDoBrasil() {
 
     const onRefresh = () => {
         setRefreshing(true);
-        fetchData();
+        fetchData(true);
     };
     
     useEffect(() => {
@@ -133,7 +139,9 @@ export function CopaDoBrasil() {
             <View style={styles.container}>
                 <View style={styles.info}>
                     {(index > 0) && <Icon name="chevron-left" size={30} color="#969696" style={styles.setasEsquerda} />}
+
                     <Text style={styles.txtInfo}>{rodada}</Text>
+
                     {(index != tabs.length - 1) && <Icon name="chevron-right" size={30} color="#969696" style={styles.setasDoreita} />}
                 </View>
                 <FlatList
@@ -157,7 +165,7 @@ export function CopaDoBrasil() {
             tabs.map((tab) => {
                 return [
                     tab.key,
-                    () => <Rodadas jogos={tab.content} rodada={tab.title} index={tab.index} />,
+                    () => <Rodadas jogos={tab.content} rodada={tab.title} index={tab.index}/>,
                 ]
             })
         )
@@ -175,13 +183,21 @@ export function CopaDoBrasil() {
         return addJogos;
     };
 
+    const changeIndex = (i) => {
+        if (!fim) {
+            setFim(true);
+            setIndex(rodada?.round -1);
+            setRefreshing(false);
+        }
+    };
+
     return (
         <View style={styles.container}>
-            {tabs &&
+            {tabs && 
             <TabView
                 navigationState={{ index: index, routes: tabs }}
                 renderScene={renderScene}
-                onIndexChange={() => {}}
+                onIndexChange={changeIndex}
                 renderTabBar={() => null}
             />}
         </View>

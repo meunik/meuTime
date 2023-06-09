@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Text, View, Image, FlatList, RefreshControl, StyleSheet } from 'react-native';
-import { brasileiraoJogosDepois, brasileiraoJogosAntes } from '@/src/store/store';
+import { brasileiraoJogosDepois, brasileiraoJogosAntes, brasileiraoRodada } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
@@ -28,38 +28,32 @@ export function Jogos() {
 
     const meuTime = useSelector(state => state.meuTime);
     const intervalo = useSelector(state => state.intervalo);
+    const [rodada, setRodada] = useState(0);
 
-    const [futurosJogos, setFuturosJogos] = useState(null);
-    const [futurosJogosPage, setFuturosJogosPage] = useState(0);
-    const [passadoJogos, setPassadoJogos] = useState(null);
-    const [passadoJogosPage, setPassadoJogosPage] = useState(0);
-    const [todosJogos, setTodosJogos] = useState(null);
-
-    // const [jogos, setJogos] = useState(null);
-
-    const [refreshing, setRefreshing] = useState(false);
+    const [refreshing, setRefreshing] = useState(true);
     const [tabs, setTabs] = useState([]);
     const [index, setIndex] = useState(0);
+    const [fim, setFim] = useState(false);
 
     const fetchData = async () => {
         try {
-            const jogosFuturos = await brasileiraoJogosDepois();
             const jogosPassado = await brasileiraoJogosAntes();
-            setFuturosJogos(jogosFuturos);
-            setPassadoJogos(jogosPassado);
+            const jogosFuturos = await brasileiraoJogosDepois();
+            setRodada(await brasileiraoRodada());
 
-            const jogosTodos = [
+            let jogosTodos = [
                 ...jogosPassado.events,
                 ...jogosFuturos.events,
             ];
 
-            setTodosJogos(jogosTodos);
+            if (jogosPassado?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos, 'passado');
+            if (jogosFuturos?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos, 'futuro');
+
             formatar(jogosTodos);
-            setIndex(3);
+            setIndex(1);
         } catch (error) {
             console.error(error);
         }
-        setRefreshing(false);
     };
 
     const formatar = (jogosTodos) => {
@@ -75,10 +69,12 @@ export function Jogos() {
         });
 
         const formattedTabs = Object.keys(jogosPorRodadas).map((itens, index) => ({
+            index: index,
             key: `${itens}`,
             title: `Rodada ${itens}`,
             content: jogosPorRodadas[itens],
         }));
+        console.log(formattedTabs);
 
         setTabs(formattedTabs);
     }
@@ -142,11 +138,15 @@ export function Jogos() {
         )
     };
 
-    const Rodadas = ({jogos, rodada}) => {
+    const Rodadas = ({jogos, rodada, index}) => {
         return (
             <View style={styles.container}>
                 <View style={styles.info}>
+                    {(index > 0) && <Icon name="chevron-left" size={30} color="#969696" style={styles.setasEsquerda} />}
+
                     <Text style={styles.txtInfo}>{rodada}</Text>
+
+                    {(index != tabs.length - 1) && <Icon name="chevron-right" size={30} color="#969696" style={styles.setasDoreita} />}
                 </View>
                 <FlatList
                     contentContainerStyle={styles.contentContainerStyle}
@@ -169,54 +169,53 @@ export function Jogos() {
             tabs.map((tab) => {
                 return [
                     tab.key,
-                    () => <Rodadas jogos={tab.content} rodada={tab.title} />,
+                    () => <Rodadas jogos={tab.content} rodada={tab.title} index={tab.index}/>,
                 ]
             })
         )
     );
 
-    const chamaAnterior = async () => {
-        setRefreshing(true);
-        const anteriorRodada = await brasileiraoJogosAntes(passadoJogosPage+1);
-        setPassadoJogosPage(passadoJogosPage+1);
-        setPassadoJogos(anteriorRodada);
-        const jogosTodos = [
-            ...anteriorRodada.events,
-            ...todosJogos,
-        ];
-        setTodosJogos(jogosTodos);
-        formatar(jogosTodos);
-        setRefreshing(false);
-    };
+    const recursiva = async (page, jogosTodos, passadoOuFuturo = 'passado') => {
+        let addJogos = [];
 
-    const chamaProxima = async () => {
-        setRefreshing(true);
-        const proximaRodada = await brasileiraoJogosDepois(futurosJogosPage+1);
-        setFuturosJogosPage(futurosJogosPage+1);
-        setFuturosJogos(proximaRodada);
-        const jogosTodos = [
-            ...todosJogos,
-            ...proximaRodada.events,
-        ];
-        setTodosJogos(jogosTodos);
-        formatar(jogosTodos);
-        setRefreshing(false);
+        if (passadoOuFuturo == 'passado') {
+            const anteriorRodada = await brasileiraoJogosAntes(page);
+            addJogos = [
+                ...anteriorRodada.events,
+                ...jogosTodos,
+            ];
+
+            if (anteriorRodada?.hasNextPage) addJogos = await recursiva(page+1, addJogos, passadoOuFuturo);
+        }
+        
+        if (passadoOuFuturo == 'futuro') {
+            const proximaRodada = await brasileiraoJogosDepois(page);
+            addJogos = [
+                ...jogosTodos,
+                ...proximaRodada.events,
+            ];
+
+            if (proximaRodada?.hasNextPage) addJogos = await recursiva(page+1, addJogos, passadoOuFuturo);
+        }
+
+        return addJogos;
     };
 
     const changeIndex = (i) => {
-        if ((futurosJogos?.hasNextPage) && (tabs.length - 1 == i)) {
-            chamaProxima();
-        }
-        if ((passadoJogos?.hasNextPage) && (i == 0)) {
-            chamaAnterior();
+        if (!fim) {
+            setFim(true);
+            setIndex(rodada?.round -1);
+            setRefreshing(false);
         }
     };
+
+    // return (<View style={{backgroundColor: '#000', flex: 1,}}></View>);
 
     return (
         <View style={styles.container}>
             {tabs &&
             <TabView
-                navigationState={{ index: (index)?index:3, routes: tabs }}
+                navigationState={{ index: index, routes: tabs }}
                 renderScene={renderScene}
                 onIndexChange={changeIndex}
                 renderTabBar={() => null}
@@ -291,6 +290,14 @@ export const styles = StyleSheet.create({
     txtInfo: {
         color: theme.colors.texto[300],
         fontSize: theme.font.size[4],
+    },
+    setasEsquerda: {
+        position: 'absolute',
+        left: 30,
+    },
+    setasDoreita: {
+        position: 'absolute',
+        right: 30,
     },
     info: {
         flexDirection: 'row',

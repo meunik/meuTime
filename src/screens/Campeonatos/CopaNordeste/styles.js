@@ -10,6 +10,9 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[100],
         fontSize: theme.font.size[4],
     },
+    txtX: {
+        color: theme.colors.texto[300],
+    },
     txtPontos: {
         color: theme.colors.texto[100],
         fontSize: theme.font.size[1],
@@ -36,6 +39,10 @@ export const styles = StyleSheet.create({
         textAlign: 'right',
         paddingHorizontal: 10,
     },
+    nomeTabela: {
+        marginTop: 30,
+        marginBottom: 10,
+    },
     txtPosicao(item) {
         let cor = '#fff';
         if (item.promotion) {
@@ -53,11 +60,11 @@ export const styles = StyleSheet.create({
         }
     },
     btn: {
-        borderWidth: 0.5,
-        borderColor: '#ffffff20',
-        borderRadius: 10,
+        // borderWidth: 0.5,
+        // borderColor: '#ffffff20',
+        // borderRadius: 10,
         // backgroundColor: '#ffffff30',
-        // flexDirection: 'row',
+        flexDirection: 'row',
         // justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 5,
@@ -66,8 +73,7 @@ export const styles = StyleSheet.create({
     },
     linksContainer: {
         paddingVertical: 5,
-        flex: 1,
-        gap: 5,
+        // gap: 5,
     },
     infoSelect: {
         flexDirection: 'row',
@@ -141,6 +147,9 @@ export const styles = StyleSheet.create({
                 case 19: cor = '#004fd9'; break; // Libertadores
                 case 20: cor = '#45a1f3'; break; // Pré-Libertadores
                 case 21: cor = '#3bb552'; break; // Sulamericana
+
+                case 6: cor = '#004fd9'; break; // Playoffs
+
                 case 3: cor = '#ef5158'; break; // Rebaixamento
             
                 default: cor = '#333'; break;
@@ -155,7 +164,15 @@ export const styles = StyleSheet.create({
             alignItems: 'center',
         }
     },
-    bolinhaLiberta: {
+    bolinhaCampeao: {
+        backgroundColor: '#dbb234',
+        borderRadius: 50,
+        width: 6,
+        height: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bolinhaSemifinalista: {
         backgroundColor: '#004fd9',
         borderRadius: 50,
         width: 6,
@@ -163,15 +180,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    bolinhaPreLiberta: {
-        backgroundColor: '#45a1f3',
-        borderRadius: 50,
-        width: 6,
-        height: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    bolinhaSula: {
+    bolinhaTacaRio: {
         backgroundColor: '#3bb552',
         borderRadius: 50,
         width: 6,

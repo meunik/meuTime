@@ -11,9 +11,13 @@ import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/Feather';
 
 import { Tabela } from "@/src/screens/Campeonatos/Tabela/index";
-import { Carioca } from "@/src/screens/Campeonatos/Carioca/index";
-import { Sulamericana } from "@/src/screens/Campeonatos/Sulamericana/index";
 import { CopaDoBrasil } from "@/src/screens/Campeonatos/CopaDoBrasil/index";
+
+import { CopaNordeste } from "@/src/screens/Campeonatos/CopaNordeste/index";
+import { Carioca } from "@/src/screens/Campeonatos/Carioca/index";
+
+import { Sulamericana } from "@/src/screens/Campeonatos/Sulamericana/index";
+import { Libertadores } from "@/src/screens/Campeonatos/Libertadores/index";
 
 export function Campeonatos() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
@@ -83,9 +87,13 @@ export function Campeonatos() {
         if (torneio) {
             switch (torneio.id) {
                 case 325: return <Tabela />;
-                case 92: return <Carioca />;
-                case 480: return <Sulamericana />;
                 case 373: return <CopaDoBrasil />;
+
+                case 1596: return <CopaNordeste />;
+                case 92: return <Carioca />;
+                
+                case 480: return <Sulamericana />;
+                case 384: return <Libertadores />;
             
                 default: return (
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

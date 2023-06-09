@@ -1,15 +1,13 @@
 
-import React, { useEffect, useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { Text, View, Image, FlatList, RefreshControl, StyleSheet } from 'react-native';
-import { sulamericanaJogosDepois, sulamericanaJogosAntes, sulamericanaRodada } from '@/src/store/store';
+import { libertadoresJogosDepois, libertadoresJogosAntes, libertadoresRodada } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { theme } from "@/src/global/styles/theme";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Lista } from "@/src/components/Lista";
 
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 
@@ -30,9 +28,9 @@ export function TodosJogos() {
 
     const fetchData = async (refresh = false) => {
         try {
-            const jogosFuturos = await sulamericanaJogosDepois();
-            const jogosPassado = await sulamericanaJogosAntes();
-            setRodada(await sulamericanaRodada());
+            const jogosFuturos = await libertadoresJogosDepois();
+            const jogosPassado = await libertadoresJogosAntes();
+            setRodada(await libertadoresRodada());
 
             let jogosTodos = [
                 ...jogosPassado.events,
@@ -179,7 +177,7 @@ export function TodosJogos() {
     );
 
     const recursiva = async (page, jogosTodos) => {
-        const anteriorRodada = await sulamericanaJogosAntes(page);
+        const anteriorRodada = await libertadoresJogosAntes(page);
         let addJogos = [
             ...anteriorRodada.events,
             ...jogosTodos,
