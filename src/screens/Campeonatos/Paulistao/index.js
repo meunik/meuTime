@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, Image, ScrollView, RefreshControl } from 'react-native';
-import { cariocao, cariocaoMataMata } from '@/src/store/store';
+import { copaNordeste, copaNordesteMataMata } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import { Lista } from "@/src/components/Lista";
 import { Eliminatoria } from "./Eliminatoria/index";
 
-export function Carioca() {
+import { limitarString } from "@/src/Utils/LimitarString";
+
+export function CopaNordeste() {
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
     const [mataMata, setMataMata] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
 
     const fetchDataTabela = async () => {
-        setTabela(await cariocao());
-        setMataMata(await cariocaoMataMata());
+        setTabela(await copaNordeste());
+        setMataMata(await copaNordesteMataMata());
         setRefreshing(false);
     };
 
@@ -36,7 +38,7 @@ export function Carioca() {
                         <Text style={styles.txtPosicao(item)}>{item.position}</Text>
                     </View>
                     <Image style={styles.imgTime} resizeMode="center" source={{ uri: `${urlBase}team/${item.team.id}/image` }} />
-                    <Text style={styles.txt}>{item.team.shortName}</Text>
+                    <Text style={styles.txt}>{limitarString(item.team.shortName, 13)}</Text>
                 </View>
                 <View style={styles.pontos}>
                     <Text style={styles.txtPontos}>{item.points}</Text>
@@ -49,8 +51,6 @@ export function Carioca() {
             </View>
         );
     }
-    // console.log(mataMata);
-    // console.log(tabela);
 
     return (
         <ScrollView
@@ -64,16 +64,24 @@ export function Carioca() {
             }
         >
             {mataMata && <Eliminatoria item={mataMata[0].views[0][0]} nome={mataMata[0].name}/>}
-            {mataMata && <Eliminatoria item={mataMata[1].views[0][0]} nome={mataMata[1].name}/>}
+            {tabela && <Tabelas tabela={tabela[0]} renderItem={renderTabela}/>}
+            {tabela && <Tabelas tabela={tabela[1]} renderItem={renderTabela}/>}
+        </ScrollView>
+    );
+}
+
+export function Tabelas({tabela, renderItem}) {
+    return (
+        <>
+            <View style={styles.nomeTabela}>
+                <Text style={styles.txtX}>{tabela.name}</Text>
+            </View>
             <View>
                 <View style={styles.listaInfo}>
                     <View style={styles.linksContainer}>
                     </View>
                     <View>
-                        <Text style={styles.txtLegenda}>Campeão da Taça Guanabara e Semifinalistas <View style={styles.bolinhaCampeao}></View></Text>
-                        <Text style={styles.txtLegenda}>Semifinalistas <View style={styles.bolinhaSemifinalista}></View></Text>
-                        <Text style={styles.txtLegenda}>Taça Rio <View style={styles.bolinhaTacaRio}></View></Text>
-                        <Text style={styles.txtLegenda}>Rebaixamento <View style={styles.bolinhaRebaixados}></View></Text>
+                        <Text style={styles.txtLegenda}>Quartas de Final <View style={styles.bolinhaSemifinalista}></View></Text>
                     </View>
                 </View>
                 <View style={styles.listaInfo}>
@@ -93,7 +101,7 @@ export function Carioca() {
                     </View>
                 </View>
             </View>
-            <Lista data={tabela && tabela.rows} renderItem={renderTabela}/>
-        </ScrollView>
+            <Lista data={tabela.rows} renderItem={renderItem}/>
+        </>
     );
 }

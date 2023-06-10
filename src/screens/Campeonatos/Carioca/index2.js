@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import { copaNordeste, copaNordesteMataMata } from '@/src/store/store';
+import { cariocao, cariocaoMataMata } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
-
-import { limitarString } from "@/src/Utils/LimitarString";
 import { ComFaseDeGrupos } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
 
-export function CopaNordeste() {
+export function Carioca() {
+
     function renderTabela(item, key) {
         return (
             <View key={key} style={styles.lista}>
@@ -16,7 +15,7 @@ export function CopaNordeste() {
                         <Text style={styles.txtPosicao(item)}>{item.position}</Text>
                     </View>
                     <Image style={styles.imgTime} resizeMode="center" source={{ uri: `${urlBase}team/${item.team.id}/image` }} />
-                    <Text style={styles.txt}>{limitarString(item.team.shortName, 13)}</Text>
+                    <Text style={styles.txt}>{item.team.shortName}</Text>
                 </View>
                 <View style={styles.pontos}>
                     <Text style={styles.txtPontos}>{item.points}</Text>
@@ -36,7 +35,10 @@ export function CopaNordeste() {
                 <View style={styles.linksContainer}>
                 </View>
                 <View>
-                    <Text style={styles.txtLegenda}>Quartas de Final <View style={styles.bolinhaSemifinalista}></View></Text>
+                    <Text style={styles.txtLegenda}>Campeão da Taça Guanabara e Semifinalistas <View style={styles.bolinhaCampeao}></View></Text>
+                    <Text style={styles.txtLegenda}>Semifinalistas <View style={styles.bolinhaSemifinalista}></View></Text>
+                    <Text style={styles.txtLegenda}>Taça Rio <View style={styles.bolinhaTacaRio}></View></Text>
+                    <Text style={styles.txtLegenda}>Rebaixamento <View style={styles.bolinhaRebaixados}></View></Text>
                 </View>
             </View>
         );
@@ -44,8 +46,8 @@ export function CopaNordeste() {
 
     return (
         <ComFaseDeGrupos
-            copa={copaNordeste}
-            copaMataMata={copaNordesteMataMata}
+            copa={cariocao}
+            copaMataMata={cariocaoMataMata}
             renderTabela={renderTabela}
             legenda={legenda}
         />

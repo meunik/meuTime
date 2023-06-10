@@ -16,6 +16,7 @@ export const theme = {
             300: '#969696',
             nav: '#000',
             link: '#969696',
+            linkAzul: '#5e84f1',
             btn: '#bfbfbf',
             tempo: '#3bb552',
         },

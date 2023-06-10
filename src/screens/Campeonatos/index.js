@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { setTorneio } from '@/src/store/action';
+import { setTorneio as setTorneioStorage } from '@/src/store/action';
 import { View, Text, Image, TouchableOpacity, Animated } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 import { theme } from "@/src/global/styles/theme";
-import { brasileirao, torneios as listaTorneiros } from '@/src/store/store';
+import { listaTorneios } from "@/src/store/listaTorneios";
+import { brasileirao, torneios as getTorneios } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Tabela } from "@/src/screens/Campeonatos/Tabela/index";
 import { CopaDoBrasil } from "@/src/screens/Campeonatos/CopaDoBrasil/index";
@@ -24,16 +25,18 @@ export function Campeonatos() {
 
 	const navigation = useNavigation();
     const meuTime = useSelector(state => state.meuTime);
-    const torneio = useSelector(state => state.torneio);
+    const torneioStorage = useSelector(state => state.torneio);
     const dispatch = useDispatch();
 
     const [tabela, setTabela] = useState(null);
+    const [torneio, setTorneio] = useState(torneioStorage);
     const [torneios, setTorneios] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
+    const [listaStatic, setTistaStatic] = useState(false);
 
     const fetchDataTabela = async () => {
         setTabela(await brasileirao());
-        setTorneios(await listaTorneiros(meuTime?.id));
+        setTorneios(await getTorneios(meuTime?.id));
         setRefreshing(false);
     };
 
@@ -65,6 +68,7 @@ export function Campeonatos() {
             duration: 300,
             useNativeDriver: true,
         }).start(() => setIsViewVisible(false));
+        setTistaStatic(false);
     };
 
     const interpolatedY = animation.interpolate({
@@ -77,9 +81,24 @@ export function Campeonatos() {
         transform: [{ translateY: interpolatedY }],
     };
 
+    function torneioSeuTime(objeto) {
+        let objetoExiste = false;
+        for (let i = 0; i < torneios.length; i++) {
+            if (torneios[i].id === objeto.id) {
+                objetoExiste = true;
+                break;
+            }
+        }
+        return objetoExiste;
+    }
+
     const selecionaTorneio = (torneioObjeto) => {
-        console.log(torneioObjeto);
-        dispatch(setTorneio(torneioObjeto));
+        if (torneioSeuTime(torneioObjeto)) {
+            dispatch(setTorneioStorage(torneioObjeto));
+            setTorneio(torneioObjeto);
+        } else {
+            setTorneio(torneioObjeto);
+        }
         handleOutsidePress();
     };
 
@@ -105,6 +124,56 @@ export function Campeonatos() {
         return null;
     };
 
+    const Lista = () => {
+        const items = [];
+        for (let i = 0; i < torneios.length; i++) {
+            items.push(
+                <TouchableOpacity key={'torneios'+i} onPress={() => selecionaTorneio(torneios[i])}>
+                    <View style={styles.infoSelect}>
+                        {torneios[i] && <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${torneios[i].id}/image/dark` }} />}
+                        <Text style={styles.txtInfo}>{torneios[i] && torneios[i].name}</Text>
+                    </View>
+                </TouchableOpacity>
+            );
+        }
+
+        items.push(
+            <TouchableOpacity key={`torneios${torneios.length}`} onPress={() => setTistaStatic(true)}>
+                <View style={{...styles.infoSelect, justifyContent: 'center', paddingVertical: 10,}}>
+                    <Icon name="format-list-text" size={25} color="#434343" style={styles.chevronDown} />
+                    <Text style={styles.txtInfoTodos}>Exibir todos disponíveis</Text>
+                </View>
+            </TouchableOpacity>
+        );
+
+        return items;
+    }
+
+    const ListarTodos = () => {
+        const items = [];
+        for (let i = 0; i < listaTorneios.length; i++) {
+            items.push(
+                <TouchableOpacity key={'listaTorneios'+i} onPress={() => selecionaTorneio(listaTorneios[i])}>
+                    <View style={styles.infoSelect}>
+                        {listaTorneios[i] && <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${listaTorneios[i].id}/image/dark` }} />}
+                        <Text style={styles.txtInfo}>{listaTorneios[i] && listaTorneios[i].name}</Text>
+                    </View>
+                </TouchableOpacity>
+            );
+        }
+
+        items.push(
+            <TouchableOpacity key={`listaTorneios${listaTorneios.length}`} onPress={() => setTistaStatic(false)}>
+                <View style={{...styles.infoSelect, justifyContent: 'center', paddingVertical: 10,}}>
+                    <Icon name="arrow-left-bold" size={25} color="#434343" style={styles.chevronDown} />
+                    <Text style={styles.txtInfoTodos}>Voltar (Torneios do seu time)</Text>
+                </View>
+            </TouchableOpacity>
+        );
+
+        return items;
+    }
+
     return (
         <View style={styles.container}>
             {isViewVisible && (
@@ -129,20 +198,7 @@ export function Campeonatos() {
                         viewStyle,
                     ]}
                 >
-                    {torneios && (() => {
-                        const items = [];
-                        for (let i = 0; i < torneios.length; i++) {
-                            items.push(
-                                <TouchableOpacity key={'torneios'+i} onPress={() => selecionaTorneio(torneios[i])}>
-                                    <View style={styles.infoSelect}>
-                                        {torneios[i] && <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${torneios[i].id}/image/dark` }} />}
-                                        <Text style={styles.txtInfo}>{torneios[i] && torneios[i].name}</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            );
-                        }
-                        return items;
-                    })()}
+                    {torneios && ((listaStatic)?<ListarTodos />:<Lista />)}
                 </Animated.View>
             )}
 
@@ -169,7 +225,6 @@ export function Campeonatos() {
                         {(torneio)?
                         <Text style={styles.txtInfo}>{torneio.name}</Text>:
                         <Text style={styles.txtPlaceholder}>Selecione o torneio</Text>}
-                        {/* <Text style={styles.txtInfo}>{(torneio) ? torneio.name : 'Selecione o torneio'}</Text> */}
                     </View>
                     <Icon name="chevron-down" size={25} color="#434343" style={styles.chevronDown} />
                 </TouchableOpacity>
