@@ -1,6 +1,13 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import { copaLibertadores, libertadoresMataMata } from '@/src/store/store';
+import {
+    copaLibertadoresInfo,
+    copaLibertadores,
+    libertadoresMataMata,
+    libertadoresJogosAntes,
+    libertadoresJogosDepois,
+    libertadoresRodada,
+} from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import { Copa } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
@@ -43,6 +50,15 @@ export function Libertadores() {
         );
     }
 
+    function stringRodada(valor) {
+        switch (valor) {
+            // case '5': return 'Oitavas de Final';
+            // case '27': return 'Quartas de Final';
+        
+            default: return `Rodada ${valor}`;
+        }
+    }
+
     return (
         <Copa
             copa={copaLibertadores}
@@ -50,7 +66,11 @@ export function Libertadores() {
             renderTabela={renderTabela}
             legenda={legenda}
             desabilitarMataMata={true}
-            btnJogos="LibertadoresJogos"
+            buscaJogosAntes={libertadoresJogosAntes}
+            buscaJogosDepois={libertadoresJogosDepois}
+            buscaRodada={libertadoresRodada}
+            buscaTorneio={copaLibertadoresInfo}
+            stringRodada={stringRodada}
         />
     );
 }

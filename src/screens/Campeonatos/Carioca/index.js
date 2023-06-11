@@ -1,6 +1,13 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import { cariocao, cariocaoMataMata } from '@/src/store/store';
+import {
+    cariocaoInfo,
+    cariocao,
+    cariocaoMataMata,
+    cariocaoJogosAntes,
+    cariocaoJogosDepois,
+    cariocaoRodada,
+} from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import { Copa } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
@@ -46,12 +53,28 @@ export function Carioca() {
         );
     }
 
+    function stringRodada(valor) {
+        switch (valor) {
+            case '27': return 'Quartas de Final';
+            case '28': return 'SemiFinal';
+            case '29': return 'Final';
+        
+            default: return `Rodada ${valor}`;
+        }
+    }
+
     return (
         <Copa
             copa={cariocao}
             copaMataMata={cariocaoMataMata}
             renderTabela={renderTabela}
             legenda={legenda}
+            buscaJogosAntes={cariocaoJogosAntes}
+            buscaJogosDepois={cariocaoJogosDepois}
+            buscaRodada={cariocaoRodada}
+            buscaTorneio={cariocaoInfo}
+            stringRodada={stringRodada}
+            eliminatoriaVertical='vertical'
         />
     );
 }

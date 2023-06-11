@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
         borderColor: '#ffffff20',
     },
     playoffsVertical: {
+        flexDirection: 'column-reverse',
         paddingVertical: 20,
         gap: 10,
         backgroundColor: '#33333330',

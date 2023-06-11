@@ -5,12 +5,21 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import { evento } from '@/src/store/store';
 import { JogoAtivo } from '@/src/components/Jogo';
 
-export function Eliminatoria({item, nome, vertical = false}) {
+export function Eliminatoria({item, nome, direcao = 'horizontal'}) {
     return (
         <View style={styles.container}>
             <Text style={styles.txtX}>{nome}</Text>
-            <ScrollView horizontal style={{padding:0}}>
-                {item && <MataMata item={item} vertical={vertical}/>}
+            <ScrollView horizontal={(direcao == 'vertical')?false:true} style={{padding:0}}>
+                {item && (() => {
+                    switch (direcao) {
+                        case 'verticalLadoLado': return <MataMataLadoLado item={item} vertical={true}/>;
+                        case 'horizontalLadoLado': return <MataMataLadoLado item={item}/>;
+                        case 'vertical': return <MataMata item={item} vertical={true}/>;
+                        case 'horizontal': return <MataMata item={item}/>;
+                    
+                        default: return <MataMata item={item}/>;
+                    }
+                })()}
             </ScrollView>
         </View>
     );
@@ -54,6 +63,59 @@ export const MataMata = ({item, vertical = false}) => {
             <View style={cssJogos}>
                 <ExibeJogo item={item} final={true}/>
             </View>
+        </View>
+    );
+}
+
+export const MataMataLadoLado = ({item, vertical = false}) => {
+    const cssPlayoffs = (vertical) ? styles.playoffsVertical : styles.playoffs;
+    const cssJogos = (vertical) ? styles.jogosVertical : styles.jogos;
+
+    return (
+        <View style={cssPlayoffs}>
+            
+            {/* Oitavas de Final */}
+            {item.left?.left?.left && <View style={cssJogos}>
+                <ExibeJogo item={item.left.left.left}/>
+                <ExibeJogo item={item.left.left.right}/>
+                <ExibeJogo item={item.left.right.left}/>
+                <ExibeJogo item={item.left.right.right}/>
+            </View>}
+            
+            {/* Quartas de Final */}
+            {item.left?.left && <View style={cssJogos}>
+                <ExibeJogo item={item.left.left}/>
+                <ExibeJogo item={item.left.right}/>
+            </View>}
+
+            {/* Semifinal */}
+            {item.left && <View style={cssJogos}>
+                <ExibeJogo item={item.left}/>
+            </View>}
+
+            {/* Final */}
+            <View style={cssJogos}>
+                <ExibeJogo item={item} final={true}/>
+            </View>
+
+            {/* Semifinal */}
+            {item.left && <View style={cssJogos}>
+                <ExibeJogo item={item.right}/>
+            </View>}
+            
+            {/* Quartas de Final */}
+            {item.left?.left && <View style={cssJogos}>
+                <ExibeJogo item={item.right.left}/>
+                <ExibeJogo item={item.right.right}/>
+            </View>}
+            
+            {/* Oitavas de Final */}
+            {item.left?.left?.left && <View style={cssJogos}>
+                <ExibeJogo item={item.right.left.left}/>
+                <ExibeJogo item={item.right.left.right}/>
+                <ExibeJogo item={item.right.right.left}/>
+                <ExibeJogo item={item.right.right.right}/>
+            </View>}
         </View>
     );
 }

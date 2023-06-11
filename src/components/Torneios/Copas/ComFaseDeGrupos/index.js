@@ -10,10 +10,16 @@ export function Copa({
     copa,
     copaMataMata,
     renderTabela,
+    buscaJogosAntes,
+    buscaJogosDepois,
+    buscaRodada,
+    buscaTorneio,
+    stringRodada,
     legenda = null,
+    desabilitarGrupos = false,
     desabilitarMataMata = false,
-    btnJogos,
     desabilitarBtnJogos = false,
+    eliminatoriaVertical = 'horizontal',
 }) {
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
@@ -24,7 +30,6 @@ export function Copa({
         setTabela(await copa());
         setMataMata(await copaMataMata());
         setRefreshing(false);
-        console.log(tabela);
     };
 
     const onRefresh = () => {
@@ -47,24 +52,39 @@ export function Copa({
                 />
             }
         >
-            {!desabilitarBtnJogos && btnJogos && <View style={styles.linksContainer}>
-                <BaseButton onPress={() => navigation.navigate(btnJogos)}>
-                    <View style={styles.btn}>
-                        <Text style={styles.txtLink}>Jogos</Text>
-                    </View>
-                </BaseButton>
-            </View>}
+            {(
+                !desabilitarBtnJogos &&
+                buscaJogosAntes &&
+                buscaJogosDepois &&
+                buscaRodada &&
+                tabela
+            ) && <BaseButton onPress={() => navigation.navigate('TodosJogos', {
+                buscaJogosAntes: buscaJogosAntes,
+                buscaJogosDepois: buscaJogosDepois,
+                buscaRodada: buscaRodada,
+                stringRodada: stringRodada,
+                buscaTorneio: buscaTorneio,
+            })}>
+                <View style={styles.btn}>
+                    <Text style={styles.txtLink}>Jogos</Text>
+                </View>
+            </BaseButton>}
 
-            {(!desabilitarMataMata && mataMata) && (() => {
+            {!desabilitarMataMata && mataMata && (() => {
                 const keys = Object.keys(mataMata);
                 const items = [];
                 keys.forEach((key, index) => items.push(
-                    <Eliminatoria key={index} item={mataMata[key].views[0][0]} nome={mataMata[key].name}/>
+                    <Eliminatoria
+                        key={index}
+                        item={mataMata[key].views[0][0]}
+                        nome={mataMata[key].name}
+                        direcao={eliminatoriaVertical}
+                    />
                 ));
                 return items;
             })()}
             
-            {tabela && (() => {
+            {!desabilitarGrupos && tabela && (() => {
                 const keys = Object.keys(tabela);
                 const items = [];
                 keys.forEach((key, index) => items.push(

@@ -1,6 +1,13 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import { copaNordeste, copaNordesteMataMata } from '@/src/store/store';
+import {
+    copaNordesteInfo,
+    copaNordeste,
+    copaNordesteMataMata,
+    copaNordesteJogosAntes,
+    copaNordesteJogosDepois,
+    copaNordesteRodada,
+} from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 
@@ -42,12 +49,27 @@ export function CopaNordeste() {
         );
     }
 
+    function stringRodada(valor) {
+        switch (valor) {
+            case '27': return 'Quartas de Final';
+            case '28': return 'SemiFinal';
+            case '29': return 'Final';
+        
+            default: return `Rodada ${valor}`;
+        }
+    }
+
     return (
         <Copa
             copa={copaNordeste}
             copaMataMata={copaNordesteMataMata}
             renderTabela={renderTabela}
             legenda={legenda}
+            buscaJogosAntes={copaNordesteJogosAntes}
+            buscaJogosDepois={copaNordesteJogosDepois}
+            buscaRodada={copaNordesteRodada}
+            buscaTorneio={copaNordesteInfo}
+            stringRodada={stringRodada}
         />
     );
 }

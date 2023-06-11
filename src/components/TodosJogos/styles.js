@@ -6,10 +6,41 @@ export const styles = StyleSheet.create({
         flex: 1,
         paddingTop: (Platform.OS === 'ios') ? 0 : 10,
         backgroundColor: theme.colors.fundo,
-        // backgroundColor: theme.colors.background(),
-        // backgroundColor: '#000000d9',
-        paddingHorizontal: 20,
     },
+
+    containerNav: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        paddingHorizontal: 5,
+        paddingBottom: 12,
+        backgroundColor: theme.colors.nav,
+        borderRadius: 10,
+        position: 'absolute',
+        left: 3,
+        right: 3,
+        bottom: -10,
+        alignSelf: 'center',
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    labelStyle: {
+        color: theme.colors.texto.nav,
+    },
+    navContainer: {
+        width: 170,
+        backgroundColor: 'transparent',
+        elevation: 0,
+        shadowOpacity: 0,
+        borderRadius: 10,
+    },
+    ativo: {
+        backgroundColor: '#000',
+        alignSelf: 'center',
+    },
+
     txtLogo: {
         color: theme.colors.texto[100],
         fontSize: theme.font.size[7],
@@ -37,9 +68,25 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[300],
         fontSize: theme.font.size[4],
     },
+    setasEsquerda: {
+        position: 'absolute',
+        left: 30,
+    },
+    setasDoreita: {
+        position: 'absolute',
+        right: 30,
+    },
     info: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
+        paddingVertical: 10,
+        gap: 5,
+    },
+    nomeRodada: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
         padding: 10,
         gap: 10,
     },
@@ -54,8 +101,7 @@ export const styles = StyleSheet.create({
         gap: 20,
     },
     lista: {
-        borderColor: '#ffffff0d',
-        // borderColor: 'transparent',
+        borderColor: 'transparent',
         paddingVertical: 10,
         borderTopWidth: 0.5,
         borderBottomWidth: 0.5,
@@ -75,7 +121,6 @@ export const styles = StyleSheet.create({
     jogo: {
         flexDirection: 'row',
         alignItems: 'center',
-        // gap: 10,
     },
     campeonato: {
         height: 60,
@@ -87,12 +132,17 @@ export const styles = StyleSheet.create({
         height: 50,
         width: 50,
     },
+    chevronDown: {
+        marginRight: 5,
+        paddingLeft: 20,
+        paddingVertical: 10,
+    },
     jogoRolando: {
         height: 100,
         paddingBottom: 10,
     },
     timesUltimoJogo: {
-        height: 50,
+        height: 60,
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',

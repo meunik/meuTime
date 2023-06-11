@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { BaseButton } from "react-native-gesture-handler";
 import { View, Text, Image, FlatList, RefreshControl } from 'react-native';
+import {
+    brasileiraoJogosDepois,
+    brasileiraoJogosAntes,
+    brasileiraoRodada,
+    brasileiraoInfo,
+} from '@/src/store/store';
 import * as NavigationBar from 'expo-navigation-bar';
 import { theme } from "@/src/global/styles/theme";
 import { brasileirao } from '@/src/store/store';
@@ -49,6 +55,10 @@ export function Tabela() {
         </View>
     );
 
+    function stringRodada(valor) {
+        return `Rodada ${valor}`;
+    }
+
     return (
         <View style={styles.container}>
             <View>
@@ -62,9 +72,12 @@ export function Tabela() {
                                 <Text style={styles.txtLink}>Ver Artilheiros</Text>
                             </View>
                         </BaseButton>}
-                        {tabela && <BaseButton onPress={() => navigation.navigate('BrasileiraoJogos', {
-                            campeonatoNome: tabela.name,
-                            campeonato: tabela.tournament,
+                        {tabela && <BaseButton onPress={() => navigation.navigate('TodosJogos', {
+                            buscaJogosAntes: brasileiraoJogosAntes,
+                            buscaJogosDepois: brasileiraoJogosDepois,
+                            buscaRodada: brasileiraoRodada,
+                            stringRodada: stringRodada,
+                            buscaTorneio: brasileiraoInfo,
                         })}>
                             <View style={styles.btn}>
                                 <Text style={styles.txtLink}>Jogos</Text>

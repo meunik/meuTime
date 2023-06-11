@@ -1,5 +1,6 @@
 import {
     api,
+    urlBase,
     urlEventos,
     
     urlBrasileirao,
@@ -7,6 +8,7 @@ import {
     urlCopaNordeste,
 
     urlCariocao,
+    urlPaulistao,
 
     urlSulamericana,
     urlLibertadores,
@@ -22,30 +24,49 @@ export const jogadores = async(id)=> await request(`${id}/players`, 'players');
 export const proximoJogo = async(id)=> await request(`${id}/near-events`);
 export const evento = async(id)=> await request(`${urlEventos}${id}`, 'event');
 
+export const brasileiraoInfo = async()=> await request(`${urlBase}unique-tournament/325`);
 export const brasileirao = async()=> await request(`${urlBrasileirao}standings/total`, 'standings', true);
 export const brasileiraoArtilheiros = async()=> await request(`${urlBrasileirao}statistics?limit=100&order=-goals&group=attack`, 'results');
 export const brasileiraoJogosDepois = async(num=0)=> await request(`${urlBrasileirao}events/next/${num}`);
 export const brasileiraoJogosAntes = async(num=0)=> await request(`${urlBrasileirao}events/last/${num}`);
 export const brasileiraoRodada = async()=> await request(`${urlBrasileirao}rounds`, 'currentRound');
 
+export const copaDoBrasilInfo = async()=> await request(`${urlBase}unique-tournament/373`);
 export const copaDoBrasil = async()=> await request(`${urlCopaDoBrasil}cuptrees/structured`, 'cupTrees', true);
 export const copaDoBrasilJogos = async()=> await request(`${urlCopaDoBrasil}cuptrees`, 'cupTrees');
 export const copaDoBrasilJogosDepois = async(num=0)=> await request(`${urlCopaDoBrasil}events/next/${num}`);
 export const copaDoBrasilJogosAntes = async(num=0)=> await request(`${urlCopaDoBrasil}events/last/${num}`);
 export const copaDoBrasilRodada = async()=> await request(`${urlCopaDoBrasil}rounds`, 'currentRound');
 
+export const copaNordesteInfo = async()=> await request(`${urlBase}unique-tournament/1596`);
 export const copaNordeste = async()=> await request(`${urlCopaNordeste}standings/total`, 'standings');
 export const copaNordesteMataMata = async()=> await request(`${urlCopaNordeste}cuptrees/structured`, 'cupTrees');
+export const copaNordesteJogosDepois = async(num=0)=> await request(`${urlCopaNordeste}events/next/${num}`);
+export const copaNordesteJogosAntes = async(num=0)=> await request(`${urlCopaNordeste}events/last/${num}`);
+export const copaNordesteRodada = async()=> await request(`${urlCopaNordeste}rounds`, 'currentRound');
 
+export const cariocaoInfo = async()=> await request(`${urlBase}unique-tournament/92`);
 export const cariocao = async()=> await request(`${urlCariocao}standings/total`, 'standings');
 export const cariocaoMataMata = async()=> await request(`${urlCariocao}cuptrees/structured`, 'cupTrees');
+export const cariocaoJogosDepois = async(num=0)=> await request(`${urlCariocao}events/next/${num}`);
+export const cariocaoJogosAntes = async(num=0)=> await request(`${urlCariocao}events/last/${num}`);
+export const cariocaoRodada = async()=> await request(`${urlCariocao}rounds`, 'currentRound');
 
+export const paulistaoInfo = async()=> await request(`${urlBase}unique-tournament/372`);
+export const paulistao = async()=> await request(`${urlPaulistao}standings/total`, 'standings');
+export const paulistaoMataMata = async()=> await request(`${urlPaulistao}cuptrees/structured`, 'cupTrees');
+export const paulistaoJogosDepois = async(num=0)=> await request(`${urlPaulistao}events/next/${num}`);
+export const paulistaoJogosAntes = async(num=0)=> await request(`${urlPaulistao}events/last/${num}`);
+export const paulistaoRodada = async()=> await request(`${urlPaulistao}rounds`, 'currentRound');
+
+export const copaSulamericanaInfo = async()=> await request(`${urlBase}unique-tournament/480`);
 export const copaSulamericana = async()=> await request(`${urlSulamericana}standings/total`, 'standings');
 export const sulamericanaMataMata = async()=> await request(`${urlSulamericana}cuptrees/structured`, 'cupTrees');
 export const sulamericanaJogosDepois = async(num=0)=> await request(`${urlSulamericana}events/next/${num}`);
 export const sulamericanaJogosAntes = async(num=0)=> await request(`${urlSulamericana}events/last/${num}`);
 export const sulamericanaRodada = async()=> await request(`${urlSulamericana}rounds`, 'currentRound');
 
+export const copaLibertadoresInfo = async()=> await request(`${urlBase}unique-tournament/384`);
 export const copaLibertadores = async()=> await request(`${urlLibertadores}standings/total`, 'standings');
 export const libertadoresMataMata = async()=> await request(`${urlLibertadores}cuptrees/structured`, 'cupTrees');
 export const libertadoresJogosDepois = async(num=0)=> await request(`${urlLibertadores}events/next/${num}`);

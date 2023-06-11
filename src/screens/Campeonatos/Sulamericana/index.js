@@ -1,6 +1,13 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import { copaSulamericana, sulamericanaMataMata } from '@/src/store/store';
+import {
+    copaSulamericanaInfo,
+    copaSulamericana,
+    sulamericanaMataMata,
+    sulamericanaJogosAntes,
+    sulamericanaJogosDepois,
+    sulamericanaRodada,
+} from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import { Copa } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
@@ -43,6 +50,15 @@ export function Sulamericana() {
         );
     }
 
+    function stringRodada(valor) {
+        switch (valor) {
+            // case '5': return 'Oitavas de Final';
+            // case '27': return 'Quartas de Final';
+        
+            default: return `Rodada ${valor}`;
+        }
+    }
+
     return (
         <Copa
             copa={copaSulamericana}
@@ -50,7 +66,11 @@ export function Sulamericana() {
             renderTabela={renderTabela}
             legenda={legenda}
             desabilitarMataMata={true}
-            btnJogos="SulamericanaJogos"
+            buscaJogosAntes={sulamericanaJogosAntes}
+            buscaJogosDepois={sulamericanaJogosDepois}
+            buscaRodada={sulamericanaRodada}
+            buscaTorneio={copaSulamericanaInfo}
+            stringRodada={stringRodada}
         />
     );
 }

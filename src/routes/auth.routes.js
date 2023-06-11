@@ -8,6 +8,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { urlTime } from '@/src/store/api';
 import { styles } from "./styles";
 
+import { TodosJogos } from "@/src/components/TodosJogos";
+
 import { Jogos } from "@/src/screens/Jogos";
 import { Campeonatos } from "@/src/screens/Campeonatos";
 import { Artilheiros as BrasileiraoArtilheiros } from "@/src/screens/Campeonatos/Tabela/Artilheiros";
@@ -99,6 +101,11 @@ export function AuthRoutes() {
                     },
                 }}
             >
+                <Screen
+                    name="TodosJogos"
+                    component={TodosJogos}
+                />
+
                 <Screen
                     name="BrasileiraoJogos"
                     component={BrasileiraoJogos}

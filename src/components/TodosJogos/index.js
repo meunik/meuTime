@@ -1,19 +1,19 @@
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
-import { Text, View, Image, FlatList, RefreshControl, StyleSheet } from 'react-native';
-import { brasileiraoJogosDepois, brasileiraoJogosAntes, brasileiraoRodada } from '@/src/store/store';
+import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
+import { BaseButton } from "react-native-gesture-handler";
 import { urlBase } from '@/src/store/api';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
-import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+import { TabView, SceneMap } from 'react-native-tab-view';
 import { theme } from "@/src/global/styles/theme";
+import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Lista } from "@/src/components/Lista";
 
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 
-export function Jogos() {
+export function TodosJogos() {
     useFocusEffect(() => {
         setBackgroundColorAsync(theme.colors.fundo);
 
@@ -22,12 +22,20 @@ export function Jogos() {
         };
     });
 
-	const navigation = useNavigation();
     const route = useRoute();
+    const params = route.params;
+    const buscaJogosAntes = params.buscaJogosAntes;
+    const buscaJogosDepois = params.buscaJogosDepois;
+    const buscaRodada = params.buscaRodada;
+    const stringRodada = params.stringRodada;
+    const buscaTorneio = params.buscaTorneio;
+
+	const navigation = useNavigation();
     const dispatch = useDispatch();
 
     const meuTime = useSelector(state => state.meuTime);
     const intervalo = useSelector(state => state.intervalo);
+    const [torneio, setTorneio] = useState(null);
     const [rodada, setRodada] = useState(0);
 
     const [refreshing, setRefreshing] = useState(true);
@@ -37,17 +45,18 @@ export function Jogos() {
 
     const fetchData = async () => {
         try {
-            const jogosPassado = await brasileiraoJogosAntes();
-            const jogosFuturos = await brasileiraoJogosDepois();
-            setRodada(await brasileiraoRodada());
+            const jogosPassado = await buscaJogosAntes();
+            const jogosFuturos = await buscaJogosDepois();
+            setTorneio(await buscaTorneio());
+            setRodada(await buscaRodada());
 
             let jogosTodos = [
-                ...jogosPassado.events,
-                ...jogosFuturos.events,
+                ...(jogosPassado) ? jogosPassado?.events : [],
+                ...(jogosFuturos) ? jogosFuturos?.events : [],
             ];
 
-            if (jogosPassado?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos, 'passado');
-            if (jogosFuturos?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos, 'futuro');
+            if (jogosPassado && jogosPassado?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos, 'passado');
+            if (jogosFuturos && jogosFuturos?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos, 'futuro');
 
             formatar(jogosTodos);
             setIndex(1);
@@ -71,7 +80,7 @@ export function Jogos() {
         const formattedTabs = Object.keys(jogosPorRodadas).map((itens, index) => ({
             index: index,
             key: `${itens}`,
-            title: `Rodada ${itens}`,
+            title: stringRodada(itens),
             content: jogosPorRodadas[itens],
         }));
         console.log(formattedTabs);
@@ -138,13 +147,13 @@ export function Jogos() {
         )
     };
 
-    const Rodadas = ({jogos, rodada, index}) => {
+    const Rodadas = ({jogos, rodadaNome, index}) => {
         return (
             <View style={styles.container}>
-                <View style={styles.info}>
+                <View style={styles.nomeRodada}>
                     {(index > 0) && <Icon name="chevron-left" size={30} color="#969696" style={styles.setasEsquerda} />}
 
-                    <Text style={styles.txtInfo}>{rodada}</Text>
+                    <Text style={styles.txtInfo}>{rodadaNome}</Text>
 
                     {(index != tabs.length - 1) && <Icon name="chevron-right" size={30} color="#969696" style={styles.setasDoreita} />}
                 </View>
@@ -169,7 +178,7 @@ export function Jogos() {
             tabs.map((tab) => {
                 return [
                     tab.key,
-                    () => <Rodadas jogos={tab.content} rodada={tab.title} index={tab.index}/>,
+                    () => <Rodadas jogos={tab.content} rodadaNome={tab.title} index={tab.index}/>,
                 ]
             })
         )
@@ -179,7 +188,7 @@ export function Jogos() {
         let addJogos = [];
 
         if (passadoOuFuturo == 'passado') {
-            const anteriorRodada = await brasileiraoJogosAntes(page);
+            const anteriorRodada = await buscaJogosAntes(page);
             addJogos = [
                 ...anteriorRodada.events,
                 ...jogosTodos,
@@ -189,7 +198,7 @@ export function Jogos() {
         }
         
         if (passadoOuFuturo == 'futuro') {
-            const proximaRodada = await brasileiraoJogosDepois(page);
+            const proximaRodada = await buscaJogosDepois(page);
             addJogos = [
                 ...jogosTodos,
                 ...proximaRodada.events,
@@ -213,6 +222,18 @@ export function Jogos() {
 
     return (
         <View style={styles.container}>
+            <View style={styles.row}>
+                <BaseButton onPress={() => navigation.goBack()}>
+                    <Icon name="arrow-u-left-top-bold" size={30} color="#434343" style={styles.chevronDown} />
+                </BaseButton>
+                <View style={styles.info}>
+                    {torneio && <>
+                        <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${torneio.uniqueTournament?.id}/image/dark` }} />
+                        <Text style={styles.txtInfo}>{torneio.uniqueTournament?.name}</Text>
+                    </>}
+                </View>
+            </View>
+
             {tabs &&
             <TabView
                 navigationState={{ index: index, routes: tabs }}
@@ -223,181 +244,3 @@ export function Jogos() {
         </View>
     );
 }
-
-export const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: (Platform.OS === 'ios') ? 0 : 10,
-        backgroundColor: theme.colors.fundo,
-        // backgroundColor: theme.colors.background(),
-        // backgroundColor: '#000000d9',
-        // paddingHorizontal: 20,
-    },
-
-    containerNav: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        paddingHorizontal: 5,
-        paddingBottom: 12,
-        backgroundColor: theme.colors.nav,
-        // backgroundColor: '#590000',
-        borderRadius: 10,
-        position: 'absolute',
-        left: 3,
-        right: 3,
-        bottom: -10,
-        alignSelf: 'center',
-    },
-    labelStyle: {
-        color: theme.colors.texto.nav,
-    },
-    navContainer: {
-        width: 170,
-        backgroundColor: 'transparent',
-        elevation: 0,
-        shadowOpacity: 0,
-        borderRadius: 10,
-    },
-    ativo: {
-        backgroundColor: '#000',
-        alignSelf: 'center',
-    },
-
-    txtLogo: {
-        color: theme.colors.texto[100],
-        fontSize: theme.font.size[7],
-    },
-    txtData: {
-        color: theme.colors.texto[200],
-        fontSize: theme.font.size[1],
-    },
-    txtTempo: {
-        color: theme.colors.texto[200],
-        fontSize: theme.font.size[1],
-    },
-    txtX: {
-        color: theme.colors.texto[300],
-    },
-    txtcampeonato: {
-        color: theme.colors.texto[200],
-        fontSize: theme.font.size[1],
-    },
-    txtTime: {
-        color: theme.colors.texto[100],
-        fontSize: theme.font.size[6],
-    },
-    txtInfo: {
-        color: theme.colors.texto[300],
-        fontSize: theme.font.size[4],
-    },
-    setasEsquerda: {
-        position: 'absolute',
-        left: 30,
-    },
-    setasDoreita: {
-        position: 'absolute',
-        right: 30,
-    },
-    info: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 10,
-        gap: 10,
-    },
-    img: {
-        height: 50,
-        width: 50,
-    },
-    logo: {
-        paddingVertical: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 20,
-    },
-    lista: {
-        // borderColor: '#ffffff0d',
-        borderColor: 'transparent',
-        paddingVertical: 10,
-        borderTopWidth: 0.5,
-        borderBottomWidth: 0.5,
-    },
-    topo: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 5,
-    },
-    rodape: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 5,
-    },
-    jogo: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        // gap: 10,
-    },
-    campeonato: {
-        height: 60,
-        width: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    imgCampeonato: {
-        height: 50,
-        width: 50,
-    },
-    jogoRolando: {
-        height: 100,
-        paddingBottom: 10,
-    },
-    timesUltimoJogo: {
-        height: 60,
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 5,
-    },
-    times: {
-        width: '100%',
-        position: 'absolute',
-        height: 60,
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 5,
-    },
-    timeCasa: {
-        width: '45%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        fontSize: 20,
-        gap: 5,
-    },
-    timeVisitante: {
-        width: '45%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 5,
-    },
-    imgLista: {
-        height: 40,
-        width: 40,
-    },
-    contentContainerStyle: {
-        paddingBottom: theme.contentContainerStyle.paddingBottom,
-    },
-    cartaoVermelho: {
-        transform: [{ rotate: '90deg'}]
-    },
-    cartaoVermelhoContainer: {
-        flexDirection: 'row',
-        gap: -1,
-    },
-})
