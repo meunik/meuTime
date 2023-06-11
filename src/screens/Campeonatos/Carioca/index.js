@@ -1,32 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { View, Text, Image, ScrollView, RefreshControl } from 'react-native';
+import React from 'react';
+import { View, Text, Image } from 'react-native';
 import { cariocao, cariocaoMataMata } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
-import { Lista } from "@/src/components/Lista";
-import { Eliminatoria } from "./Eliminatoria/index";
+import { Copa } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
+
+import { limitarString } from "@/src/Utils/LimitarString";
 
 export function Carioca() {
-	const navigation = useNavigation();
-    const [tabela, setTabela] = useState(null);
-    const [mataMata, setMataMata] = useState(null);
-    const [refreshing, setRefreshing] = useState(false);
-
-    const fetchDataTabela = async () => {
-        setTabela(await cariocao());
-        setMataMata(await cariocaoMataMata());
-        setRefreshing(false);
-    };
-
-    const onRefresh = () => {
-        setRefreshing(true);
-        fetchDataTabela();
-    };
-
-    useEffect(() => {
-        fetchDataTabela();
-    }, []);
 
     function renderTabela(item, key) {
         return (
@@ -36,7 +17,7 @@ export function Carioca() {
                         <Text style={styles.txtPosicao(item)}>{item.position}</Text>
                     </View>
                     <Image style={styles.imgTime} resizeMode="center" source={{ uri: `${urlBase}team/${item.team.id}/image` }} />
-                    <Text style={styles.txt}>{item.team.shortName}</Text>
+                    <Text style={styles.txt}>{limitarString(item.team.shortName, 14)}</Text>
                 </View>
                 <View style={styles.pontos}>
                     <Text style={styles.txtPontos}>{item.points}</Text>
@@ -49,51 +30,28 @@ export function Carioca() {
             </View>
         );
     }
-    // console.log(mataMata);
-    // console.log(tabela);
 
-    return (
-        <ScrollView
-            style={styles.container}
-            contentContainerStyle={styles.contentContainerStyle}
-            refreshControl={
-                <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                />
-            }
-        >
-            {mataMata && <Eliminatoria item={mataMata[0].views[0][0]} nome={mataMata[0].name}/>}
-            {mataMata && <Eliminatoria item={mataMata[1].views[0][0]} nome={mataMata[1].name}/>}
-            <View>
-                <View style={styles.listaInfo}>
-                    <View style={styles.linksContainer}>
-                    </View>
-                    <View>
-                        <Text style={styles.txtLegenda}>Campeão da Taça Guanabara e Semifinalistas <View style={styles.bolinhaCampeao}></View></Text>
-                        <Text style={styles.txtLegenda}>Semifinalistas <View style={styles.bolinhaSemifinalista}></View></Text>
-                        <Text style={styles.txtLegenda}>Taça Rio <View style={styles.bolinhaTacaRio}></View></Text>
-                        <Text style={styles.txtLegenda}>Rebaixamento <View style={styles.bolinhaRebaixados}></View></Text>
-                    </View>
+    function legenda(item) {
+        return (
+            <View style={styles.listaInfo}>
+                <View style={styles.linksContainer}>
                 </View>
-                <View style={styles.listaInfo}>
-                    <View style={styles.time}>
-                        <View>
-                            <Text style={styles.txtInfo}>#</Text>
-                        </View>
-                        <Text style={styles.txtInfo}>Times</Text>
-                    </View>
-                    <View style={styles.pontos}>
-                        <Text style={styles.txtInfoPontos}>P</Text>
-                        <Text style={styles.txtInfoPontos}>J</Text>
-                        <Text style={styles.txtInfoPontos}>V</Text>
-                        <Text style={styles.txtInfoPontos}>E</Text>
-                        <Text style={styles.txtInfoPontos}>D</Text>
-                        <Text style={{...styles.txtInfoPontos, width: 20}}>SG</Text>
-                    </View>
+                <View>
+                    <Text style={styles.txtLegenda}>Campeão da Taça Guanabara e Semifinalistas <View style={styles.bolinhaCampeao}></View></Text>
+                    <Text style={styles.txtLegenda}>Semifinalistas <View style={styles.bolinhaSemifinalista}></View></Text>
+                    <Text style={styles.txtLegenda}>Taça Rio <View style={styles.bolinhaTacaRio}></View></Text>
+                    <Text style={styles.txtLegenda}>Rebaixamento <View style={styles.bolinhaRebaixados}></View></Text>
                 </View>
             </View>
-            <Lista data={tabela && tabela.rows} renderItem={renderTabela}/>
-        </ScrollView>
+        );
+    }
+
+    return (
+        <Copa
+            copa={cariocao}
+            copaMataMata={cariocaoMataMata}
+            renderTabela={renderTabela}
+            legenda={legenda}
+        />
     );
 }

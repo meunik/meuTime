@@ -5,7 +5,7 @@ import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 
 import { limitarString } from "@/src/Utils/LimitarString";
-import { ComFaseDeGrupos } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
+import { Copa } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
 
 export function CopaNordeste() {
     function renderTabela(item, key) {
@@ -43,7 +43,7 @@ export function CopaNordeste() {
     }
 
     return (
-        <ComFaseDeGrupos
+        <Copa
             copa={copaNordeste}
             copaMataMata={copaNordesteMataMata}
             renderTabela={renderTabela}

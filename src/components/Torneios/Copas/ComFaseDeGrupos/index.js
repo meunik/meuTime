@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, Image, ScrollView, RefreshControl } from 'react-native';
-import { urlBase } from '@/src/store/api';
+import { BaseButton } from "react-native-gesture-handler";
 import { styles } from "./styles";
 import { Lista } from "@/src/components/Lista";
 import { Eliminatoria } from "./Eliminatoria/index";
 
-import { limitarString } from "@/src/Utils/LimitarString";
-
-export function ComFaseDeGrupos({ copa, copaMataMata, renderTabela, legenda = null}) {
+export function Copa({
+    copa,
+    copaMataMata,
+    renderTabela,
+    legenda = null,
+    desabilitarMataMata = false,
+    btnJogos,
+    desabilitarBtnJogos = false,
+}) {
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
     const [mataMata, setMataMata] = useState(null);
@@ -18,6 +24,7 @@ export function ComFaseDeGrupos({ copa, copaMataMata, renderTabela, legenda = nu
         setTabela(await copa());
         setMataMata(await copaMataMata());
         setRefreshing(false);
+        console.log(tabela);
     };
 
     const onRefresh = () => {
@@ -40,7 +47,15 @@ export function ComFaseDeGrupos({ copa, copaMataMata, renderTabela, legenda = nu
                 />
             }
         >
-            {mataMata && (() => {
+            {!desabilitarBtnJogos && btnJogos && <View style={styles.linksContainer}>
+                <BaseButton onPress={() => navigation.navigate(btnJogos)}>
+                    <View style={styles.btn}>
+                        <Text style={styles.txtLink}>Jogos</Text>
+                    </View>
+                </BaseButton>
+            </View>}
+
+            {(!desabilitarMataMata && mataMata) && (() => {
                 const keys = Object.keys(mataMata);
                 const items = [];
                 keys.forEach((key, index) => items.push(
@@ -86,7 +101,7 @@ export function Tabelas({tabela, renderItem, legenda}) {
                     </View>
                 </View>
             </View>
-            <Lista data={tabela.rows} renderItem={renderItem}/>
+            <Lista data={tabela && tabela.rows} renderItem={renderItem}/>
         </>
     );
 }

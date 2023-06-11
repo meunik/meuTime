@@ -60,20 +60,15 @@ export const styles = StyleSheet.create({
         }
     },
     btn: {
-        // borderWidth: 0.5,
-        // borderColor: '#ffffff20',
-        // borderRadius: 10,
-        // backgroundColor: '#ffffff30',
-        flexDirection: 'row',
-        // justifyContent: 'center',
+        borderWidth: 0.5,
+        borderColor: '#ffffff20',
+        borderRadius: 10,
         alignItems: 'center',
         paddingVertical: 5,
-        // paddingHorizontal: 15,
         borderRadius: 10,
     },
     linksContainer: {
-        paddingVertical: 5,
-        // gap: 5,
+        padding: 10,
     },
     infoSelect: {
         flexDirection: 'row',

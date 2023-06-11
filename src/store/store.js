@@ -37,15 +37,17 @@ export const copaDoBrasilRodada = async()=> await request(`${urlCopaDoBrasil}rou
 export const copaNordeste = async()=> await request(`${urlCopaNordeste}standings/total`, 'standings');
 export const copaNordesteMataMata = async()=> await request(`${urlCopaNordeste}cuptrees/structured`, 'cupTrees');
 
-export const cariocao = async()=> await request(`${urlCariocao}standings/total`, 'standings', true);
+export const cariocao = async()=> await request(`${urlCariocao}standings/total`, 'standings');
 export const cariocaoMataMata = async()=> await request(`${urlCariocao}cuptrees/structured`, 'cupTrees');
 
 export const copaSulamericana = async()=> await request(`${urlSulamericana}standings/total`, 'standings');
+export const sulamericanaMataMata = async()=> await request(`${urlSulamericana}cuptrees/structured`, 'cupTrees');
 export const sulamericanaJogosDepois = async(num=0)=> await request(`${urlSulamericana}events/next/${num}`);
 export const sulamericanaJogosAntes = async(num=0)=> await request(`${urlSulamericana}events/last/${num}`);
 export const sulamericanaRodada = async()=> await request(`${urlSulamericana}rounds`, 'currentRound');
 
 export const copaLibertadores = async()=> await request(`${urlLibertadores}standings/total`, 'standings');
+export const libertadoresMataMata = async()=> await request(`${urlLibertadores}cuptrees/structured`, 'cupTrees');
 export const libertadoresJogosDepois = async(num=0)=> await request(`${urlLibertadores}events/next/${num}`);
 export const libertadoresJogosAntes = async(num=0)=> await request(`${urlLibertadores}events/last/${num}`);
 export const libertadoresRodada = async()=> await request(`${urlLibertadores}rounds`, 'currentRound');
