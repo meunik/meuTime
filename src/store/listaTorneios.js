@@ -126,6 +126,69 @@ export const estaduais = [
         id: 377,
         displayInverseHomeAwayTeams: false
     },
+    {
+        name: "Paranaense",
+        slug: "paranaense",
+        primaryColorHex: "#86bc38",
+        secondaryColorHex: "#30629c",
+        category: {
+            name: "Brazil",
+            slug: "brazil",
+            sport: {
+                name: "Football",
+                slug: "football",
+                id: 1
+            },
+            id: 13,
+            flag: "brazil",
+            alpha2: "BR"
+        },
+        userCount: 4769,
+        id: 382,
+        displayInverseHomeAwayTeams: false
+    },
+    {
+        name: "Goiano",
+        slug: "goiano",
+        primaryColorHex: "#0e3189",
+        secondaryColorHex: "#189b34",
+        category: {
+            name: "Brazil",
+            slug: "brazil",
+            sport: {
+                name: "Football",
+                slug: "football",
+                id: 1
+            },
+            id: 13,
+            flag: "brazil",
+            alpha2: "BR"
+        },
+        userCount: 3385,
+        id: 381,
+        displayInverseHomeAwayTeams: false
+    },
+    {
+        name: "Mato-Grossense",
+        slug: "mato-grossense",
+        primaryColorHex: "#0b4c7a",
+        secondaryColorHex: "#eea722",
+        category: {
+            name: "Brazil",
+            slug: "brazil",
+            sport: {
+                name: "Football",
+                slug: "football",
+                id: 1
+            },
+            id: 13,
+            flag: "brazil",
+            alpha2: "BR"
+        },
+        userCount: 1500,
+        id: 11670,
+        displayInverseHomeAwayTeams: false
+    }
 ];
 
 export const continentais = [

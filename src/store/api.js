@@ -11,6 +11,9 @@ const urlMineiro = `${urlBase}unique-tournament/379/season/47947/`;
 const urlCearense = `${urlBase}unique-tournament/378/season/47690/`;
 const urlBaiano = `${urlBase}unique-tournament/374/season/47686/`;
 const urlGaucho = `${urlBase}unique-tournament/377/season/47663/`;
+const urlParanaense = `${urlBase}unique-tournament/382/season/48061/`;
+const urlGoiano = `${urlBase}unique-tournament/381/season/47682/`;
+const urlMatoGrossense = `${urlBase}unique-tournament/11670/season/47691/`;
 
 const urlBrasileirao = `${urlBase}unique-tournament/325/season/48982/`;
 const urlCopaDoBrasil = `${urlBase}unique-tournament/373/season/48876/`;
@@ -37,6 +40,9 @@ export {
     urlCearense,
     urlBaiano,
     urlGaucho,
+    urlParanaense,
+    urlGoiano,
+    urlMatoGrossense,
 
     urlBrasileirao,
     urlCopaDoBrasil,

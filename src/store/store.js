@@ -13,6 +13,9 @@ import {
     urlCearense,
     urlBaiano,
     urlGaucho,
+    urlParanaense,
+    urlGoiano,
+    urlMatoGrossense,
 
     urlSulamericana,
     urlLibertadores,
@@ -90,6 +93,27 @@ export const gauchoMataMata = async()=> await request(`${urlGaucho}cuptrees/stru
 export const gauchoJogosDepois = async(num=0)=> await request(`${urlGaucho}events/next/${num}`);
 export const gauchoJogosAntes = async(num=0)=> await request(`${urlGaucho}events/last/${num}`);
 export const gauchoRodada = async()=> await request(`${urlGaucho}rounds`, 'currentRound');
+
+export const paranaenseInfo = async()=> await request(`${urlBase}unique-tournament/382`);
+export const paranaense = async()=> await request(`${urlParanaense}standings/total`, 'standings');
+export const paranaenseMataMata = async()=> await request(`${urlParanaense}cuptrees/structured`, 'cupTrees');
+export const paranaenseJogosDepois = async(num=0)=> await request(`${urlParanaense}events/next/${num}`);
+export const paranaenseJogosAntes = async(num=0)=> await request(`${urlParanaense}events/last/${num}`);
+export const paranaenseRodada = async()=> await request(`${urlParanaense}rounds`, 'currentRound');
+
+export const goianoInfo = async()=> await request(`${urlBase}unique-tournament/381`);
+export const goiano = async()=> await request(`${urlGoiano}standings/total`, 'standings');
+export const goianoMataMata = async()=> await request(`${urlGoiano}cuptrees/structured`, 'cupTrees');
+export const goianoJogosDepois = async(num=0)=> await request(`${urlGoiano}events/next/${num}`);
+export const goianoJogosAntes = async(num=0)=> await request(`${urlGoiano}events/last/${num}`);
+export const goianoRodada = async()=> await request(`${urlGoiano}rounds`, 'currentRound');
+
+export const matoGrossenseInfo = async()=> await request(`${urlBase}unique-tournament/11670`);
+export const matoGrossense = async()=> await request(`${urlMatoGrossense}standings/total`, 'standings');
+export const matoGrossenseMataMata = async()=> await request(`${urlMatoGrossense}cuptrees/structured`, 'cupTrees');
+export const matoGrossenseJogosDepois = async(num=0)=> await request(`${urlMatoGrossense}events/next/${num}`);
+export const matoGrossenseJogosAntes = async(num=0)=> await request(`${urlMatoGrossense}events/last/${num}`);
+export const matoGrossenseRodada = async()=> await request(`${urlMatoGrossense}rounds`, 'currentRound');
 
 export const copaSulamericanaInfo = async()=> await request(`${urlBase}unique-tournament/480`);
 export const copaSulamericana = async()=> await request(`${urlSulamericana}standings/total`, 'standings');

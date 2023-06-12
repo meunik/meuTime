@@ -22,6 +22,9 @@ import { Mineiro } from "@/src/screens/Campeonatos/Mineiro/index";
 import { Cearense } from "@/src/screens/Campeonatos/Cearense/index";
 import { Baiano } from "@/src/screens/Campeonatos/Baiano/index";
 import { Gaucho } from "@/src/screens/Campeonatos/Gaucho/index";
+import { Paranaense } from "@/src/screens/Campeonatos/Paranaense/index";
+import { Goiano } from "@/src/screens/Campeonatos/Goiano/index";
+import { MatoGrossense } from "@/src/screens/Campeonatos/MatoGrossense/index";
 
 import { Sulamericana } from "@/src/screens/Campeonatos/Sulamericana/index";
 import { Libertadores } from "@/src/screens/Campeonatos/Libertadores/index";
@@ -125,6 +128,9 @@ export function Campeonatos() {
                 case 378: return <Cearense />;
                 case 374: return <Baiano />;
                 case 377: return <Gaucho />;
+                case 382: return <Paranaense />;
+                case 381: return <Goiano />;
+                case 11670: return <MatoGrossense />;
                 
                 case 480: return <Sulamericana />;
                 case 384: return <Libertadores />;
