@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTorneio as setTorneioStorage } from '@/src/store/action';
-import { View, Text, Image, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Animated, ScrollView, useWindowDimensions } from 'react-native';
+import { ScrollViewIndicator } from '@fanchenbao/react-native-scroll-indicator';
 import * as NavigationBar from 'expo-navigation-bar';
 import { theme } from "@/src/global/styles/theme";
 import { listaTorneios } from "@/src/store/listaTorneios";
@@ -16,6 +17,11 @@ import { CopaDoBrasil } from "@/src/screens/Campeonatos/CopaDoBrasil/index";
 
 import { CopaNordeste } from "@/src/screens/Campeonatos/CopaNordeste/index";
 import { Carioca } from "@/src/screens/Campeonatos/Carioca/index";
+import { Paulistao } from "@/src/screens/Campeonatos/Paulistao/index";
+import { Mineiro } from "@/src/screens/Campeonatos/Mineiro/index";
+import { Cearense } from "@/src/screens/Campeonatos/Cearense/index";
+import { Baiano } from "@/src/screens/Campeonatos/Baiano/index";
+import { Gaucho } from "@/src/screens/Campeonatos/Gaucho/index";
 
 import { Sulamericana } from "@/src/screens/Campeonatos/Sulamericana/index";
 import { Libertadores } from "@/src/screens/Campeonatos/Libertadores/index";
@@ -23,6 +29,7 @@ import { Libertadores } from "@/src/screens/Campeonatos/Libertadores/index";
 export function Campeonatos() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
 
+    const layout = useWindowDimensions();
 	const navigation = useNavigation();
     const meuTime = useSelector(state => state.meuTime);
     const torneioStorage = useSelector(state => state.torneio);
@@ -103,6 +110,9 @@ export function Campeonatos() {
     };
 
     const exibeTorneio = () => {
+        // console.log('meuTime: '+meuTime?.id);
+        // console.log('torneio: '+torneio?.id);
+        // console.log('layout: '+layout.height);
         if (torneio) {
             switch (torneio.id) {
                 case 325: return <Tabela />;
@@ -110,6 +120,11 @@ export function Campeonatos() {
 
                 case 1596: return <CopaNordeste />;
                 case 92: return <Carioca />;
+                case 372: return <Paulistao />;
+                case 379: return <Mineiro />;
+                case 378: return <Cearense />;
+                case 374: return <Baiano />;
+                case 377: return <Gaucho />;
                 
                 case 480: return <Sulamericana />;
                 case 384: return <Libertadores />;
@@ -184,6 +199,7 @@ export function Campeonatos() {
                             top: 65,
                             left: 0,
                             right: 0,
+                            maxHeight: layout.height - 225,
                             // backgroundColor: '#141414',
                             backgroundColor: '#000',
                             borderWidth: 0.5,
@@ -194,11 +210,20 @@ export function Campeonatos() {
                             borderRadius: 10,
                             marginHorizontal: 5,
                             zIndex: 99,
+                            overflow: 'hidden',
                         },
                         viewStyle,
                     ]}
                 >
-                    {torneios && ((listaStatic)?<ListarTodos />:<Lista />)}
+                    {torneios && ((listaStatic)?
+                    <ScrollViewIndicator indStyle={{
+                        top: 2,
+                        marginRight: 2,
+                        backgroundColor: '#ffffff40'
+                    }}>
+                        <ListarTodos />
+                    </ScrollViewIndicator>
+                    :<Lista />)}
                 </Animated.View>
             )}
 

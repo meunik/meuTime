@@ -8,7 +8,7 @@ import { urlBase } from '@/src/store/api';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { theme } from "@/src/global/styles/theme";
-import { styles } from "./styles";
+import { styles } from "@/src/global/styles/styles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { tempoJogo } from "@/src/Utils/TempoJogo";
@@ -83,7 +83,6 @@ export function TodosJogos() {
             title: stringRodada(itens),
             content: jogosPorRodadas[itens],
         }));
-        console.log(formattedTabs);
 
         setTabs(formattedTabs);
     }
@@ -149,7 +148,7 @@ export function TodosJogos() {
 
     const Rodadas = ({jogos, rodadaNome, index}) => {
         return (
-            <View style={styles.container}>
+            <View style={styles.containerFull}>
                 <View style={styles.nomeRodada}>
                     {(index > 0) && <Icon name="chevron-left" size={30} color="#969696" style={styles.setasEsquerda} />}
 
@@ -221,7 +220,7 @@ export function TodosJogos() {
     // return (<View style={{backgroundColor: '#000', flex: 1,}}></View>);
 
     return (
-        <View style={styles.container}>
+        <View style={styles.containerFull}>
             <View style={styles.row}>
                 <BaseButton onPress={() => navigation.goBack()}>
                     <Icon name="arrow-u-left-top-bold" size={30} color="#434343" style={styles.chevronDown} />

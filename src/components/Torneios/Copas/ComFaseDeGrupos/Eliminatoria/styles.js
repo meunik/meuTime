@@ -36,7 +36,8 @@ export const styles = StyleSheet.create({
     jogos: {
         width: 170,
         alignItems: 'center',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-around',
+        gap: 10,
     },
     jogosVertical: {
         flexDirection: 'row',

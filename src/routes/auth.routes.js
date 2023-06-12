@@ -15,8 +15,6 @@ import { Campeonatos } from "@/src/screens/Campeonatos";
 import { Artilheiros as BrasileiraoArtilheiros } from "@/src/screens/Campeonatos/Tabela/Artilheiros";
 import { Jogos as BrasileiraoJogos } from "@/src/screens/Campeonatos/Tabela/Jogos";
 import { Times } from "@/src/screens/Times";
-import { TodosJogos as SulamericanaJogos } from "@/src/screens/Campeonatos/Sulamericana/TodosJogos";
-import { TodosJogos as LibertadoresJogos } from "@/src/screens/Campeonatos/Libertadores/TodosJogos";
 
 const FirstRoute = () => (
     <Jogos />
@@ -117,14 +115,6 @@ export function AuthRoutes() {
                 <Screen
                     name="Times"
                     component={Times}
-                />
-                <Screen
-                    name="SulamericanaJogos"
-                    component={SulamericanaJogos}
-                />
-                <Screen
-                    name="LibertadoresJogos"
-                    component={LibertadoresJogos}
                 />
             </Group>
         </Navigator>

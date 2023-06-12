@@ -10,11 +10,18 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[100],
         fontSize: theme.font.size[4],
     },
+    txtX: {
+        color: theme.colors.texto[300],
+    },
     txtPontos: {
         color: theme.colors.texto[100],
         fontSize: theme.font.size[1],
         textAlign: 'center',
         width: 15,
+    },
+    txtInfo: {
+        color: theme.colors.texto[300],
+        fontSize: theme.font.size[4],
     },
     txtLink: {
         color: theme.colors.texto.btn,
@@ -32,10 +39,9 @@ export const styles = StyleSheet.create({
         textAlign: 'right',
         paddingHorizontal: 10,
     },
-
-    txtInfo: {
-        color: theme.colors.texto[300],
-        fontSize: theme.font.size[4],
+    nomeTabela: {
+        marginTop: 30,
+        marginBottom: 10,
     },
     txtPosicao(item) {
         let cor = '#fff';
@@ -54,15 +60,20 @@ export const styles = StyleSheet.create({
         }
     },
     btn: {
-        borderWidth: 0.5,
-        borderColor: '#ffffff20',
-        borderRadius: 10,
+        // borderWidth: 0.5,
+        // borderColor: '#ffffff20',
+        // borderRadius: 10,
+        // backgroundColor: '#ffffff30',
+        flexDirection: 'row',
+        // justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 5,
+        // paddingHorizontal: 15,
         borderRadius: 10,
     },
     linksContainer: {
         paddingVertical: 5,
+        // gap: 5,
     },
     infoSelect: {
         flexDirection: 'row',
@@ -137,8 +148,7 @@ export const styles = StyleSheet.create({
                 case 20: cor = '#45a1f3'; break; // Pré-Libertadores
                 case 21: cor = '#3bb552'; break; // Sulamericana
 
-                case 6: cor = (item.position == 1) ? '#dbb234' : '#004fd9'; break; // Semifinalistas Carioca
-                case 35: cor = '#3bb552'; break; // Taça Rio
+                case 6: cor = '#004fd9'; break; // Playoffs
 
                 case 3: cor = '#ef5158'; break; // Rebaixamento
             

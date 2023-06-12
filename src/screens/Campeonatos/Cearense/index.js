@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import {
-    paulistaoInfo,
-    paulistao,
-    paulistaoMataMata,
-    paulistaoJogosAntes,
-    paulistaoJogosDepois,
-    paulistaoRodada,
+    cearenseInfo,
+    cearense,
+    cearenseMataMata,
+    cearenseJogosAntes,
+    cearenseJogosDepois,
+    cearenseRodada,
 } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
@@ -14,7 +14,7 @@ import { Copa } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
 
 import { limitarString } from "@/src/Utils/LimitarString";
 
-export function Paulistao() {
+export function Cearense() {
 
     function renderTabela(item, key) {
         return (
@@ -44,7 +44,9 @@ export function Paulistao() {
                 <View style={styles.linksContainer}>
                 </View>
                 <View>
-                    <Text style={styles.txtLegenda}>Classificados <View style={styles.bolinhaSemifinalista}></View></Text>
+                    <Text style={styles.txtLegenda}>Semifinal <View style={styles.bolinhaAzulEscuro}></View></Text>
+                    <Text style={styles.txtLegenda}>Quartas de final <View style={styles.bolinhaAzulClaro}></View></Text>
+                    <Text style={styles.txtLegenda}>Rebaixamento <View style={styles.bolinhaVermelha}></View></Text>
                 </View>
             </View>
         );
@@ -62,14 +64,14 @@ export function Paulistao() {
 
     return (
         <Copa
-            copa={paulistao}
-            copaMataMata={paulistaoMataMata}
+            copa={cearense}
+            copaMataMata={cearenseMataMata}
             renderTabela={renderTabela}
             legenda={legenda}
-            buscaJogosAntes={paulistaoJogosAntes}
-            buscaJogosDepois={paulistaoJogosDepois}
-            buscaRodada={paulistaoRodada}
-            buscaTorneio={paulistaoInfo}
+            buscaJogosAntes={cearenseJogosAntes}
+            buscaJogosDepois={cearenseJogosDepois}
+            buscaRodada={cearenseRodada}
+            buscaTorneio={cearenseInfo}
             stringRodada={stringRodada}
         />
     );

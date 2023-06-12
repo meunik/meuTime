@@ -30,6 +30,7 @@ export function Copa({
         setTabela(await copa());
         setMataMata(await copaMataMata());
         setRefreshing(false);
+        console.log(tabela);
     };
 
     const onRefresh = () => {

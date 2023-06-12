@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import {
-    paulistaoInfo,
-    paulistao,
-    paulistaoMataMata,
-    paulistaoJogosAntes,
-    paulistaoJogosDepois,
-    paulistaoRodada,
+    gauchoInfo,
+    gaucho,
+    gauchoMataMata,
+    gauchoJogosAntes,
+    gauchoJogosDepois,
+    gauchoRodada,
 } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
@@ -14,7 +14,7 @@ import { Copa } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
 
 import { limitarString } from "@/src/Utils/LimitarString";
 
-export function Paulistao() {
+export function Gaucho() {
 
     function renderTabela(item, key) {
         return (
@@ -24,7 +24,7 @@ export function Paulistao() {
                         <Text style={styles.txtPosicao(item)}>{item.position}</Text>
                     </View>
                     <Image style={styles.imgTime} resizeMode="center" source={{ uri: `${urlBase}team/${item.team.id}/image` }} />
-                    <Text style={styles.txt}>{limitarString(item.team.shortName, 14)}</Text>
+                    <Text style={styles.txt}>{limitarString(item.team.shortName, 13)}</Text>
                 </View>
                 <View style={styles.pontos}>
                     <Text style={styles.txtPontos}>{item.points}</Text>
@@ -44,7 +44,8 @@ export function Paulistao() {
                 <View style={styles.linksContainer}>
                 </View>
                 <View>
-                    <Text style={styles.txtLegenda}>Classificados <View style={styles.bolinhaSemifinalista}></View></Text>
+                    <Text style={styles.txtLegenda}>Classificado <View style={styles.bolinhaAzulEscuro}></View></Text>
+                    <Text style={styles.txtLegenda}>Rebaixamento <View style={styles.bolinhaVermelha}></View></Text>
                 </View>
             </View>
         );
@@ -62,15 +63,16 @@ export function Paulistao() {
 
     return (
         <Copa
-            copa={paulistao}
-            copaMataMata={paulistaoMataMata}
+            copa={gaucho}
+            copaMataMata={gauchoMataMata}
             renderTabela={renderTabela}
             legenda={legenda}
-            buscaJogosAntes={paulistaoJogosAntes}
-            buscaJogosDepois={paulistaoJogosDepois}
-            buscaRodada={paulistaoRodada}
-            buscaTorneio={paulistaoInfo}
+            buscaJogosAntes={gauchoJogosAntes}
+            buscaJogosDepois={gauchoJogosDepois}
+            buscaRodada={gauchoRodada}
+            buscaTorneio={gauchoInfo}
             stringRodada={stringRodada}
+            eliminatoriaVertical='vertical'
         />
     );
 }

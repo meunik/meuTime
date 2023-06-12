@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import {
-    paulistaoInfo,
-    paulistao,
-    paulistaoMataMata,
-    paulistaoJogosAntes,
-    paulistaoJogosDepois,
-    paulistaoRodada,
+    mineiroInfo,
+    mineiro,
+    mineiroMataMata,
+    mineiroJogosAntes,
+    mineiroJogosDepois,
+    mineiroRodada,
 } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
@@ -14,7 +14,7 @@ import { Copa } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
 
 import { limitarString } from "@/src/Utils/LimitarString";
 
-export function Paulistao() {
+export function Mineiro() {
 
     function renderTabela(item, key) {
         return (
@@ -62,14 +62,14 @@ export function Paulistao() {
 
     return (
         <Copa
-            copa={paulistao}
-            copaMataMata={paulistaoMataMata}
+            copa={mineiro}
+            copaMataMata={mineiroMataMata}
             renderTabela={renderTabela}
             legenda={legenda}
-            buscaJogosAntes={paulistaoJogosAntes}
-            buscaJogosDepois={paulistaoJogosDepois}
-            buscaRodada={paulistaoRodada}
-            buscaTorneio={paulistaoInfo}
+            buscaJogosAntes={mineiroJogosAntes}
+            buscaJogosDepois={mineiroJogosDepois}
+            buscaRodada={mineiroRodada}
+            buscaTorneio={mineiroInfo}
             stringRodada={stringRodada}
         />
     );

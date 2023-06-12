@@ -9,6 +9,10 @@ import {
 
     urlCariocao,
     urlPaulistao,
+    urlMineiro,
+    urlCearense,
+    urlBaiano,
+    urlGaucho,
 
     urlSulamericana,
     urlLibertadores,
@@ -58,6 +62,34 @@ export const paulistaoMataMata = async()=> await request(`${urlPaulistao}cuptree
 export const paulistaoJogosDepois = async(num=0)=> await request(`${urlPaulistao}events/next/${num}`);
 export const paulistaoJogosAntes = async(num=0)=> await request(`${urlPaulistao}events/last/${num}`);
 export const paulistaoRodada = async()=> await request(`${urlPaulistao}rounds`, 'currentRound');
+
+export const mineiroInfo = async()=> await request(`${urlBase}unique-tournament/379`);
+export const mineiro = async()=> await request(`${urlMineiro}standings/total`, 'standings');
+export const mineiroMataMata = async()=> await request(`${urlMineiro}cuptrees/structured`, 'cupTrees');
+export const mineiroJogosDepois = async(num=0)=> await request(`${urlMineiro}events/next/${num}`);
+export const mineiroJogosAntes = async(num=0)=> await request(`${urlMineiro}events/last/${num}`);
+export const mineiroRodada = async()=> await request(`${urlMineiro}rounds`, 'currentRound');
+
+export const cearenseInfo = async()=> await request(`${urlBase}unique-tournament/379`);
+export const cearense = async()=> await request(`${urlCearense}standings/total`, 'standings');
+export const cearenseMataMata = async()=> await request(`${urlCearense}cuptrees/structured`, 'cupTrees');
+export const cearenseJogosDepois = async(num=0)=> await request(`${urlCearense}events/next/${num}`);
+export const cearenseJogosAntes = async(num=0)=> await request(`${urlCearense}events/last/${num}`);
+export const cearenseRodada = async()=> await request(`${urlCearense}rounds`, 'currentRound');
+
+export const baianoInfo = async()=> await request(`${urlBase}unique-tournament/374`);
+export const baiano = async()=> await request(`${urlBaiano}standings/total`, 'standings');
+export const baianoMataMata = async()=> await request(`${urlBaiano}cuptrees/structured`, 'cupTrees');
+export const baianoJogosDepois = async(num=0)=> await request(`${urlBaiano}events/next/${num}`);
+export const baianoJogosAntes = async(num=0)=> await request(`${urlBaiano}events/last/${num}`);
+export const baianoRodada = async()=> await request(`${urlBaiano}rounds`, 'currentRound');
+
+export const gauchoInfo = async()=> await request(`${urlBase}unique-tournament/377`);
+export const gaucho = async()=> await request(`${urlGaucho}standings/total`, 'standings');
+export const gauchoMataMata = async()=> await request(`${urlGaucho}cuptrees/structured`, 'cupTrees');
+export const gauchoJogosDepois = async(num=0)=> await request(`${urlGaucho}events/next/${num}`);
+export const gauchoJogosAntes = async(num=0)=> await request(`${urlGaucho}events/last/${num}`);
+export const gauchoRodada = async()=> await request(`${urlGaucho}rounds`, 'currentRound');
 
 export const copaSulamericanaInfo = async()=> await request(`${urlBase}unique-tournament/480`);
 export const copaSulamericana = async()=> await request(`${urlSulamericana}standings/total`, 'standings');
