@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { Text, View, Image, FlatList, RefreshControl, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { urlBase } from '@/src/store/api';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Eliminatoria } from "./Eliminatoria";
+
+import { Lista } from "@/src/components/Lista";
+import { Tabs } from "@/src/components/Tabs";
 
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 
@@ -44,16 +47,11 @@ export function Copa({
             if (jogosPassado?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos);
             
             formatar(jogosTodos);
-            if (refresh) {
-                setRefreshing(false);
-            } else {
-                setIndex(1);
-            }
+            setRefreshing(false);
         } catch (error) {
             console.error(error);
         }
     };
-    console.log(mataMata);
 
     const formatar = (jogosTodos) => {
         let jogosPorRodadas = {};
@@ -87,9 +85,9 @@ export function Copa({
         fetchData();
     }, []);
 
-    const renderItem = ({item}) => {
+    const renderItem = (item, index) => {
         return (
-            <View style={styles.lista}>
+            <View key={index} style={styles.lista}>
                 <View style={styles.timesUltimoJogo}>
 
                     <View style={styles.timeCasa}>
@@ -136,42 +134,13 @@ export function Copa({
         )
     };
 
-    const Rodadas = ({jogos, rodada, index}) => {
+    const Rodadas = (jogos) => {
         return (
             <View style={styles.container}>
-                <View style={styles.info}>
-                    {(index > 0) && <Icon name="chevron-left" size={30} color="#969696" style={styles.setasEsquerda} />}
-
-                    <Text style={styles.txtInfo}>{rodada}</Text>
-
-                    {(index != tabs.length - 1) && <Icon name="chevron-right" size={30} color="#969696" style={styles.setasDoreita} />}
-                </View>
-                <FlatList
-                    contentContainerStyle={styles.contentContainerStyle}
-                    data={jogos}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                        />
-                    }
-                />
+                <Lista data={jogos} renderItem={renderItem}/>
             </View>
         )
     };
-
-    const renderScene = SceneMap(
-        Object.fromEntries(
-            tabs.map((tab) => {
-                return [
-                    tab.key,
-                    () => <Rodadas jogos={tab.content} rodada={tab.title} index={tab.index}/>,
-                ]
-            })
-        )
-    );
 
     const recursiva = async (page, jogosTodos) => {
         const anteriorRodada = await buscaJogosAntes(page);
@@ -185,27 +154,19 @@ export function Copa({
         return addJogos;
     };
 
-    const changeIndex = (i) => {
-        if (!fim) {
-            setFim(true);
-            setIndex(rodada?.round -1);
-            setRefreshing(false);
-        }
-    };
-
     return (
-        <View style={styles.container}>
-            {/* {mataMata && <Eliminatoria
-                item={mataMata[0].views}
-                nome={mataMata[0].name}
-            />} */}
-            {tabs && 
-            <TabView
-                navigationState={{ index: index, routes: tabs }}
-                renderScene={renderScene}
-                onIndexChange={changeIndex}
-                renderTabBar={() => null}
-            />}
-        </View>
+        <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.contentContainerStyle}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />
+            }
+        >
+            {mataMata && <Eliminatoria item={mataMata[0].views} nome={mataMata[0].name}/>}
+            {tabs && <Tabs data={tabs} render={Rodadas} indexInicial={tabs.length -1}/>}
+        </ScrollView>
     );
 }

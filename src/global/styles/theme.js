@@ -34,7 +34,7 @@ export const theme = {
         },
     },
     contentContainerStyle: {
-        paddingBottom: 50
+        paddingBottom: 60
     },
     
 };

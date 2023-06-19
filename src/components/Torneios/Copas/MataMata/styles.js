@@ -91,6 +91,7 @@ export const styles = StyleSheet.create({
         gap: 20,
     },
     lista: {
+        height: 90,
         // borderColor: '#ffffff0d',
         borderColor: 'transparent',
         paddingVertical: 10,
