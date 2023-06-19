@@ -4,7 +4,6 @@ import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import { evento } from '@/src/store/store';
 import { JogoAtivo } from '@/src/components/Jogo';
-import { JogoFuturo } from './JogoFuturo';
 
 export function Eliminatoria({item, nome, direcao = 'horizontal'}) {
     return (
@@ -122,18 +121,6 @@ export const MataMataLadoLado = ({item, vertical = false}) => {
 }
 
 export function ExibeJogo ({item, final = false}) {
-    const eventos = () => {
-        return (<View style={styles.row}>
-            {item.eventIds && <Jogos id={item.eventIds[0]}/>}
-            {(item.eventIds.length > 1) && <Jogos id={item.eventIds[1]}/>}
-        </View>)
-    };
-    const simulaEventos = () => {
-        return (<>
-            <JogoFuturo tamanhoImg={30} altura={40}/>
-        </>)
-    };
-
     return (<View>
         <View style={styles.jogo}>
             {(item.leftParticipant?.winner && final) && <Icon name="trophy" size={20} color="#dbb234" style={styles.campeaoLeft}/>}
@@ -141,7 +128,8 @@ export function ExibeJogo ({item, final = false}) {
             {(item.rightParticipant?.winner && final) && <Icon name="trophy" size={20} color="#dbb234" style={styles.campeaoRight}/>}
         </View>
         <View>
-            {(item.eventIds.length > 0) ? eventos() : simulaEventos()}
+            {item.eventIds && <Jogos id={item.eventIds[0]}/>}
+            {(item.eventIds.length > 1) && <Jogos id={item.eventIds[1]}/>}
         </View>
     </View>);
 }

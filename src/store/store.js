@@ -41,6 +41,7 @@ export const brasileiraoRodada = async()=> await request(`${urlBrasileirao}round
 export const copaDoBrasilInfo = async()=> await request(`${urlBase}unique-tournament/373`);
 export const copaDoBrasil = async()=> await request(`${urlCopaDoBrasil}cuptrees/structured`, 'cupTrees', true);
 export const copaDoBrasilJogos = async()=> await request(`${urlCopaDoBrasil}cuptrees`, 'cupTrees');
+export const copaDoBrasilMataMata = async()=> await request(`${urlCopaDoBrasil}cuptrees/structured`, 'cupTrees');
 export const copaDoBrasilJogosDepois = async(num=0)=> await request(`${urlCopaDoBrasil}events/next/${num}`);
 export const copaDoBrasilJogosAntes = async(num=0)=> await request(`${urlCopaDoBrasil}events/last/${num}`);
 export const copaDoBrasilRodada = async()=> await request(`${urlCopaDoBrasil}rounds`, 'currentRound');

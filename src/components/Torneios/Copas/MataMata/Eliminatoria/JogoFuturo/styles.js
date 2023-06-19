@@ -6,37 +6,10 @@ export const styles = StyleSheet.create({
         flex: 1,
         paddingTop: (Platform.OS === 'ios') ? 0 : 10,
         backgroundColor: theme.colors.fundo,
+        // backgroundColor: theme.colors.background(),
+        // backgroundColor: '#000000d9',
+        paddingHorizontal: 20,
     },
-
-    containerNav: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        paddingHorizontal: 5,
-        paddingBottom: 12,
-        backgroundColor: theme.colors.nav,
-        borderRadius: 10,
-        position: 'absolute',
-        left: 3,
-        right: 3,
-        bottom: -10,
-        alignSelf: 'center',
-    },
-    labelStyle: {
-        color: theme.colors.texto.nav,
-    },
-    navContainer: {
-        width: 170,
-        backgroundColor: 'transparent',
-        elevation: 0,
-        shadowOpacity: 0,
-        borderRadius: 10,
-    },
-    ativo: {
-        backgroundColor: '#000',
-        alignSelf: 'center',
-    },
-
     txtLogo: {
         color: theme.colors.texto[100],
         fontSize: theme.font.size[7],
@@ -52,6 +25,10 @@ export const styles = StyleSheet.create({
     txtX: {
         color: theme.colors.texto[300],
     },
+    txtPenaltis: {
+        color: theme.colors.texto[300],
+        fontSize: theme.font.size[1] - 2,
+    },
     txtcampeonato: {
         color: theme.colors.texto[200],
         fontSize: theme.font.size[1],
@@ -59,25 +36,6 @@ export const styles = StyleSheet.create({
     txtTime: {
         color: theme.colors.texto[100],
         fontSize: theme.font.size[6],
-    },
-    txtInfo: {
-        color: theme.colors.texto[300],
-        fontSize: theme.font.size[4],
-    },
-    setasEsquerda: {
-        position: 'absolute',
-        left: 30,
-    },
-    setasDoreita: {
-        position: 'absolute',
-        right: 30,
-    },
-    info: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 10,
-        gap: 10,
     },
     img: {
         height: 50,
@@ -90,8 +48,8 @@ export const styles = StyleSheet.create({
         gap: 20,
     },
     lista: {
-        // borderColor: '#ffffff0d',
-        borderColor: 'transparent',
+        borderColor: '#ffffff0d',
+        // borderColor: 'transparent',
         paddingVertical: 10,
         borderTopWidth: 0.5,
         borderBottomWidth: 0.5,
@@ -124,16 +82,40 @@ export const styles = StyleSheet.create({
         width: 50,
     },
     jogoRolando: {
-        height: 100,
         paddingBottom: 10,
     },
+    jogoRolando(valor) {
+        return {
+            height: 100,
+            paddingBottom: 10,
+        };
+    },
+    placarPenaltis(valor) {
+        return {
+            position: 'absolute',
+            top: ((valor?valor:100)/2)+7,
+            right: 0,
+            left: 0,
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 5,
+        }
+    },
     timesUltimoJogo: {
-        height: 60,
+        flex: 1,
+        // flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        // gap: 5,
+    },
+    timesFinal: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 5,
+        // gap: 5,
     },
     times: {
         width: '100%',
@@ -143,25 +125,27 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 5,
+        // gap: 5,
     },
     timeCasa: {
-        width: '45%',
+        // width: '20%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
         fontSize: 20,
-        gap: 5,
+        // gap: 2,
     },
     timeVisitante: {
-        width: '45%',
+        // width: '20%',
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 5,
+        // gap: 2,
     },
-    imgLista: {
-        height: 40,
-        width: 40,
+    imgLista(valor) {
+        return {
+            height: (valor)?valor:40,
+            width: (valor)?valor:40,
+        }
     },
     contentContainerStyle: {
         paddingBottom: theme.contentContainerStyle.paddingBottom,
