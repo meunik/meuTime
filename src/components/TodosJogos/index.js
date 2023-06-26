@@ -1,8 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
-import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
+import { Text, View, Image, ScrollView, RefreshControl } from 'react-native';
 import { BaseButton } from "react-native-gesture-handler";
 import { urlBase } from '@/src/store/api';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
@@ -11,7 +11,20 @@ import { theme } from "@/src/global/styles/theme";
 import { styles } from "@/src/global/styles/styles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { Lista } from "@/src/components/Lista";
+import { Tabs } from "@/src/components/Tabs";
+
 import { tempoJogo } from "@/src/Utils/TempoJogo";
+import {
+    torneioInfo,
+    torneio as buscaTorneio,
+    torneioJogos,
+    torneioArtilheiros,
+    torneioMataMata,
+    torneioJogosAntes,
+    torneioJogosDepois,
+    torneioRodada,
+} from '@/src/store/store';
 
 export function TodosJogos() {
     useFocusEffect(() => {
@@ -24,31 +37,22 @@ export function TodosJogos() {
 
     const route = useRoute();
     const params = route.params;
-    const buscaJogosAntes = params.buscaJogosAntes;
-    const buscaJogosDepois = params.buscaJogosDepois;
-    const buscaRodada = params.buscaRodada;
-    const stringRodada = params.stringRodada;
-    const buscaTorneio = params.buscaTorneio;
+    const mataMataString = params?.mataMataString || 0;
 
 	const navigation = useNavigation();
-    const dispatch = useDispatch();
+    const torneioId = useSelector(state => state.torneioId);
 
-    const meuTime = useSelector(state => state.meuTime);
-    const intervalo = useSelector(state => state.intervalo);
     const [torneio, setTorneio] = useState(null);
     const [rodada, setRodada] = useState(0);
-
     const [refreshing, setRefreshing] = useState(true);
     const [tabs, setTabs] = useState([]);
-    const [index, setIndex] = useState(0);
-    const [fim, setFim] = useState(false);
 
     const fetchData = async () => {
         try {
-            const jogosPassado = await buscaJogosAntes();
-            const jogosFuturos = await buscaJogosDepois();
-            setTorneio(await buscaTorneio());
-            setRodada(await buscaRodada());
+            const jogosPassado = await torneioJogosAntes(torneioId);
+            const jogosFuturos = await torneioJogosDepois(torneioId);
+            setTorneio(await torneioInfo(torneioId));
+            setRodada(await torneioRodada(torneioId));
 
             let jogosTodos = [
                 ...(jogosPassado) ? jogosPassado?.events : [],
@@ -59,9 +63,22 @@ export function TodosJogos() {
             if (jogosFuturos && jogosFuturos?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos, 'futuro');
 
             formatar(jogosTodos);
-            setIndex(1);
+            setRefreshing(false);
         } catch (error) {
             console.error(error);
+        }
+    };
+
+    function stringRodada(valor) {
+        if (mataMataString == 0) return `Rodada ${valor}`;
+
+        switch (valor) {
+            case '5': if (mataMataString >= 8) return 'Oitavas de Final';
+            case '27': if (mataMataString >= 4) return 'Quartas de Final';
+            case '28': if (mataMataString >= 2) return 'SemiFinal';
+            case '29': if (mataMataString >= 1) return 'Final';
+        
+            default: return `Rodada ${valor}`;
         }
     };
 
@@ -97,9 +114,9 @@ export function TodosJogos() {
         fetchData();
     }, []);
 
-    const renderItem = ({item}) => {
+    const renderItem = (item, index) => {
         return (
-            <View style={styles.lista}>
+            <View key={index} style={styles.lista}>
                 <View style={styles.timesUltimoJogo}>
 
                     <View style={styles.timeCasa}>
@@ -146,78 +163,54 @@ export function TodosJogos() {
         )
     };
 
-    const Rodadas = ({jogos, rodadaNome, index}) => {
+    const Rodadas = (jogos) => {
         return (
-            <View style={styles.containerFull}>
-                <View style={styles.nomeRodada}>
-                    {(index > 0) && <Icon name="chevron-left" size={30} color="#969696" style={styles.setasEsquerda} />}
-
-                    <Text style={styles.txtInfo}>{rodadaNome}</Text>
-
-                    {(index != tabs.length - 1) && <Icon name="chevron-right" size={30} color="#969696" style={styles.setasDoreita} />}
-                </View>
-                <FlatList
-                    contentContainerStyle={styles.contentContainerStyle}
-                    data={jogos}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                        />
-                    }
-                />
-            </View>
+            <ScrollView
+                style={styles.containerFull}
+                contentContainerStyle={styles.contentContainerStyle}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
+                <Lista data={jogos} renderItem={renderItem}/>
+            </ScrollView>
         )
     };
-
-    const renderScene = SceneMap(
-        Object.fromEntries(
-            tabs.map((tab) => {
-                return [
-                    tab.key,
-                    () => <Rodadas jogos={tab.content} rodadaNome={tab.title} index={tab.index}/>,
-                ]
-            })
-        )
-    );
 
     const recursiva = async (page, jogosTodos, passadoOuFuturo = 'passado') => {
         let addJogos = [];
 
         if (passadoOuFuturo == 'passado') {
-            const anteriorRodada = await buscaJogosAntes(page);
+            const anteriorRodada = await torneioJogosAntes(torneioId, page);
             addJogos = [
-                ...anteriorRodada.events,
+                ...(anteriorRodada) ? anteriorRodada.events : [],
                 ...jogosTodos,
             ];
-
-            if (anteriorRodada?.hasNextPage) addJogos = await recursiva(page+1, addJogos, passadoOuFuturo);
+            
+            if (anteriorRodada && anteriorRodada.hasNextPage) {
+                let anteriorRecursiva = await recursiva(page+1, addJogos, passadoOuFuturo);
+                if (anteriorRecursiva.length > 0) addJogos = anteriorRecursiva;
+            }
         }
         
         if (passadoOuFuturo == 'futuro') {
-            const proximaRodada = await buscaJogosDepois(page);
+            const proximaRodada = await torneioJogosDepois(torneioId, page);
             addJogos = [
                 ...jogosTodos,
-                ...proximaRodada.events,
+                ...(proximaRodada) ? proximaRodada.events : [],
             ];
-
-            if (proximaRodada?.hasNextPage) addJogos = await recursiva(page+1, addJogos, passadoOuFuturo);
+            
+            if (proximaRodada && proximaRodada.hasNextPage) {
+                let proximaRecursiva = await recursiva(page+1, addJogos, passadoOuFuturo);
+                if (proximaRecursiva.length > 0) addJogos = proximaRecursiva;
+            }
         }
 
         return addJogos;
     };
-
-    const changeIndex = (i) => {
-        if (!fim) {
-            setFim(true);
-            setIndex(rodada?.round -1);
-            setRefreshing(false);
-        }
-    };
-
-    // return (<View style={{backgroundColor: '#000', flex: 1,}}></View>);
 
     return (
         <View style={styles.containerFull}>
@@ -233,13 +226,7 @@ export function TodosJogos() {
                 </View>
             </View>
 
-            {tabs &&
-            <TabView
-                navigationState={{ index: index, routes: tabs }}
-                renderScene={renderScene}
-                onIndexChange={changeIndex}
-                renderTabBar={() => null}
-            />}
+            {(tabs.length > 0) && rodada.round && <Tabs data={tabs} render={Rodadas} indexInicial={rodada.round} id='jogos'/>}
         </View>
     );
 }

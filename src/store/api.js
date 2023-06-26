@@ -5,27 +5,206 @@ const url = `${urlBase}team/1958/`;
 const urlTime = `${urlBase}team/`;
 const urlEventos = `${urlBase}event/`;
 
-const urlCariocao = `${urlBase}unique-tournament/92/season/47664/`;
-const urlPaulistao = `${urlBase}unique-tournament/372/season/47661/`;
-const urlMineiro = `${urlBase}unique-tournament/379/season/47947/`;
-const urlCearense = `${urlBase}unique-tournament/378/season/47690/`;
-const urlBaiano = `${urlBase}unique-tournament/374/season/47686/`;
-const urlGaucho = `${urlBase}unique-tournament/377/season/47663/`;
-const urlParanaense = `${urlBase}unique-tournament/382/season/48061/`;
-const urlGoiano = `${urlBase}unique-tournament/381/season/47682/`;
-const urlMatoGrossense = `${urlBase}unique-tournament/11670/season/47691/`;
-
 const urlBrasileirao = `${urlBase}unique-tournament/325/season/48982/`;
-const urlCopaDoBrasil = `${urlBase}unique-tournament/373/season/48876/`;
-const urlCopaNordeste = `${urlBase}unique-tournament/1596/season/47716/`;
-
-const urlSulamericana = `${urlBase}unique-tournament/480/season/47968/`;
-const urlLibertadores = `${urlBase}unique-tournament/384/season/47974/`;
 
 const api = axios.create({
     baseURL: urlTime,
     timeout: 3000
 });
+
+export const urlTorneio = (id) => `${urlBase}unique-tournament/${id}/season/${seasons[id]['season']}/`;
+
+export const seasons = {
+    92: { // Cariocao
+        season: 47664,
+        legenda: [
+            {
+                cor: 'bolinhaCampeao',
+                texto: 'Campeão da Taça Guanabara e Semifinalistas',
+            },
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Semifinalistas',
+            },
+            {
+                cor: 'bolinhaVerde',
+                texto: 'Taça Rio',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
+    },
+    372: { // Paulistao
+        season: 47661,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Classificados',
+            },
+        ],
+    },
+    379: { // Mineiro
+        season: 47947,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Classificados',
+            },
+        ],
+    },
+    378: { // Cearense
+        season: 47690,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Semifinal',
+            },
+            {
+                cor: 'bolinhaAzulClaro',
+                texto: 'Quartas de final',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
+    },
+    374: { // Baiano
+        season: 47686,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Classificado',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
+    },
+    377: { // Gaucho
+        season: 47663,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Classificado',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
+    },
+    382: { // Paranaense
+        season: 48061,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Classificado',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
+    },
+    381: { // Goiano
+        season: 47682,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Classificado',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
+    },
+    11670: { // MatoGrossense
+        season: 47691,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Semifinal',
+            },
+            {
+                cor: 'bolinhaAzulClaro',
+                texto: 'Quartas de final',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
+    },
+    325: { // Brasileirao
+        season: 48982,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Libertadores',
+            },
+            {
+                cor: 'bolinhaAzulClaro',
+                texto: 'Pré Libertadores',
+            },
+            {
+                cor: 'bolinhaVerde',
+                texto: 'Sulamericana',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
+    },
+    373: { // CopaDoBrasil
+        season: 48876,
+        legenda: null,
+    },
+    1596: { // CopaNordeste
+        season: 47716,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Quartas de Final',
+            },
+        ],
+    },
+    10158: { // CopaVerde
+        season: 48077,
+        legenda: null,
+    },
+    480: { // Sulamericana
+        season: 47968,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Oitavas de Final',
+            },
+            {
+                cor: 'bolinhaAzulClaro',
+                texto: 'Repescagem',
+            },
+        ],
+    },
+    384: { // Libertadores
+        season: 47974,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Oitavas de Final',
+            },
+            {
+                cor: 'bolinhaVerde',
+                texto: 'Sulamericana',
+            },
+        ],
+    },
+};
 
 export {
     api,
@@ -33,21 +212,6 @@ export {
     urlBase,
     urlTime,
     urlEventos,
-    
-    urlCariocao,
-    urlPaulistao,
-    urlMineiro,
-    urlCearense,
-    urlBaiano,
-    urlGaucho,
-    urlParanaense,
-    urlGoiano,
-    urlMatoGrossense,
 
     urlBrasileirao,
-    urlCopaDoBrasil,
-    urlCopaNordeste,
-
-    urlSulamericana,
-    urlLibertadores,
 }

@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { BaseButton } from "react-native-gesture-handler";
 import { View, Text, Image, FlatList, RefreshControl } from 'react-native';
-import {
-    brasileiraoJogosDepois,
-    brasileiraoJogosAntes,
-    brasileiraoRodada,
-    brasileiraoInfo,
-} from '@/src/store/store';
 import * as NavigationBar from 'expo-navigation-bar';
 import { theme } from "@/src/global/styles/theme";
-import { brasileirao } from '@/src/store/store';
+import { torneio } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
+import { Lista } from "@/src/components/Lista";
 
 export function Tabela() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
@@ -20,9 +16,10 @@ export function Tabela() {
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
+    const torneioId = useSelector(state => state.torneioId);
 
     const fetchDataTabela = async () => {
-        setTabela(await brasileirao());
+        setTabela(await torneio(torneioId, true));
         setRefreshing(false);
     };
 
@@ -35,8 +32,8 @@ export function Tabela() {
         fetchDataTabela();
     }, []);
 
-    const renderTabela = ({ item }) => (
-        <View style={styles.lista}>
+    const renderTabela = (item, key) => (
+        <View key={key} style={styles.lista}>
             <View style={styles.time}>
                 <View style={styles.posicao(item)}>
                     <Text style={styles.txtPosicao(item)}>{item.position}</Text>
@@ -55,10 +52,6 @@ export function Tabela() {
         </View>
     );
 
-    function stringRodada(valor) {
-        return `Rodada ${valor}`;
-    }
-
     return (
         <View style={styles.container}>
             <View>
@@ -72,13 +65,7 @@ export function Tabela() {
                                 <Text style={styles.txtLink}>Ver Artilheiros</Text>
                             </View>
                         </BaseButton>}
-                        {tabela && <BaseButton onPress={() => navigation.navigate('TodosJogos', {
-                            buscaJogosAntes: brasileiraoJogosAntes,
-                            buscaJogosDepois: brasileiraoJogosDepois,
-                            buscaRodada: brasileiraoRodada,
-                            stringRodada: stringRodada,
-                            buscaTorneio: brasileiraoInfo,
-                        })}>
+                        {tabela && <BaseButton onPress={() => navigation.navigate('TodosJogos')}>
                             <View style={styles.btn}>
                                 <Text style={styles.txtLink}>Jogos</Text>
                             </View>
@@ -108,18 +95,18 @@ export function Tabela() {
                     </View>
                 </View>
             </View>
-            <FlatList
+            {tabela && <Lista
+                scroll={true}
                 contentContainerStyle={styles.contentContainerStyle}
-                data={tabela && tabela.rows}
+                data={tabela.rows}
                 renderItem={renderTabela}
-                keyExtractor={(item) => item.id.toString()}
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
                         onRefresh={onRefresh}
                     />
                 }
-            />
+            />}
         </View>
     );
 }

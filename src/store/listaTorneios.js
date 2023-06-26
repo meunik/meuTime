@@ -299,6 +299,27 @@ export const brasileiros = [
         id: 1596,
         displayInverseHomeAwayTeams: false
     },
+    {
+      name: "Copa Verde",
+      slug: "copa-verde",
+      primaryColorHex: "#259844",
+      secondaryColorHex: "#004b22",
+      category: {
+        name: "Brazil",
+        slug: "brazil",
+        sport: {
+          name: "Football",
+          slug: "football",
+          id: 1
+        },
+        id: 13,
+        flag: "brazil",
+        alpha2: "BR"
+      },
+      userCount: 3458,
+      id: 10158,
+      displayInverseHomeAwayTeams: false
+    },
     ...estaduais,
 ];
 

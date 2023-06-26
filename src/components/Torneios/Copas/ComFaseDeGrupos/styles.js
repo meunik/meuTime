@@ -33,31 +33,20 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         width: 15,
     },
+    boxLegenda: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        gap: 5,
+    },
     txtLegenda: {
         color: theme.colors.texto[300],
         fontSize: theme.font.size.legendas,
         textAlign: 'right',
-        paddingHorizontal: 10,
+        // paddingHorizontal: 10,
     },
     nomeTabela: {
         marginTop: 30,
         marginBottom: 10,
-    },
-    txtPosicao(item) {
-        let cor = '#fff';
-        if (item.promotion) {
-            switch (item.promotion.id) {
-                case 20: cor = '#000'; break;
-                case 19: cor = '#fff'; break;
-                case 21: cor = '#000'; break;
-                case 3: cor = '#000'; break;
-            
-                default: cor = '#fff'; break;
-            }
-        }
-        return {
-            color: cor,
-        }
     },
     btn: {
         borderWidth: 0.5,
@@ -70,7 +59,7 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
     },
     linksContainer: {
-        padding: 10,
+        paddingVertical: 5,
     },
     infoSelect: {
         flexDirection: 'row',
@@ -137,17 +126,37 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 5,
     },
-    posicao(item) {
+    txtPosicao(item) {
+        let cor = '#fff';
+        if (item.promotion) {
+            switch (item.promotion.id) {
+                case 20: cor = '#000'; break;
+                case 19: cor = '#fff'; break;
+                case 21: cor = '#000'; break;
+                case 22: cor = '#000'; break; // Rebaixamento
+                case 3: cor = '#000'; break;
+            
+                default: cor = '#fff'; break;
+            }
+        }
+        return {
+            color: cor,
+        }
+    },
+    posicao(item, campeao) {
         let cor = '#333';
         if (item.promotion) {
             switch (item.promotion.id) {
-                case 19: cor = '#004fd9'; break; // Libertadores
-                case 20: cor = '#45a1f3'; break; // Pré-Libertadores
-                case 21: cor = '#3bb552'; break; // Sulamericana
+                case 19: cor = '#004fd9'; break; // AzulEscuro
+                case 20: cor = '#45a1f3'; break; // AzulClaro
+                case 21: cor = '#3bb552'; break; // Verde
 
-                case 6: cor = '#004fd9'; break; // Playoffs
+                case 6: cor = (campeao && item.position == 1)?'#dbb234':'#004fd9'; break; //Amarelo/AzulEscuro
+                case 14: cor = '#45a1f3'; break; // AzulClaro
+                case 35: cor = '#3bb552'; break; // Verde
 
-                case 3: cor = '#ef5158'; break; // Rebaixamento
+                case 22: cor = '#ef5158'; break; // Vermelha
+                case 3: cor = '#ef5158'; break; // Vermelha
             
                 default: cor = '#333'; break;
             }
@@ -166,32 +175,35 @@ export const styles = StyleSheet.create({
         borderRadius: 50,
         width: 6,
         height: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignSelf: 'center',
     },
-    bolinhaSemifinalista: {
+    bolinhaAzulEscuro: {
         backgroundColor: '#004fd9',
         borderRadius: 50,
         width: 6,
         height: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignSelf: 'center',
     },
-    bolinhaTacaRio: {
+    bolinhaAzulClaro: {
+        backgroundColor: '#45a1f3',
+        borderRadius: 50,
+        width: 6,
+        height: 6,
+        alignSelf: 'center',
+    },
+    bolinhaVerde: {
         backgroundColor: '#3bb552',
         borderRadius: 50,
         width: 6,
         height: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignSelf: 'center',
     },
-    bolinhaRebaixados: {
+    bolinhaVermelha: {
         backgroundColor: '#ef5158',
         borderRadius: 50,
         width: 6,
         height: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignSelf: 'center',
     },
     contentContainerStyle: {
         paddingBottom: theme.contentContainerStyle.paddingBottom,

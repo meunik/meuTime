@@ -69,7 +69,7 @@ export const MataMata = ({item}) => {
 
 export function ExibeJogo ({item, final = false, titulo = null}) {
     const eventos = () => {
-        return (<View style={styles.row}>
+        return (<View style={!final && styles.row}>
             {item.eventIds && <Jogos id={item.eventIds[0]} final={final}/>}
         </View>)
     };
@@ -91,7 +91,7 @@ export function ExibeJogo ({item, final = false, titulo = null}) {
     </View>);
 }
 
-export function Jogos({id}) {
+export function Jogos({id, final = false}) {
     const [jogo, setJogo] = useState(null);
   
     useEffect(() => {
@@ -112,7 +112,8 @@ export function Jogos({id}) {
                 titulo={false}
                 tempo={false}
                 tamanhoImg={30}
-                altura={40}
+                altura={100}
+                final={final}
             />}
         </>
     );

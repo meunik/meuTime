@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { setTorneio as setTorneioStorage } from '@/src/store/action';
+import { setTorneioId, setTorneio as setTorneioStorage } from '@/src/store/action';
 import { View, Text, Image, TouchableOpacity, Animated, ScrollView, useWindowDimensions } from 'react-native';
 import { ScrollViewIndicator } from '@fanchenbao/react-native-scroll-indicator';
 import * as NavigationBar from 'expo-navigation-bar';
@@ -12,22 +12,11 @@ import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { Copa as CopaGrupos } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
+import { Copa as CopaMataMata } from "@/src/components/Torneios/Copas/MataMata";
+
 import { Tabela } from "@/src/screens/Campeonatos/Tabela/index";
 import { CopaDoBrasil } from "@/src/screens/Campeonatos/CopaDoBrasil/index";
-
-import { CopaNordeste } from "@/src/screens/Campeonatos/CopaNordeste/index";
-import { Carioca } from "@/src/screens/Campeonatos/Carioca/index";
-import { Paulistao } from "@/src/screens/Campeonatos/Paulistao/index";
-import { Mineiro } from "@/src/screens/Campeonatos/Mineiro/index";
-import { Cearense } from "@/src/screens/Campeonatos/Cearense/index";
-import { Baiano } from "@/src/screens/Campeonatos/Baiano/index";
-import { Gaucho } from "@/src/screens/Campeonatos/Gaucho/index";
-import { Paranaense } from "@/src/screens/Campeonatos/Paranaense/index";
-import { Goiano } from "@/src/screens/Campeonatos/Goiano/index";
-import { MatoGrossense } from "@/src/screens/Campeonatos/MatoGrossense/index";
-
-import { Sulamericana } from "@/src/screens/Campeonatos/Sulamericana/index";
-import { Libertadores } from "@/src/screens/Campeonatos/Libertadores/index";
 
 export function Campeonatos() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
@@ -113,27 +102,26 @@ export function Campeonatos() {
     };
 
     const exibeTorneio = () => {
-        // console.log('meuTime: '+meuTime?.id);
-        // console.log('torneio: '+torneio?.id);
-        // console.log('layout: '+layout.height);
+        dispatch(setTorneioId(torneio.id));
         if (torneio) {
             switch (torneio.id) {
                 case 325: return <Tabela />;
-                case 373: return <CopaDoBrasil />;
+                case 373: return <CopaMataMata mataMataString={8}/>;
+                case 10158: return <CopaMataMata mataMataString={8}/>;
 
-                case 1596: return <CopaNordeste />;
-                case 92: return <Carioca />;
-                case 372: return <Paulistao />;
-                case 379: return <Mineiro />;
-                case 378: return <Cearense />;
-                case 374: return <Baiano />;
-                case 377: return <Gaucho />;
-                case 382: return <Paranaense />;
-                case 381: return <Goiano />;
-                case 11670: return <MatoGrossense />;
+                case 1596: return <CopaGrupos mataMataString={4} limitaString={13}/>;
+                case 92: return <CopaGrupos campeaoGrupos={true} mataMataString={4} eliminatoriaVertical='vertical'/>;
+                case 372: return <CopaGrupos mataMataString={4}/>;
+                case 379: return <CopaGrupos mataMataString={4}/>;
+                case 378: return <CopaGrupos mataMataString={4}/>;
+                case 374: return <CopaGrupos/>;
+                case 377: return <CopaGrupos mataMataString={4} limitaString={13} eliminatoriaVertical='vertical'/>;
+                case 382: return <CopaGrupos mataMataString={4} limitaString={13}/>;
+                case 381: return <CopaGrupos mataMataString={4} limitaString={13}/>;
+                case 11670: return <CopaGrupos mataMataString={4} limitaString={13}/>;
                 
-                case 480: return <Sulamericana />;
-                case 384: return <Libertadores />;
+                case 480: return <CopaGrupos desabilitarMataMata={true}/>;
+                case 384: return <CopaGrupos mataMataString={0} desabilitarMataMata={true}/>;
             
                 default: return (
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

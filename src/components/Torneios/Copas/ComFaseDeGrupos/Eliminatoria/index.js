@@ -137,7 +137,7 @@ export function ExibeJogo ({item, final = false}) {
     return (<View>
         <View style={styles.jogo}>
             {(item.leftParticipant?.winner && final) && <Icon name="trophy" size={20} color="#dbb234" style={styles.campeaoLeft}/>}
-            <Text style={styles.txtX}>{item.round.description}</Text>
+            <Text style={styles.txtX}>{item.round?.description}</Text>
             {(item.rightParticipant?.winner && final) && <Icon name="trophy" size={20} color="#dbb234" style={styles.campeaoRight}/>}
         </View>
         <View>

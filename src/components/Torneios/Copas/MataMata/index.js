@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, FlatList, RefreshControl, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { useSelector } from 'react-redux';
+import { Text, View, Image, RefreshControl, ScrollView } from 'react-native';
 import { urlBase } from '@/src/store/api';
-import { TabView, SceneMap } from 'react-native-tab-view';
 import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Eliminatoria } from "./Eliminatoria";
@@ -10,41 +10,38 @@ import { Lista } from "@/src/components/Lista";
 import { Tabs } from "@/src/components/Tabs";
 
 import { tempoJogo } from "@/src/Utils/TempoJogo";
+import {
+    torneioInfo,
+    torneio,
+    torneioJogos,
+    torneioArtilheiros,
+    torneioMataMata,
+    torneioJogosAntes,
+    torneioJogosDepois,
+    torneioRodada,
+} from '@/src/store/store';
 
-export function Copa({
-    buscaMataMata,
-    buscaJogosAntes,
-    buscaJogosDepois,
-    buscaRodada,
-    buscaTorneio,
-    stringRodada,
-    legenda = null,
-    desabilitarGrupos = false,
-    desabilitarMataMata = false,
-    desabilitarBtnJogos = false,
-    eliminatoriaVertical = 'horizontalLadoLado',
-}) {
+export function Copa({mataMataString = 0}) {
     const [refreshing, setRefreshing] = useState(true);
     const [tabs, setTabs] = useState([]);
-    const [index, setIndex] = useState(0);
     const [rodada, setRodada] = useState(0);
-    const [fim, setFim] = useState(false);
-    
     const [mataMata, setMataMata] = useState(null);
+
+    const torneioId = useSelector(state => state.torneioId);
 
     const fetchData = async (refresh = false) => {
         try {
-            const jogosPassado = await buscaJogosAntes();
-            const jogosFuturos = await buscaJogosDepois();
-            setRodada(await buscaRodada());
-            setMataMata(await buscaMataMata());
+            const jogosPassado = await torneioJogosAntes(torneioId);
+            const jogosFuturos = await torneioJogosDepois(torneioId);
+            setRodada(await torneioRodada(torneioId));
+            setMataMata(await torneioMataMata(torneioId));
 
             let jogosTodos = [
-                ...jogosPassado.events,
-                ...jogosFuturos.events,
+                ...(jogosPassado) ? jogosPassado?.events : [],
+                ...(jogosFuturos) ? jogosFuturos?.events : [],
             ];
 
-            if (jogosPassado?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos);
+            if (jogosPassado && jogosPassado?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos);
             
             formatar(jogosTodos);
             setRefreshing(false);
@@ -83,7 +80,7 @@ export function Copa({
     useEffect(() => {
         setRefreshing(true);
         fetchData();
-    }, []);
+    }, [torneioId]);
 
     const renderItem = (item, index) => {
         return (
@@ -143,15 +140,33 @@ export function Copa({
     };
 
     const recursiva = async (page, jogosTodos) => {
-        const anteriorRodada = await buscaJogosAntes(page);
-        let addJogos = [
-            ...anteriorRodada.events,
+        let addJogos = [];
+
+        const anteriorRodada = await torneioJogosAntes(torneioId, page);
+        addJogos = [
+            ...(anteriorRodada) ? anteriorRodada.events : [],
             ...jogosTodos,
         ];
-            
-        if (anteriorRodada?.hasNextPage) addJogos = recursiva(page+1, addJogos);
+
+        if (anteriorRodada && anteriorRodada.hasNextPage) {
+            let anteriorRecursiva = await recursiva(page+1, addJogos);
+            if (anteriorRecursiva.length > 0) addJogos = anteriorRecursiva;
+        }
 
         return addJogos;
+    };
+
+    function stringRodada(valor) {
+        if (mataMataString == 0) return `Rodada ${valor}`;
+
+        switch (valor) {
+            case '5': if (mataMataString >= 8) return 'Oitavas de Final';
+            case '27': if (mataMataString >= 4) return 'Quartas de Final';
+            case '28': if (mataMataString >= 2) return 'SemiFinal';
+            case '29': if (mataMataString >= 1) return 'Final';
+        
+            default: return `Rodada ${valor}`;
+        }
     };
 
     return (
@@ -166,7 +181,7 @@ export function Copa({
             }
         >
             {mataMata && <Eliminatoria item={mataMata[0].views} nome={mataMata[0].name}/>}
-            {tabs && <Tabs data={tabs} render={Rodadas} indexInicial={tabs.length -1}/>}
+            {(tabs.length > 0) && rodada.round && <Tabs data={tabs} render={Rodadas} indexInicial={rodada.round}/>}
         </ScrollView>
     );
 }

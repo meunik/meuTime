@@ -84,10 +84,10 @@ export const styles = StyleSheet.create({
     jogoRolando: {
         paddingBottom: 10,
     },
-    jogoRolando(valor) {
+    jogoRolando(valor, valorFinal = 0) {
         return {
-            height: 100,
-            paddingBottom: 10,
+            height: valorFinal || valor,
+            paddingHorizontal: valorFinal?10:0,
         };
     },
     placarPenaltis(valor) {

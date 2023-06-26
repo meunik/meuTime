@@ -59,7 +59,7 @@ export function JogoAtivo ({
     final = false
 }) {
     return jogo ? (
-        <View style={styles.jogoRolando(altura)}>
+        <View style={styles.jogoRolando(altura, final && tamanhoImg)}>
             <View style={(final)?styles.timesFinal:styles.timesUltimoJogo}>
 
                 <View style={styles.timeCasa}>

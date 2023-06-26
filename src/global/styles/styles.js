@@ -132,6 +132,7 @@ export const styles = StyleSheet.create({
         gap: 20,
     },
     lista: {
+        height: 90,
         borderColor: 'transparent',
         paddingVertical: 10,
         borderTopWidth: 0.5,
