@@ -16,7 +16,6 @@ import { Copa as CopaGrupos } from "@/src/components/Torneios/Copas/ComFaseDeGru
 import { Copa as CopaMataMata } from "@/src/components/Torneios/Copas/MataMata";
 
 import { Tabela } from "@/src/screens/Campeonatos/Tabela/index";
-import { CopaDoBrasil } from "@/src/screens/Campeonatos/CopaDoBrasil/index";
 
 export function Campeonatos() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);

@@ -1,5 +1,6 @@
 import {
     api,
+    urlTime,
     urlBase,
     urlEventos,
     urlTorneio,
@@ -18,6 +19,7 @@ export const proximoJogo = async(id)=> await request(`${id}/near-events`);
 export const evento = async(id)=> await request(`${urlEventos}${id}`, 'event');
 
 export const torneioInfo = async(id)=> await request(`${urlBase}unique-tournament/${id}`);
+export const torneioSeasons = async(id)=> await request(`${id}/standings/seasons`, 'tournamentSeasons');
 export const torneioCopa = async(id)=> await request(`${urlTorneio(id)}cuptrees/structured`, 'cupTrees', true);
 export const torneio = async(id, first = false)=> await request(`${urlTorneio(id)}standings/total`, 'standings', first);
 export const torneioJogos = async(id)=> await request(`${urlTorneio(id)}cuptrees`, 'cupTrees');
