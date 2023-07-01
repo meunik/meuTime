@@ -13,6 +13,10 @@ export const setTorneioId = (torneioId) => ({
     type: 'SET_TORNEIO_ID',
     payload: torneioId,
 });
+export const setSeason = (season) => ({
+    type: 'SET_SEASON',
+    payload: season,
+});
 export const setListaTimes = (listaTimes) => ({
     type: 'SET_LISTA_TIME',
     payload: listaTimes,

@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { setTorneioId, setTorneio as setTorneioStorage } from '@/src/store/action';
+import { setTorneioId, setSeason, setTorneio as setTorneioStorage } from '@/src/store/action';
 import { View, Text, Image, TouchableOpacity, Animated, ScrollView, useWindowDimensions } from 'react-native';
 import { ScrollViewIndicator } from '@fanchenbao/react-native-scroll-indicator';
 import * as NavigationBar from 'expo-navigation-bar';
 import { theme } from "@/src/global/styles/theme";
 import { listaTorneios } from "@/src/store/listaTorneios";
-import { brasileirao, torneios as getTorneios } from '@/src/store/store';
+import { brasileirao, torneios as getTorneios, getSeasons } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Copa as CopaGrupos } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
 import { Copa as CopaMataMata } from "@/src/components/Torneios/Copas/MataMata";
-
 import { Tabela } from "@/src/screens/Campeonatos/Tabela/index";
 
 export function Campeonatos() {
@@ -24,17 +23,24 @@ export function Campeonatos() {
 	const navigation = useNavigation();
     const meuTime = useSelector(state => state.meuTime);
     const torneioStorage = useSelector(state => state.torneio);
+    // const torneioId = useSelector(state => state.torneioId);
+    const season = useSelector(state => state.season);
     const dispatch = useDispatch();
 
-    const [tabela, setTabela] = useState(null);
     const [torneio, setTorneio] = useState(torneioStorage);
     const [torneios, setTorneios] = useState(null);
+    const [torneioId, setTorneioIdLocal] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
     const [listaStatic, setTistaStatic] = useState(false);
 
     const fetchDataTabela = async () => {
-        setTabela(await brasileirao());
-        setTorneios(await getTorneios(meuTime?.id));
+        const torneiosFetch = await getTorneios(meuTime?.id);
+        torneiosFetch.forEach((e, i) => {
+            filtrado = listaTorneios.filter(item => item.id == e.id);
+            if (filtrado[0]) torneiosFetch[i] = filtrado[0];
+            else torneiosFetch.splice(i);
+        });
+        setTorneios(torneiosFetch);
         setRefreshing(false);
     };
 
@@ -46,7 +52,7 @@ export function Campeonatos() {
     useEffect(() => {
         setRefreshing(true);
         fetchDataTabela();
-    }, [meuTime]);
+    }, [meuTime, torneioId]);
 
     const [isViewVisible, setIsViewVisible] = useState(false);
     const [animation] = useState(new Animated.Value(0));
@@ -90,7 +96,7 @@ export function Campeonatos() {
         return objetoExiste;
     }
 
-    const selecionaTorneio = (torneioObjeto) => {
+    const selecionaTorneio = async (torneioObjeto) => {
         if (torneioSeuTime(torneioObjeto)) {
             dispatch(setTorneioStorage(torneioObjeto));
             setTorneio(torneioObjeto);
@@ -102,34 +108,19 @@ export function Campeonatos() {
 
     const exibeTorneio = () => {
         dispatch(setTorneioId(torneio.id));
-        if (torneio) {
-            switch (torneio.id) {
-                case 325: return <Tabela />;
-                case 373: return <CopaMataMata mataMataString={8}/>;
-                case 10158: return <CopaMataMata mataMataString={8}/>;
 
-                case 1596: return <CopaGrupos mataMataString={4} limitaString={13}/>;
-                case 92: return <CopaGrupos campeaoGrupos={true} mataMataString={4} eliminatoriaVertical='vertical'/>;
-                case 372: return <CopaGrupos mataMataString={4}/>;
-                case 379: return <CopaGrupos mataMataString={4}/>;
-                case 378: return <CopaGrupos mataMataString={4}/>;
-                case 374: return <CopaGrupos/>;
-                case 377: return <CopaGrupos mataMataString={4} limitaString={13} eliminatoriaVertical='vertical'/>;
-                case 382: return <CopaGrupos mataMataString={4} limitaString={13}/>;
-                case 381: return <CopaGrupos mataMataString={4} limitaString={13}/>;
-                case 11670: return <CopaGrupos mataMataString={4} limitaString={13}/>;
-                
-                case 480: return <CopaGrupos desabilitarMataMata={true}/>;
-                case 384: return <CopaGrupos mataMataString={0} desabilitarMataMata={true}/>;
-            
-                default: return (
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.txtInfo}>Indisponível no momento</Text>
-                    </View>
-                );
-            }
+        const padrao = (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={styles.txtInfo}>Indisponível no momento</Text>
+            </View>
+        );
+
+        if (torneio) {
+            filtrado = listaTorneios.filter(item => item.id == torneio.id);
+            return (filtrado[0]) ? filtrado[0].container : padrao;
         }
-        return null;
+
+        return padrao;
     };
 
     const Lista = () => {
@@ -247,6 +238,7 @@ export function Campeonatos() {
                     <Icon name="chevron-down" size={25} color="#434343" style={styles.chevronDown} />
                 </TouchableOpacity>
             </View>
+
             {exibeTorneio()}
         </View>
     );

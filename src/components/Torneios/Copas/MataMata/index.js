@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Text, View, Image, RefreshControl, ScrollView } from 'react-native';
+import { setSeason } from '@/src/store/action';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,6 +12,7 @@ import { Tabs } from "@/src/components/Tabs";
 
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 import {
+    getSeasons,
     torneioInfo,
     torneio,
     torneioJogos,
@@ -28,13 +30,18 @@ export function Copa({mataMataString = 0}) {
     const [mataMata, setMataMata] = useState(null);
 
     const torneioId = useSelector(state => state.torneioId);
+    const season = useSelector(state => state.season);
+    const dispatch = useDispatch();
 
     const fetchData = async (refresh = false) => {
+        let season = await getSeasons(torneioId);
+        dispatch(setSeason(season));
+
         try {
-            const jogosPassado = await torneioJogosAntes(torneioId);
-            const jogosFuturos = await torneioJogosDepois(torneioId);
-            setRodada(await torneioRodada(torneioId));
-            setMataMata(await torneioMataMata(torneioId));
+            const jogosPassado = await torneioJogosAntes(torneioId, season.id);
+            const jogosFuturos = await torneioJogosDepois(torneioId, season.id);
+            setRodada(await torneioRodada(torneioId, season.id));
+            setMataMata(await torneioMataMata(torneioId, season.id));
 
             let jogosTodos = [
                 ...(jogosPassado) ? jogosPassado?.events : [],
@@ -142,7 +149,7 @@ export function Copa({mataMataString = 0}) {
     const recursiva = async (page, jogosTodos) => {
         let addJogos = [];
 
-        const anteriorRodada = await torneioJogosAntes(torneioId, page);
+        const anteriorRodada = await torneioJogosAntes(torneioId, season.id, page);
         addJogos = [
             ...(anteriorRodada) ? anteriorRodada.events : [],
             ...jogosTodos,

@@ -1,236 +1,217 @@
 
+import { Copa as CopaGrupos } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
+import { Copa as CopaMataMata } from "@/src/components/Torneios/Copas/MataMata";
+import { Tabela } from "@/src/screens/Campeonatos/Tabela/index";
+
 export const estaduais = [
     {
         name: "Carioca",
         slug: "carioca",
         primaryColorHex: "#140533",
         secondaryColorHex: "#6c31e3",
-        category: {
-            name: "Brazil",
-            slug: "brazil",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 13,
-            flag: "brazil",
-            alpha2: "BR"
-        },
-        userCount: 31148,
         id: 92,
-        displayInverseHomeAwayTeams: false
+        container: <CopaGrupos campeaoGrupos={true} mataMataString={4} eliminatoriaVertical='vertical'/>,
+        legenda: [
+            {
+                cor: 'bolinhaCampeao',
+                texto: 'Campeão da Taça Guanabara e Semifinalistas',
+            },
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Semifinalistas',
+            },
+            {
+                cor: 'bolinhaVerde',
+                texto: 'Taça Rio',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
     },
     {
-        name: "Paulista Série A1",
+        name: "Paulista",
         slug: "paulista-serie-a1",
         primaryColorHex: "#004990",
         secondaryColorHex: "#d1a02f",
-        category: {
-            name: "Brazil",
-            slug: "brazil",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 13,
-            flag: "brazil",
-            alpha2: "BR"
-        },
-        userCount: 49186,
         id: 372,
-        displayInverseHomeAwayTeams: false
+        container: <CopaGrupos mataMataString={4}/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Classificados',
+            },
+        ],
     },
     {
-        name: "Mineiro Módulo I",
+        name: "Mineiro",
         slug: "mineiro-modulo-i",
         primaryColorHex: "#b31218",
         secondaryColorHex: "#77818b",
-        category: {
-            name: "Brazil",
-            slug: "brazil",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 13,
-            flag: "brazil",
-            alpha2: "BR"
-        },
-        userCount: 10510,
         id: 379,
-        displayInverseHomeAwayTeams: false
+        container: <CopaGrupos mataMataString={4}/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Classificados',
+            },
+        ],
     },
     {
         name: "Cearense",
         slug: "cearense",
         primaryColorHex: "#bd8542",
         secondaryColorHex: "#e8cd86",
-        category: {
-            name: "Brazil",
-            slug: "brazil",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 13,
-            flag: "brazil",
-            alpha2: "BR"
-        },
-        userCount: 4742,
         id: 378,
-        displayInverseHomeAwayTeams: false
+        container: <CopaGrupos mataMataString={4}/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Semifinal',
+            },
+            {
+                cor: 'bolinhaAzulClaro',
+                texto: 'Quartas de final',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
     },
     {
         name: "Baiano",
         slug: "baiano",
         primaryColorHex: "#502582",
         secondaryColorHex: "#f42552",
-        category: {
-            name: "Brazil",
-            slug: "brazil",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 13,
-            flag: "brazil",
-            alpha2: "BR"
-        },
-        userCount: 5197,
         id: 374,
-        displayInverseHomeAwayTeams: false
+        container: <CopaGrupos/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Classificado',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
     },
     {
         name: "Gaúcho",
         slug: "gaucho",
         primaryColorHex: "#2c9248",
         secondaryColorHex: "#e5c438",
-        category: {
-            name: "Brazil",
-            slug: "brazil",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 13,
-            flag: "brazil",
-            alpha2: "BR"
-        },
-        userCount: 12801,
         id: 377,
-        displayInverseHomeAwayTeams: false
+        container: <CopaGrupos mataMataString={4} limitaString={13} eliminatoriaVertical='vertical'/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Classificado',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
     },
     {
         name: "Paranaense",
         slug: "paranaense",
         primaryColorHex: "#86bc38",
         secondaryColorHex: "#30629c",
-        category: {
-            name: "Brazil",
-            slug: "brazil",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 13,
-            flag: "brazil",
-            alpha2: "BR"
-        },
-        userCount: 4769,
         id: 382,
-        displayInverseHomeAwayTeams: false
+        container: <CopaGrupos mataMataString={4} limitaString={13}/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Classificado',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
     },
     {
         name: "Goiano",
         slug: "goiano",
         primaryColorHex: "#0e3189",
         secondaryColorHex: "#189b34",
-        category: {
-            name: "Brazil",
-            slug: "brazil",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 13,
-            flag: "brazil",
-            alpha2: "BR"
-        },
-        userCount: 3385,
         id: 381,
-        displayInverseHomeAwayTeams: false
+        container: <CopaGrupos mataMataString={4} limitaString={13}/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Classificado',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
     },
     {
-        name: "Mato-Grossense",
+        name: "Mato Grossense",
         slug: "mato-grossense",
         primaryColorHex: "#0b4c7a",
         secondaryColorHex: "#eea722",
-        category: {
-            name: "Brazil",
-            slug: "brazil",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 13,
-            flag: "brazil",
-            alpha2: "BR"
-        },
-        userCount: 1500,
         id: 11670,
-        displayInverseHomeAwayTeams: false
+        container: <CopaGrupos mataMataString={4} limitaString={13}/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Semifinal',
+            },
+            {
+                cor: 'bolinhaAzulClaro',
+                texto: 'Quartas de final',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
     }
 ];
 
 export const continentais = [
     {
-        name: "CONMEBOL Sudamericana",
+        name: "Sul-americana",
         slug: "conmebol-sudamericana",
         primaryColorHex: "#e3c000",
         secondaryColorHex: "#13489c",
-        category: {
-            name: "South America",
-            slug: "south-america",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 1470,
-            flag: "south-america"
-        },
-        userCount: 100845,
         id: 480,
-        displayInverseHomeAwayTeams: false
+        container: <CopaGrupos desabilitarMataMata={true}/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Oitavas de Final',
+            },
+            {
+                cor: 'bolinhaAzulClaro',
+                texto: 'Repescagem',
+            },
+        ],
     },
     {
-        name: "CONMEBOL Libertadores",
+        name: "Libertadores",
         slug: "conmebol-libertadores",
         primaryColorHex: "#573215",
         secondaryColorHex: "#dfaf49",
-        category: {
-            name: "South America",
-            slug: "south-america",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 1470,
-            flag: "south-america"
-        },
-        userCount: 190236,
         id: 384,
-        displayInverseHomeAwayTeams: false
+        container: <CopaGrupos mataMataString={0} desabilitarMataMata={true}/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Oitavas de Final',
+            },
+            {
+                cor: 'bolinhaVerde',
+                texto: 'Sulamericana',
+            },
+        ],
     },
 ];
 
@@ -240,42 +221,35 @@ export const brasileiros = [
         slug: "brasileiro-serie-a",
         primaryColorHex: "#C7FF00",
         secondaryColorHex: "#969696",
-        category: {
-            name: "Brazil",
-            slug: "brazil",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 13,
-            flag: "brazil",
-            alpha2: "BR"
-        },
-        userCount: 246763,
         id: 325,
-        displayInverseHomeAwayTeams: false
+        container: <Tabela />,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Libertadores',
+            },
+            {
+                cor: 'bolinhaAzulClaro',
+                texto: 'Pré Libertadores',
+            },
+            {
+                cor: 'bolinhaVerde',
+                texto: 'Sulamericana',
+            },
+            {
+                cor: 'bolinhaVermelha',
+                texto: 'Rebaixamento',
+            },
+        ],
     },
     {
         name: "Copa do Brasil",
         slug: "copa-do-brasil",
         primaryColorHex: "#34a348",
         secondaryColorHex: "#f2ba1c",
-        category: {
-            name: "Brazil",
-            slug: "brazil",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 13,
-            flag: "brazil",
-            alpha2: "BR"
-        },
-        userCount: 127818,
         id: 373,
-        displayInverseHomeAwayTeams: false
+        container: <CopaMataMata mataMataString={8}/>,
+        legenda: null
     },
     ...continentais,
     {
@@ -283,44 +257,25 @@ export const brasileiros = [
         slug: "copa-do-nordeste",
         primaryColorHex: "#033bbe",
         secondaryColorHex: "#a5863b",
-        category: {
-            name: "Brazil",
-            slug: "brazil",
-            sport: {
-                name: "Football",
-                slug: "football",
-                id: 1
-            },
-            id: 13,
-            flag: "brazil",
-            alpha2: "BR"
-        },
-        userCount: 20521,
         id: 1596,
-        displayInverseHomeAwayTeams: false
+        container: <CopaGrupos mataMataString={4} limitaString={13}/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Quartas de Final',
+            },
+        ],
     },
+    ...estaduais,
     {
       name: "Copa Verde",
       slug: "copa-verde",
       primaryColorHex: "#259844",
       secondaryColorHex: "#004b22",
-      category: {
-        name: "Brazil",
-        slug: "brazil",
-        sport: {
-          name: "Football",
-          slug: "football",
-          id: 1
-        },
-        id: 13,
-        flag: "brazil",
-        alpha2: "BR"
-      },
-      userCount: 3458,
       id: 10158,
-      displayInverseHomeAwayTeams: false
+      container: <CopaMataMata mataMataString={8}/>,
+      legenda: null
     },
-    ...estaduais,
 ];
 
 

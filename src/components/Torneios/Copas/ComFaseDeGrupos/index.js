@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, Image, ScrollView, RefreshControl } from 'react-native';
 import { BaseButton } from "react-native-gesture-handler";
 import { urlBase } from '@/src/store/api';
-import { torneio, torneioMataMata } from '@/src/store/store';
+import { setSeason } from '@/src/store/action';
+import { torneio, torneioMataMata, getSeasons } from '@/src/store/store';
 import { limitarString } from "@/src/Utils/LimitarString";
 import { Lista } from "@/src/components/Lista";
 import { styles } from "./styles";
 import { Eliminatoria } from "./Eliminatoria/index";
 import { seasons } from '@/src/store/api';
+import { listaTorneios } from "@/src/store/listaTorneios";
 
 export function Copa({
     campeaoGrupos = false,
@@ -26,10 +28,15 @@ export function Copa({
     const [mataMata, setMataMata] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
     const torneioId = useSelector(state => state.torneioId);
+    const season = useSelector(state => state.season);
+    const dispatch = useDispatch();
 
     const fetchDataTabela = async () => {
-        setTabela(await torneio(torneioId));
-        setMataMata(await torneioMataMata(torneioId));
+        let season = await getSeasons(torneioId);
+        dispatch(setSeason(season));
+
+        setTabela(await torneio(torneioId, season.id));
+        setMataMata(await torneioMataMata(torneioId, season.id));
         setRefreshing(false);
     };
 
@@ -116,6 +123,11 @@ export function Copa({
 }
 
 export function Tabelas({tabela, renderItem, torneioId}) {
+    const legendaFiltrada = () => {
+        filtrado = listaTorneios.filter(item => item.id == torneioId);
+        return (filtrado[0]) ? filtrado[0].legenda : null;
+    }
+
     function legenda() {
         return (
             <View style={styles.listaInfo}>
@@ -123,7 +135,7 @@ export function Tabelas({tabela, renderItem, torneioId}) {
                 </View>
                 <View>
                     {tabela && torneioId && (() => {
-                        const legendas = seasons[torneioId].legenda;
+                        const legendas = legendaFiltrada();
                         const items = [];
                         legendas.forEach((index, key) => items.push(
                             <View key={key} style={styles.boxLegenda}>
@@ -144,7 +156,7 @@ export function Tabelas({tabela, renderItem, torneioId}) {
                 <Text style={styles.txtX}>{tabela.name}</Text>
             </View>
             <View>
-                {seasons[torneioId].legenda && legenda(tabela)}
+                {legendaFiltrada() && legenda(tabela)}
                 <View style={styles.listaInfo}>
                     <View style={styles.time}>
                         <View>

@@ -1,10 +1,11 @@
 
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Text, View, Image, ScrollView, RefreshControl } from 'react-native';
 import { BaseButton } from "react-native-gesture-handler";
 import { urlBase } from '@/src/store/api';
+import { setSeason } from '@/src/store/action';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { theme } from "@/src/global/styles/theme";
@@ -16,6 +17,7 @@ import { Tabs } from "@/src/components/Tabs";
 
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 import {
+    getSeasons,
     torneioInfo,
     torneio as buscaTorneio,
     torneioJogos,
@@ -41,6 +43,8 @@ export function TodosJogos() {
 
 	const navigation = useNavigation();
     const torneioId = useSelector(state => state.torneioId);
+    const season = useSelector(state => state.season);
+    const dispatch = useDispatch();
 
     const [torneio, setTorneio] = useState(null);
     const [rodada, setRodada] = useState(0);
@@ -48,11 +52,13 @@ export function TodosJogos() {
     const [tabs, setTabs] = useState([]);
 
     const fetchData = async () => {
+        let season = await getSeasons(torneioId);
+        dispatch(setSeason(season));
         try {
-            const jogosPassado = await torneioJogosAntes(torneioId);
-            const jogosFuturos = await torneioJogosDepois(torneioId);
-            setTorneio(await torneioInfo(torneioId));
-            setRodada(await torneioRodada(torneioId));
+            const jogosPassado = await torneioJogosAntes(torneioId, season.id);
+            const jogosFuturos = await torneioJogosDepois(torneioId, season.id);
+            setTorneio(await torneioInfo(torneioId, season.id));
+            setRodada(await torneioRodada(torneioId, season.id));
 
             let jogosTodos = [
                 ...(jogosPassado) ? jogosPassado?.events : [],
@@ -184,7 +190,7 @@ export function TodosJogos() {
         let addJogos = [];
 
         if (passadoOuFuturo == 'passado') {
-            const anteriorRodada = await torneioJogosAntes(torneioId, page);
+            const anteriorRodada = await torneioJogosAntes(torneioId, season.id, page);
             addJogos = [
                 ...(anteriorRodada) ? anteriorRodada.events : [],
                 ...jogosTodos,
@@ -197,7 +203,7 @@ export function TodosJogos() {
         }
         
         if (passadoOuFuturo == 'futuro') {
-            const proximaRodada = await torneioJogosDepois(torneioId, page);
+            const proximaRodada = await torneioJogosDepois(torneioId, season.id, page);
             addJogos = [
                 ...jogosTodos,
                 ...(proximaRodada) ? proximaRodada.events : [],

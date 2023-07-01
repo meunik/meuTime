@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { BaseButton } from "react-native-gesture-handler";
 import { View, Text, Image, FlatList, RefreshControl } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 import { theme } from "@/src/global/styles/theme";
-import { torneio } from '@/src/store/store';
+import { setSeason } from '@/src/store/action';
+import { torneio, getSeasons } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import { Lista } from "@/src/components/Lista";
@@ -17,9 +18,14 @@ export function Tabela() {
     const [tabela, setTabela] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
     const torneioId = useSelector(state => state.torneioId);
+    const season = useSelector(state => state.season);
+    const dispatch = useDispatch();
 
     const fetchDataTabela = async () => {
-        setTabela(await torneio(torneioId, true));
+        let season = await getSeasons(torneioId);
+        dispatch(setSeason(season));
+
+        setTabela(await torneio(torneioId, season.id, true));
         setRefreshing(false);
     };
 
