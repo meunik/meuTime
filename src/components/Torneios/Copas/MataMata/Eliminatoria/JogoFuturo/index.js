@@ -53,11 +53,12 @@ export function JogoAtivo ({
     jogo,
     nomes = true,
     titulo = true,
-    tempo = true,
+    tempo = false,
     tamanhoImg = 0,
     altura = 0,
     final = false
 }) {
+    console.log(jogo);
     return jogo ? (
         <View style={styles.jogoRolando(altura, final && tamanhoImg)}>
             <View style={(final)?styles.timesFinal:styles.timesUltimoJogo}>
@@ -65,16 +66,25 @@ export function JogoAtivo ({
                 <View style={styles.timeCasa}>
                     {nomes && <Text style={styles.txtTime}>{jogo.homeTeam.nameCode}</Text>}
                     <Image style={styles.imgLista(tamanhoImg)} resizeMode="center" source={{ uri: `${urlBase}team/${jogo.homeTeam.id}/image` }} />
+                    <Text style={styles.txtPlacar(tamanhoImg, final)}>{jogo.homeScore.display}</Text>
                 </View>
 
                 <Icon name="close" size={15} color="#969696"/>
 
                 <View style={styles.timeVisitante}>
-                    {nomes && <Text style={styles.txtTime}>{jogo.awayTeam.nameCode}</Text>}
+                    <Text style={styles.txtPlacar(tamanhoImg, final)}>{jogo.awayScore.display}</Text>
                     <Image style={styles.imgLista(tamanhoImg)} resizeMode="center" source={{ uri: `${urlBase}team/${jogo.awayTeam.id}/image` }} />
+                    {nomes && <Text style={styles.txtTime}>{jogo.awayTeam.nameCode}</Text>}
                 </View>
 
             </View>
+            {((jogo.status.code == 500)||(jogo.status.code == 120))&&
+            <View style={styles.placarPenaltis(altura)}>
+                <Text style={styles.txtPenaltis}>({jogo.homeScore.current-jogo.homeScore.display} x {jogo.awayScore.current-jogo.awayScore.display})</Text>
+            </View>}
+            {tempo && <View style={styles.rodape}>
+                <Text style={styles.txtTempo}>{tempoJogo(jogo)}</Text>
+            </View>}
         </View>
     ) : null;
 };

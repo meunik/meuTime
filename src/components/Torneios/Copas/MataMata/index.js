@@ -9,6 +9,7 @@ import { Eliminatoria } from "./Eliminatoria";
 
 import { Lista } from "@/src/components/Lista";
 import { Tabs } from "@/src/components/Tabs";
+import { Spinner } from "@/src/components/Spinner";
 
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 import {
@@ -23,8 +24,13 @@ import {
     torneioRodada,
 } from '@/src/store/store';
 
-export function Copa({mataMataString = 0}) {
-    const [refreshing, setRefreshing] = useState(true);
+export function Copa({
+    mataMataString = 0,
+    somenteMataMata = false,
+    nomeTimes = false,
+}) {
+    const [carregando, setCarregando] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
     const [tabs, setTabs] = useState([]);
     const [rodada, setRodada] = useState(0);
     const [mataMata, setMataMata] = useState(null);
@@ -34,27 +40,28 @@ export function Copa({mataMataString = 0}) {
     const dispatch = useDispatch();
 
     const fetchData = async (refresh = false) => {
+        if (!refresh) setMataMata(null);
         let season = await getSeasons(torneioId);
         dispatch(setSeason(season));
+        setMataMata(await torneioMataMata(torneioId, season.id));
 
-        try {
+        if (!somenteMataMata) {
             const jogosPassado = await torneioJogosAntes(torneioId, season.id);
             const jogosFuturos = await torneioJogosDepois(torneioId, season.id);
             setRodada(await torneioRodada(torneioId, season.id));
-            setMataMata(await torneioMataMata(torneioId, season.id));
-
+    
             let jogosTodos = [
                 ...(jogosPassado) ? jogosPassado?.events : [],
                 ...(jogosFuturos) ? jogosFuturos?.events : [],
             ];
-
+    
             if (jogosPassado && jogosPassado?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos);
             
             formatar(jogosTodos);
-            setRefreshing(false);
-        } catch (error) {
-            console.error(error);
         }
+
+        setCarregando(false);
+        setRefreshing(false);
     };
 
     const formatar = (jogosTodos) => {
@@ -85,7 +92,7 @@ export function Copa({mataMataString = 0}) {
     };
     
     useEffect(() => {
-        setRefreshing(true);
+        setCarregando(true);
         fetchData();
     }, [torneioId]);
 
@@ -187,8 +194,11 @@ export function Copa({mataMataString = 0}) {
                 />
             }
         >
-            {mataMata && <Eliminatoria item={mataMata[0].views} nome={mataMata[0].name}/>}
-            {(tabs.length > 0) && rodada.round && <Tabs data={tabs} render={Rodadas} indexInicial={rodada.round}/>}
+            {mataMata && <Eliminatoria item={mataMata[0].views} nome={mataMata[0].name} nomeTime={nomeTimes}/>}
+            {!somenteMataMata && ( ((tabs.length > 0) && rodada.round && !carregando)
+                ? <Tabs data={tabs} render={Rodadas} indexInicial={rodada.round}/>
+                : <Spinner />
+            )}
         </ScrollView>
     );
 }

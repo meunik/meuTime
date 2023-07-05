@@ -6,12 +6,15 @@ import { evento } from '@/src/store/store';
 // import { JogoAtivo } from '@/src/components/Jogo';
 import { JogoFuturo, JogoAtivo } from './JogoFuturo';
 
-export function Eliminatoria({item, nome}) {
+let nomeTimes = false;
+
+export function Eliminatoria({item, nome, nomeTime = false}) {
+    nomeTimes = nomeTime;
     return (
         <View style={styles.container}>
             <Text style={styles.txtX}>{nome}</Text>
             <ScrollView style={{padding: 0, width: '100%'}}>
-                <MataMata item={item}/>
+                <MataMata item={item} nomeTime={nomeTime}/>
             </ScrollView>
         </View>
     );
@@ -108,7 +111,7 @@ export function Jogos({id, final = false}) {
             {jogo && 
             <JogoAtivo
                 jogo={jogo}
-                nomes={false}
+                nomes={nomeTimes}
                 titulo={false}
                 tempo={false}
                 tamanhoImg={30}

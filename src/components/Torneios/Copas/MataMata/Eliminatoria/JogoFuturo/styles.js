@@ -37,6 +37,17 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[100],
         fontSize: theme.font.size[6],
     },
+    txtPlacar(tamanhoImg, final) {
+        return final ? {
+            color: theme.colors.texto[100],
+            fontSize: theme.font.size[6],
+        } : {
+            position: 'absolute',
+            right: tamanhoImg,
+            color: theme.colors.texto[100],
+            fontSize: theme.font.size[6],
+        };
+    },
     img: {
         height: 50,
         width: 50,
@@ -133,7 +144,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-end',
         fontSize: 20,
-        // gap: 2,
+        // gap: 5,
     },
     timeVisitante: {
         // width: '20%',

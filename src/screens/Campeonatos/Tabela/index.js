@@ -10,12 +10,14 @@ import { torneio, getSeasons } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import { Lista } from "@/src/components/Lista";
+import { Spinner } from "@/src/components/Spinner";
 
 export function Tabela() {
     NavigationBar.setBackgroundColorAsync(theme.colors.nav);
 
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
+    const [carregando, setCarregando] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const torneioId = useSelector(state => state.torneioId);
     const season = useSelector(state => state.season);
@@ -26,6 +28,7 @@ export function Tabela() {
         dispatch(setSeason(season));
 
         setTabela(await torneio(torneioId, season.id, true));
+        setCarregando(false);
         setRefreshing(false);
     };
 
@@ -101,7 +104,7 @@ export function Tabela() {
                     </View>
                 </View>
             </View>
-            {tabela && <Lista
+            {(tabela && !carregando) ? <Lista
                 scroll={true}
                 contentContainerStyle={styles.contentContainerStyle}
                 data={tabela.rows}
@@ -112,7 +115,7 @@ export function Tabela() {
                         onRefresh={onRefresh}
                     />
                 }
-            />}
+            /> : <Spinner />}
         </View>
     );
 }

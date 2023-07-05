@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-around',
         paddingVertical: 20,
         backgroundColor: '#33333330',
+        minHeight: 140,
         borderWidth: 1,
         borderRadius: 10,
         borderColor: '#ffffff20',
@@ -52,10 +53,10 @@ export const styles = StyleSheet.create({
     },
     campeaoLeft: {
         position: 'absolute',
-        paddingRight: 140,
+        paddingRight: 90,
     },
     campeaoRight: {
         position: 'absolute',
-        paddingLeft: 140,
+        paddingLeft: 90,
     },
 })

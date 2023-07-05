@@ -276,6 +276,15 @@ export const brasileiros = [
       container: <CopaMataMata mataMataString={8}/>,
       legenda: null
     },
+    {
+      name: "Supercopa do Brasil",
+      slug: "supercopa-do-brasil",
+      primaryColorHex: "#ffb100",
+      secondaryColorHex: "#072a54",
+      id: 14602,
+      container: <CopaMataMata mataMataString={1} somenteMataMata={true} nomeTimes={true}/>,
+      legenda: null
+    },
 ];
 
 

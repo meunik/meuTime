@@ -12,6 +12,7 @@ import { styles } from "./styles";
 import { Eliminatoria } from "./Eliminatoria/index";
 import { seasons } from '@/src/store/api';
 import { listaTorneios } from "@/src/store/listaTorneios";
+import { Spinner } from "@/src/components/Spinner";
 
 export function Copa({
     campeaoGrupos = false,
@@ -26,26 +27,34 @@ export function Copa({
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
     const [mataMata, setMataMata] = useState(null);
+    const [carregando, setCarregando] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const torneioId = useSelector(state => state.torneioId);
     const season = useSelector(state => state.season);
     const dispatch = useDispatch();
 
-    const fetchDataTabela = async () => {
+    const fetchDataTabela = async (refresh = false) => {
+        if (!refresh) {
+            setTabela(null);
+            setMataMata(null);
+        }
         let season = await getSeasons(torneioId);
         dispatch(setSeason(season));
 
         setTabela(await torneio(torneioId, season.id));
         setMataMata(await torneioMataMata(torneioId, season.id));
+
+        setCarregando(false);
         setRefreshing(false);
     };
 
     const onRefresh = () => {
         setRefreshing(true);
-        fetchDataTabela();
+        fetchDataTabela(true);
     };
 
     useEffect(() => {
+        setCarregando(true);
         fetchDataTabela();
     }, [torneioId]);
 
@@ -104,7 +113,7 @@ export function Copa({
                 return items;
             })()}
             
-            {!desabilitarGrupos && tabela && (() => {
+            {!desabilitarGrupos && ( (tabela && !carregando) ? (() => {
                 const keys = Object.keys(tabela);
                 const items = [];
                 keys.forEach((key, index) => items.push(
@@ -117,7 +126,7 @@ export function Copa({
                     />
                 ));
                 return items;
-            })()}
+            })() : <Spinner /> )}
         </ScrollView>
     );
 }

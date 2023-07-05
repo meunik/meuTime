@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
-import { Text, View, Image, ScrollView, RefreshControl } from 'react-native';
+import { Text, View, Image, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
 import { BaseButton } from "react-native-gesture-handler";
 import { urlBase } from '@/src/store/api';
 import { setSeason } from '@/src/store/action';
@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Lista } from "@/src/components/Lista";
 import { Tabs } from "@/src/components/Tabs";
+import { Spinner } from "@/src/components/Spinner";
 
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 import {
@@ -48,6 +49,7 @@ export function TodosJogos() {
 
     const [torneio, setTorneio] = useState(null);
     const [rodada, setRodada] = useState(0);
+    const [carregando, setCarregando] = useState(true);
     const [refreshing, setRefreshing] = useState(true);
     const [tabs, setTabs] = useState([]);
 
@@ -68,7 +70,8 @@ export function TodosJogos() {
             if (jogosPassado && jogosPassado?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos, 'passado');
             if (jogosFuturos && jogosFuturos?.hasNextPage) jogosTodos = await recursiva(1, jogosTodos, 'futuro');
 
-            formatar(jogosTodos);
+            await formatar(jogosTodos);
+            setCarregando(false);
             setRefreshing(false);
         } catch (error) {
             console.error(error);
@@ -108,6 +111,7 @@ export function TodosJogos() {
         }));
 
         setTabs(formattedTabs);
+        return null;
     }
 
     const onRefresh = () => {
@@ -232,7 +236,10 @@ export function TodosJogos() {
                 </View>
             </View>
 
-            {(tabs.length > 0) && rodada.round && <Tabs data={tabs} render={Rodadas} indexInicial={rodada.round} id='jogos'/>}
+            {((tabs.length > 0) && rodada.round && !carregando) 
+                ? <Tabs data={tabs} render={Rodadas} indexInicial={rodada.round} id='jogos'/>
+                : <Spinner />
+            }
         </View>
     );
 }
