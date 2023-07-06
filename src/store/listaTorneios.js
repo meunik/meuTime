@@ -268,23 +268,41 @@ export const brasileiros = [
     },
     ...estaduais,
     {
-      name: "Copa Verde",
-      slug: "copa-verde",
-      primaryColorHex: "#259844",
-      secondaryColorHex: "#004b22",
-      id: 10158,
-      container: <CopaMataMata mataMataString={8}/>,
-      legenda: null
+        name: "Copa Verde",
+        slug: "copa-verde",
+        primaryColorHex: "#259844",
+        secondaryColorHex: "#004b22",
+        id: 10158,
+        container: <CopaMataMata mataMataString={8}/>,
+        legenda: null
     },
     {
-      name: "Supercopa do Brasil",
-      slug: "supercopa-do-brasil",
-      primaryColorHex: "#ffb100",
-      secondaryColorHex: "#072a54",
-      id: 14602,
-      container: <CopaMataMata mataMataString={1} somenteMataMata={true} nomeTimes={true}/>,
-      legenda: null
+        name: "Supercopa do Brasil",
+        slug: "supercopa-do-brasil",
+        primaryColorHex: "#ffb100",
+        secondaryColorHex: "#072a54",
+        id: 14602,
+        container: <CopaMataMata mataMataString={1} somenteMataMata={true} nomeTimes={true}/>,
+        legenda: null
     },
+    {
+        name: "Mundial de Clubes",
+        slug: "club-world-championship",
+        primaryColorHex: "#8d1536",
+        secondaryColorHex: "#0bbda4",
+        id: 357,
+        container: <CopaMataMata mataMataString={8}/>,
+        legenda: null
+    },
+    // {
+    //     name: "Recopa Sul-Americana",
+    //     slug: "conmebol-recopa",
+    //     primaryColorHex: "#989898",
+    //     secondaryColorHex: "#0183be",
+    //     id: 490,
+    //     container: <CopaMataMata mataMataString={1} somenteMataMata={true} nomeTimes={true}/>,
+    //     legenda: null
+    // }
 ];
 
 

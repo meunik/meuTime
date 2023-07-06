@@ -107,6 +107,16 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         right: 30,
     },
+    btn: {
+        borderWidth: 0.5,
+        borderColor: '#ffffff20',
+        borderRadius: 10,
+        alignItems: 'center',
+        marginTop: 5,
+        marginHorizontal: 5,
+        paddingVertical: 5,
+        borderRadius: 10,
+    },
     info: {
         flex: 1,
         flexDirection: 'row',

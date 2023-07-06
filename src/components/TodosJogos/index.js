@@ -49,6 +49,7 @@ export function TodosJogos() {
 
     const [torneio, setTorneio] = useState(null);
     const [rodada, setRodada] = useState(0);
+    const [rodadaNumero, setRodadaNumero] = useState(0);
     const [carregando, setCarregando] = useState(true);
     const [refreshing, setRefreshing] = useState(true);
     const [tabs, setTabs] = useState([]);
@@ -60,7 +61,9 @@ export function TodosJogos() {
             const jogosPassado = await torneioJogosAntes(torneioId, season.id);
             const jogosFuturos = await torneioJogosDepois(torneioId, season.id);
             setTorneio(await torneioInfo(torneioId, season.id));
-            setRodada(await torneioRodada(torneioId, season.id));
+            const rodadaFetch = await torneioRodada(torneioId, season.id);
+            setRodada(rodadaFetch);
+            setRodadaNumero(rodadaFetch.round);
 
             let jogosTodos = [
                 ...(jogosPassado) ? jogosPassado?.events : [],
@@ -224,20 +227,31 @@ export function TodosJogos() {
 
     return (
         <View style={styles.containerFull}>
-            <View style={styles.row}>
-                <BaseButton onPress={() => navigation.goBack()}>
-                    <Icon name="arrow-u-left-top-bold" size={30} color="#434343" style={styles.chevronDown} />
-                </BaseButton>
-                <View style={styles.info}>
-                    {torneio && <>
-                        <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${torneio.uniqueTournament?.id}/image/dark` }} />
-                        <Text style={styles.txtInfo}>{torneio.uniqueTournament?.name}</Text>
-                    </>}
+            <View>
+                <View style={styles.row}>
+                    <BaseButton onPress={() => navigation.goBack()}>
+                        <Icon name="arrow-u-left-top-bold" size={30} color="#434343" style={styles.chevronDown} />
+                    </BaseButton>
+                    <View style={styles.info}>
+                        {torneio && <>
+                            <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${torneio.uniqueTournament?.id}/image/dark` }} />
+                            <Text style={styles.txtInfo}>{torneio.uniqueTournament?.name}</Text>
+                        </>}
+                    </View>
                 </View>
+                {/* <BaseButton onPress={() => {
+                    console.log('teste');
+                    console.log(rodada);
+                    setRodadaNumero(13)
+                }}>
+                    <View style={styles.btn}>
+                        <Text style={styles.txtLink}>Rodada Atual</Text>
+                    </View>
+                </BaseButton> */}
             </View>
 
-            {((tabs.length > 0) && rodada.round && !carregando) 
-                ? <Tabs data={tabs} render={Rodadas} indexInicial={rodada.round} id='jogos'/>
+            {((tabs.length > 0) && rodadaNumero && !carregando) 
+                ? <Tabs data={tabs} render={Rodadas} indexInicial={rodadaNumero} id='jogos'/>
                 : <Spinner />
             }
         </View>

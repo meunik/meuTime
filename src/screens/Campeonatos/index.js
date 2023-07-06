@@ -107,7 +107,7 @@ export function Campeonatos() {
     };
 
     const exibeTorneio = () => {
-        dispatch(setTorneioId(torneio.id));
+        dispatch(setTorneioId(torneio?.id));
 
         const padrao = (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

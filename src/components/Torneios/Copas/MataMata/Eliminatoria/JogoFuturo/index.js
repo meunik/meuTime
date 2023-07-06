@@ -22,7 +22,7 @@ export function JogoFuturo ({
                     />
                 </View>
 
-                <View>
+                <View style={styles.centralizado}>
                     <Icon name="close" size={15} color="#969696"/>
                 </View>
 
@@ -60,19 +60,19 @@ export function JogoAtivo ({
 }) {
     console.log(jogo);
     return jogo ? (
-        <View style={styles.jogoRolando(altura, final && tamanhoImg)}>
+        <View style={styles.jogoRolando(altura, final)}>
             <View style={(final)?styles.timesFinal:styles.timesUltimoJogo}>
 
                 <View style={styles.timeCasa}>
                     {nomes && <Text style={styles.txtTime}>{jogo.homeTeam.nameCode}</Text>}
                     <Image style={styles.imgLista(tamanhoImg)} resizeMode="center" source={{ uri: `${urlBase}team/${jogo.homeTeam.id}/image` }} />
-                    <Text style={styles.txtPlacar(tamanhoImg, final)}>{jogo.homeScore.display}</Text>
+                    <Text style={styles.txtPlacar(final)}>{jogo.homeScore.display}</Text>
                 </View>
 
                 <Icon name="close" size={15} color="#969696"/>
 
                 <View style={styles.timeVisitante}>
-                    <Text style={styles.txtPlacar(tamanhoImg, final)}>{jogo.awayScore.display}</Text>
+                    <Text style={styles.txtPlacar(final)}>{jogo.awayScore.display}</Text>
                     <Image style={styles.imgLista(tamanhoImg)} resizeMode="center" source={{ uri: `${urlBase}team/${jogo.awayTeam.id}/image` }} />
                     {nomes && <Text style={styles.txtTime}>{jogo.awayTeam.nameCode}</Text>}
                 </View>

@@ -178,6 +178,7 @@ export function Copa({
             case '27': if (mataMataString >= 4) return 'Quartas de Final';
             case '28': if (mataMataString >= 2) return 'SemiFinal';
             case '29': if (mataMataString >= 1) return 'Final';
+            case '50': if (mataMataString >= 1) return '3º Lugar';
         
             default: return `Rodada ${valor}`;
         }

@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-around',
         paddingVertical: 20,
         backgroundColor: '#33333330',
-        minHeight: 140,
+        minHeight: 100,
         borderWidth: 1,
         borderRadius: 10,
         borderColor: '#ffffff20',
@@ -40,9 +40,11 @@ export const styles = StyleSheet.create({
         left: 1,
         top: 20,
     },
-    row: {
-        flexDirection: 'row',
-        gap: 5,
+    grupo: {
+        height: 120,
+        justifyContent: 'center',
+        // flexDirection: 'row',
+        // gap: 5,
     },
     txtX: {
         color: theme.colors.texto[300],

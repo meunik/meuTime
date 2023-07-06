@@ -27,7 +27,7 @@ export function Tabs({
 
     useEffect(() => {
       scrollToTab(indexInicial)
-    }, []);
+    }, [indexInicial]);
     
     const keys = Object.keys(data);
 

@@ -37,15 +37,10 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[100],
         fontSize: theme.font.size[6],
     },
-    txtPlacar(tamanhoImg, final) {
-        return final ? {
+    txtPlacar(final) {
+        return {
             color: theme.colors.texto[100],
-            fontSize: theme.font.size[6],
-        } : {
-            position: 'absolute',
-            right: tamanhoImg,
-            color: theme.colors.texto[100],
-            fontSize: theme.font.size[6],
+            fontSize: theme.font.size[final?6:1],
         };
     },
     img: {
@@ -95,10 +90,10 @@ export const styles = StyleSheet.create({
     jogoRolando: {
         paddingBottom: 10,
     },
-    jogoRolando(valor, valorFinal = 0) {
+    jogoRolando(valor, final) {
         return {
-            height: valorFinal || valor,
-            paddingHorizontal: valorFinal?10:0,
+            height: final?null:valor,
+            paddingHorizontal: final?10:0,
         };
     },
     placarPenaltis(valor) {
@@ -116,17 +111,15 @@ export const styles = StyleSheet.create({
     },
     timesUltimoJogo: {
         flex: 1,
-        // flexDirection: 'row',
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        // gap: 5,
     },
     timesFinal: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        // gap: 5,
     },
     times: {
         width: '100%',
@@ -136,21 +129,22 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        // gap: 5,
     },
     timeCasa: {
-        // width: '20%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
         fontSize: 20,
-        // gap: 5,
+        gap: 2,
     },
     timeVisitante: {
-        // width: '20%',
         flexDirection: 'row',
         alignItems: 'center',
-        // gap: 2,
+        gap: 2,
+    },
+    centralizado: {
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     imgLista(valor) {
         return {

@@ -25,12 +25,12 @@ export const MataMata = ({item}) => {
         <View style={styles.playoffs}>
             
             {/* Oitavas de Final */}
-            {item[3] && <View style={styles.jogos}>
+            {/* {item[3] && <View style={styles.jogos}>
                 <ExibeJogo item={item[3][0]} titulo="Oitavas de Final"/>
                 <ExibeJogo item={item[3][1]} titulo="Oitavas de Final"/>
                 <ExibeJogo item={item[3][2]} titulo="Oitavas de Final"/>
                 <ExibeJogo item={item[3][3]} titulo="Oitavas de Final"/>
-            </View>}
+            </View>} */}
             
             {/* Quartas de Final */}
             {item[0][0].left?.left && <View style={styles.jogos}>
@@ -60,20 +60,21 @@ export const MataMata = ({item}) => {
             </View>}
             
             {/* Oitavas de Final */}
-            {item[3] && <View style={styles.jogos}>
+            {/* {item[3] && <View style={styles.jogos}>
                 <ExibeJogo item={item[3][4]} titulo="Oitavas de Final"/>
                 <ExibeJogo item={item[3][5]} titulo="Oitavas de Final"/>
                 <ExibeJogo item={item[3][6]} titulo="Oitavas de Final"/>
                 <ExibeJogo item={item[3][7]} titulo="Oitavas de Final"/>
-            </View>}
+            </View>} */}
         </View>
     );
 }
 
 export function ExibeJogo ({item, final = false, titulo = null}) {
     const eventos = () => {
-        return (<View style={!final && styles.row}>
+        return (<View style={!final && styles.grupo}>
             {item.eventIds && <Jogos id={item.eventIds[0]} final={final}/>}
+            {item.eventIds && <Jogos id={item.eventIds[1]} final={final}/>}
         </View>)
     };
     const simulaEventos = () => {
@@ -114,8 +115,8 @@ export function Jogos({id, final = false}) {
                 nomes={nomeTimes}
                 titulo={false}
                 tempo={false}
-                tamanhoImg={30}
-                altura={100}
+                tamanhoImg={25}
+                altura={35}
                 final={final}
             />}
         </>
