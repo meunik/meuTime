@@ -23,6 +23,7 @@ export function Copa({
     desabilitarMataMata = false,
     desabilitarBtnJogos = false,
     eliminatoriaVertical = 'horizontal',
+    scroll = true,
 }) {
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
@@ -43,6 +44,9 @@ export function Copa({
 
         setTabela(await torneio(torneioId, season.id));
         setMataMata(await torneioMataMata(torneioId, season.id));
+        // console.log(tabela);
+        // console.log(mataMata);
+        // console.log(desabilitarMataMata);
 
         setCarregando(false);
         setRefreshing(false);
@@ -108,6 +112,7 @@ export function Copa({
                         item={mataMata[key].views[0][0]}
                         nome={mataMata[key].name}
                         direcao={eliminatoriaVertical}
+                        scroll={scroll}
                     />
                 ));
                 return items;

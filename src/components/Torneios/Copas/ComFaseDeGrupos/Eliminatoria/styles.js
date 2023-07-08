@@ -6,6 +6,16 @@ export const styles = StyleSheet.create({
         paddingVertical: 20,
         gap: 10,
     },
+    playoffsLadoLado: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 20,
+        minHeight: 200,
+        backgroundColor: '#33333330',
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#ffffff20',
+    },
     playoffs: {
         flexDirection: 'row',
         paddingVertical: 20,
@@ -33,11 +43,23 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         gap: 3,
     },
+    jogosLadoLado: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        gap: 10,
+    },
     jogos: {
         width: 170,
         alignItems: 'center',
         justifyContent: 'space-around',
         gap: 10,
+    },
+    final: {
+        position: 'absolute',
+        right: 1,
+        left: 1,
+        top: 10,
     },
     jogosVertical: {
         flexDirection: 'row',
