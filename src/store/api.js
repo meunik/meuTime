@@ -12,6 +12,8 @@ const api = axios.create({
     timeout: 3000
 });
 
+export const urlEvento = (id) => `${urlEventos}${id}/`;
+export const urlChannel = (id, idEvento) => `${urlEventos}tv/channel/${id}/event/${idEvento}/votes`;
 export const urlSeason = (id) => `${urlBase}unique-tournament/${id}/seasons`;
 // export const urlTorneio = (id, season) => `${urlBase}unique-tournament/${id}/season/${seasons[id]['season']}/`;
 export const urlTorneio = (id, season) => `${urlBase}unique-tournament/${id}/season/${season}/`;

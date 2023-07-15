@@ -58,7 +58,6 @@ export function JogoAtivo ({
     altura = 0,
     final = false
 }) {
-    console.log(jogo);
     return jogo ? (
         <View style={styles.jogoRolando(altura, final)}>
             <View style={(final)?styles.timesFinal:styles.timesUltimoJogo}>

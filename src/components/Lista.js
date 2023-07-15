@@ -9,6 +9,7 @@ export function Lista({
     refreshControl = null,
     scroll = false,
     ids = '',
+    infoAdd = null,
 }) {
     if (!data) {
         return null;
@@ -29,7 +30,7 @@ export function Lista({
             >
                 {data && (() => {
                     const items = [];
-                    keys.forEach((key, index) => items.push(renderItem(data[key], `${ids}${index}`)));
+                    keys.forEach((key, index) => items.push(renderItem(data[key], `${ids}${index}`, infoAdd)));
                     return items;
                 })()}
             </ScrollView>
@@ -38,7 +39,7 @@ export function Lista({
         return (<>
             {data && (() => {
                 const items = [];
-                keys.forEach((key, index) => items.push(renderItem(data[key], `${ids}${index}`)));
+                keys.forEach((key, index) => items.push(renderItem(data[key], `${ids}${index}`, infoAdd)));
                 return items;
             })()}
         </>);

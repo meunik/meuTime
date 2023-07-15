@@ -7,9 +7,11 @@ export const styles = StyleSheet.create({
         gap: 10,
     },
     playoffsLadoLado: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 20,
+        justifyContent: 'space-around',
+        // paddingVertical: 20,
         minHeight: 200,
         backgroundColor: '#33333330',
         borderWidth: 1,
@@ -43,6 +45,44 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         gap: 3,
     },
+    row: {
+        flex: 1,
+        flexDirection: 'row',
+    },
+    jogosLadoLadoSemiDireita: {
+        position: 'absolute',
+        width: '100%',
+        alignItems: 'center',
+        left: 30,
+    },
+    jogosLadoLadoSemiEsquerda: {
+        position: 'absolute',
+        width: '100%',
+        alignItems: 'center',
+        right: 30,
+    },
+    jogosLadoLadoSemi: {
+        height: '100%',
+        justifyContent: 'space-evenly',
+    },
+    jogosLadoLadoQuartasEsquerda: {
+        // height: '100%',
+        // justifyContent: 'space-evenly',
+        height: '60%',
+        justifyContent: 'space-between',
+        marginRight: 25,
+    },
+    jogosLadoLadoQuartasDireita: {
+        // height: '100%',
+        // justifyContent: 'space-evenly',
+        height: '60%',
+        justifyContent: 'space-between',
+        marginLeft: 25,
+    },
+    jogosLadoLadoQuartas: {
+        height: '100%',
+        justifyContent: 'space-evenly',
+    },
     jogosLadoLado: {
         flex: 1,
         alignItems: 'center',
@@ -59,7 +99,7 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         right: 1,
         left: 1,
-        top: 10,
+        top: 3,
     },
     jogosVertical: {
         flexDirection: 'row',

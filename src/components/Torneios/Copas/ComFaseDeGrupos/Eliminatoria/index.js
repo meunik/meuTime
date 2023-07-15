@@ -3,15 +3,14 @@ import { View, Text, ScrollView } from 'react-native';
 import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import { evento } from '@/src/store/store';
-import { JogoAtivo } from '@/src/components/Jogo';
-import { JogoFuturo } from './JogoFuturo';
+// import { JogoAtivo } from '@/src/components/Jogo';
+import { JogoFuturo, JogoAtivo } from './JogoFuturo';
 
 export function Eliminatoria({item, nome, direcao = 'horizontal', scroll = true}) {
     const hori = () => {
         if (scroll) {
             switch (direcao) {
-                case 'verticalLadoLado': return false;
-                case 'horizontalLadoLado': return true;
+                case 'ladoLado': return false;
                 case 'vertical': return false;
                 case 'horizontal': return true;
             
@@ -28,8 +27,7 @@ export function Eliminatoria({item, nome, direcao = 'horizontal', scroll = true}
             <ScrollView horizontal={hori()} style={{padding:0}}>
                 {item && (() => {
                     switch (direcao) {
-                        case 'verticalLadoLado': return <MataMataLadoLado item={item} vertical={true}/>;
-                        case 'horizontalLadoLado': return <MataMataLadoLado item={item}/>;
+                        case 'ladoLado': return <MataMataLadoLado item={item}/>;
                         case 'vertical': return <MataMata item={item} vertical={true}/>;
                         case 'horizontal': return <MataMata item={item}/>;
                     
@@ -83,30 +81,28 @@ export const MataMata = ({item, vertical = false}) => {
     );
 }
 
-export const MataMataLadoLado = ({item, vertical = false}) => {
-    const cssPlayoffs = (vertical) ? styles.playoffsVertical : styles.playoffsLadoLado;
-    const cssJogos = (vertical) ? styles.jogosVertical : styles.jogosLadoLado;
-
+export const MataMataLadoLado = ({item}) => {
     return (
-        <View style={cssPlayoffs}>
+        <View style={styles.playoffsLadoLado}>
             
             {/* Oitavas de Final */}
-            {/* {item.left?.left?.left && <View style={cssJogos}>
+            {item.left?.left?.left && <View style={styles.jogosLadoLado}>
             <ExibeJogo item={item.left.left.left} titulo="8ª de Final"/>
             <ExibeJogo item={item.left.left.right} titulo="8ª de Final"/>
             <ExibeJogo item={item.left.right.left} titulo="8ª de Final"/>
             <ExibeJogo item={item.left.right.right} titulo="8ª de Final"/>
-            </View>} */}
+            </View>}
             
             {/* Quartas de Final */}
-            {item.left?.left && <View style={cssJogos}>
-                <ExibeJogo item={item.left.left} titulo="4ª de Final"/>
-                <ExibeJogo item={item.left.right} titulo="4ª de Final"/>
+            {item.left?.left && <View style={styles.jogosLadoLadoQuartasEsquerda}>
+                <ExibeJogo item={item.left.left} titulo="4ª de Final" vertical={true}/>
+                <ExibeJogo item={item.left.right} titulo="4ª de Final" vertical={true}/>
             </View>}
 
             {/* Semifinal */}
-            {item.left && <View style={cssJogos}>
-                <ExibeJogo item={item.left} titulo="Semifinal"/>
+            {/* {item.left && <View style={(item.eventIds.length > 1) ? styles.jogosLadoLadoSemiEsquerda : styles.jogosLadoLadoSemi}> */}
+            {item.left && <View style={styles.jogosLadoLadoSemiEsquerda}>
+                <ExibeJogo item={item.left} semiFinal={true} titulo="Semifinal" vertical={true}/>
             </View>}
 
             {/* Final */}
@@ -115,44 +111,46 @@ export const MataMataLadoLado = ({item, vertical = false}) => {
             </View>
 
             {/* Semifinal */}
-            {item.left && <View style={cssJogos}>
-                <ExibeJogo item={item.right} titulo="Semifinal"/>
+            {/* {item.left && <View style={(item.eventIds.length > 1) ? styles.jogosLadoLadoSemiDireita : styles.jogosLadoLadoSemi}> */}
+            {item.left && <View style={styles.jogosLadoLadoSemiDireita}>
+                <ExibeJogo item={item.right} semiFinal={true} titulo="Semifinal" vertical={true}/>
             </View>}
             
             {/* Quartas de Final */}
-            {item.left?.left && <View style={cssJogos}>
-                <ExibeJogo item={item.right.left} titulo="4ª de Final"/>
-                <ExibeJogo item={item.right.right} titulo="4ª de Final"/>
+            {item.left?.left && <View style={styles.jogosLadoLadoQuartasDireita}>
+                <ExibeJogo item={item.right.left} titulo="4ª de Final" vertical={true}/>
+                <ExibeJogo item={item.right.right} titulo="4ª de Final" vertical={true}/>
             </View>}
             
             {/* Oitavas de Final */}
-            {/* {item.left?.left?.left && <View style={cssJogos}>
+            {item.left?.left?.left && <View style={styles.jogosLadoLado}>
             <ExibeJogo item={item.right.left.left} titulo="8ª de Final"/>
             <ExibeJogo item={item.right.left.right} titulo="8ª de Final"/>
             <ExibeJogo item={item.right.right.left} titulo="8ª de Final"/>
             <ExibeJogo item={item.right.right.right} titulo="8ª de Final"/>
-            </View>} */}
+            </View>}
         </View>
     );
 }
 
-export function ExibeJogo ({item, final = false, titulo = null}) {
+export function ExibeJogo ({item, final = false, semiFinal = false, titulo = null, vertical = false}) {
     const eventos = () => {
-        return (<View style={styles.row}>
+        return (<View>
             {item.eventIds && <Jogos id={item.eventIds[0]}/>}
             {(item.eventIds.length > 1) && <Jogos id={item.eventIds[1]}/>}
         </View>)
     };
     const simulaEventos = () => {
-        return (<>
-            <JogoFuturo tamanhoImg={30} altura={40}/>
-        </>)
+        return (<View style={(final) || styles.row}>
+            <JogoFuturo tamanhoImg={30} altura={40} vertical={vertical}/>
+            {/* {(final) || <JogoFuturo tamanhoImg={30} altura={40} vertical={vertical}/>} */}
+        </View>)
     };
 
     return (<View>
         <View style={styles.jogo}>
             {(item.leftParticipant?.winner && final) && <Icon name="trophy" size={20} color="#dbb234" style={styles.campeaoLeft}/>}
-            <Text style={styles.txtX}>{titulo}</Text>
+            {!vertical && <Text style={styles.txtX}>{titulo}</Text>}
             {(item.rightParticipant?.winner && final) && <Icon name="trophy" size={20} color="#dbb234" style={styles.campeaoRight}/>}
         </View>
         <View>

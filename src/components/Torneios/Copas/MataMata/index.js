@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import { Text, View, Image, RefreshControl, ScrollView } from 'react-native';
+import { BaseButton } from "react-native-gesture-handler";
 import { setSeason } from '@/src/store/action';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
@@ -29,6 +31,9 @@ export function Copa({
     somenteMataMata = false,
     nomeTimes = false,
 }) {
+
+	const navigation = useNavigation();
+
     const [carregando, setCarregando] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [tabs, setTabs] = useState([]);
@@ -44,6 +49,8 @@ export function Copa({
         let season = await getSeasons(torneioId);
         dispatch(setSeason(season));
         setMataMata(await torneioMataMata(torneioId, season.id));
+        console.log('---------- mataMata ----------');
+        console.log(mataMata);
 
         if (!somenteMataMata) {
             const jogosPassado = await torneioJogosAntes(torneioId, season.id);
@@ -98,7 +105,8 @@ export function Copa({
 
     const renderItem = (item, index) => {
         return (
-            <View key={index} style={styles.lista}>
+            <BaseButton key={index} onPress={() => navigation.navigate('Partida', { idPartida: item.id })}>
+            <View style={styles.lista}>
                 <View style={styles.timesUltimoJogo}>
 
                     <View style={styles.timeCasa}>
@@ -142,6 +150,7 @@ export function Copa({
                     <Text style={styles.txtTempo}>{tempoJogo(item)}</Text>
                 </View>
             </View>
+            </BaseButton>
         )
     };
 

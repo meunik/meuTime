@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
+import { BaseButton } from "react-native-gesture-handler";
 import { jogosDepois, proximoJogo, evento } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import moment from 'moment';
@@ -111,9 +112,12 @@ export function Jogos() {
 
     return (
         <View style={styles.container}>
-            <View>
+            {jogo && <BaseButton onPress={() => navigation.navigate('Partida', { idPartida: jogo.id })}>
+                <JogoAtivo jogo={jogo}/>
+            </BaseButton>}
+            {/* <View>
                 {jogo && <JogoAtivo jogo={jogo}/>}
-            </View>
+            </View> */}
             <FlatList
                 contentContainerStyle={styles.contentContainerStyle}
                 data={futurosJogos}

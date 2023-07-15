@@ -183,7 +183,7 @@ export const continentais = [
         primaryColorHex: "#e3c000",
         secondaryColorHex: "#13489c",
         id: 480,
-        container: <CopaGrupos mataMataString={8} eliminatoriaVertical='horizontalLadoLado' scroll={false}/>,
+        container: <CopaGrupos mataMataString={8} eliminatoriaVertical='ladoLado' scroll={false}/>,
         legenda: [
             {
                 cor: 'bolinhaAzulEscuro',
@@ -201,7 +201,7 @@ export const continentais = [
         primaryColorHex: "#573215",
         secondaryColorHex: "#dfaf49",
         id: 384,
-        container: <CopaGrupos mataMataString={8} eliminatoriaVertical='horizontalLadoLado' scroll={false}/>,
+        container: <CopaGrupos mataMataString={8} eliminatoriaVertical='ladoLado' scroll={false}/>,
         legenda: [
             {
                 cor: 'bolinhaAzulEscuro',

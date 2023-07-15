@@ -65,7 +65,7 @@ export function Tabs({
                                 </TouchableOpacity>}
                             </View>
                             
-                            {render(data[key].content, data[key].title, data[key].index)}
+                            {render(data[key].content, data[key].title, data[key].index, data[key])}
                         </View>
                     ));
                     return items;

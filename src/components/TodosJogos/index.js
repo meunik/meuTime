@@ -129,7 +129,8 @@ export function TodosJogos() {
 
     const renderItem = (item, index) => {
         return (
-            <View key={index} style={styles.lista}>
+            <BaseButton key={index} onPress={() => navigation.navigate('Partida', { idPartida: item.id })}>
+            <View style={styles.lista}>
                 <View style={styles.timesUltimoJogo}>
 
                     <View style={styles.timeCasa}>
@@ -173,6 +174,7 @@ export function TodosJogos() {
                     <Text style={styles.txtTempo}>{tempoJogo(item)}</Text>
                 </View>
             </View>
+            </BaseButton>
         )
     };
 

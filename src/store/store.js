@@ -2,6 +2,7 @@ import {
     api,
     urlTime,
     urlBase,
+    urlEvento,
     urlEventos,
     urlTorneio,
     urlSeason,
@@ -10,6 +11,14 @@ import {
 } from '@/src/store/api';
 
 export const getSeasons = async(id)=> await request(urlSeason(id), 'seasons', true);
+
+//sobre a pertida
+export const getEscalacao = async(id)=> await request(`${urlEvento(id)}lineups`);
+export const getTecnicos = async(id)=> await request(`${urlEvento(id)}managers`);
+export const getEstatisticas = async(id)=> await request(`${urlEvento(id)}statistics`, 'statistics');
+export const getIncidents = async(id)=> await request(`${urlEvento(id)}incidents`, 'incidents');
+export const getHighlights = async(id)=> await request(`${urlEvento(id)}highlights`, 'highlights');
+export const getChannel = async(id, idEvento)=> await request(`${urlChannel(id, idEvento)}`, 'tvChannelVotes');
 
 export const time = async(id)=> await request(`${id}`, 'team');
 export const img = async(id)=> await request(`${id}/image`);
