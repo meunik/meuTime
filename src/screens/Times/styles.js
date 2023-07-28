@@ -6,6 +6,14 @@ export const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: theme.colors.fundo,
     },
+    containerSpinner: {
+        position: 'absolute',
+        flex: 1,
+        height: '100%',
+        width: '100%',
+        backgroundColor: 'transparent',
+        zIndex: 9,
+    },
     img: {
         height: 40,
         width: 40,

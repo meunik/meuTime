@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTorneioId, setSeason, setTorneio as setTorneioStorage } from '@/src/store/action';
 import { View, Text, Image, TouchableOpacity, Animated, ScrollView, useWindowDimensions } from 'react-native';
@@ -12,13 +12,7 @@ import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { Copa as CopaGrupos } from "@/src/components/Torneios/Copas/ComFaseDeGrupos";
-import { Copa as CopaMataMata } from "@/src/components/Torneios/Copas/MataMata";
-import { Tabela } from "@/src/screens/Campeonatos/Tabela/index";
-
 export function Campeonatos() {
-    NavigationBar.setBackgroundColorAsync(theme.colors.nav);
-
     const layout = useWindowDimensions();
 	const navigation = useNavigation();
     const meuTime = useSelector(state => state.meuTime);

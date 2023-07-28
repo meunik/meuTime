@@ -4,13 +4,13 @@ import { Text, View, ActivityIndicator } from 'react-native';
 import { styles } from "@/src/global/styles/styles";
 import { theme } from "@/src/global/styles/theme";
 
-export function Spinner() {
+export function Spinner({fundoPreto = false}) {
     return (
         <View style={{
             flex: 1,
             paddingTop: (Platform.OS === 'ios') ? 0 : 10,
             backgroundColor: theme.colors.fundo,
-            opacity: 0.8,
+            opacity: fundoPreto ? 1 : 0.8,
             gap: 10,
             flexDirection: 'row',
             justifyContent: 'center',

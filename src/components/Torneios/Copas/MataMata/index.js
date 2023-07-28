@@ -7,7 +7,8 @@ import { setSeason } from '@/src/store/action';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Eliminatoria } from "./Eliminatoria";
+// import { Eliminatoria } from "./Eliminatoria";
+import { Eliminatoria } from "@/src/components/Torneios/Eliminatoria";
 
 import { Lista } from "@/src/components/Lista";
 import { Tabs } from "@/src/components/Tabs";
@@ -30,6 +31,7 @@ export function Copa({
     mataMataString = 0,
     somenteMataMata = false,
     nomeTimes = false,
+    somenteFinal = false,
 }) {
 
 	const navigation = useNavigation();
@@ -204,7 +206,12 @@ export function Copa({
                 />
             }
         >
-            {mataMata && <Eliminatoria item={mataMata[0].views} nome={mataMata[0].name} nomeTime={nomeTimes}/>}
+            {mataMata && <Eliminatoria
+                item={mataMata[0].views[0][0]}
+                nome={mataMata[0].name}
+                nomeTime={nomeTimes}
+                direcao={somenteFinal?null:'ladoLado'}
+            />}
             {!somenteMataMata && ( ((tabs.length > 0) && rodada.round && !carregando)
                 ? <Tabs data={tabs} render={Rodadas} indexInicial={rodada.round}/>
                 : <Spinner />

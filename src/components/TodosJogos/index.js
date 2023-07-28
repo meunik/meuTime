@@ -6,8 +6,6 @@ import { Text, View, Image, ScrollView, RefreshControl, ActivityIndicator } from
 import { BaseButton } from "react-native-gesture-handler";
 import { urlBase } from '@/src/store/api';
 import { setSeason } from '@/src/store/action';
-import { setBackgroundColorAsync } from 'expo-navigation-bar';
-import { TabView, SceneMap } from 'react-native-tab-view';
 import { theme } from "@/src/global/styles/theme";
 import { styles } from "@/src/global/styles/styles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -30,14 +28,6 @@ import {
 } from '@/src/store/store';
 
 export function TodosJogos() {
-    useFocusEffect(() => {
-        setBackgroundColorAsync(theme.colors.fundo);
-
-        return () => {
-            setBackgroundColorAsync(theme.colors.nav);
-        };
-    });
-
     const route = useRoute();
     const params = route.params;
     const mataMataString = params?.mataMataString || 0;
@@ -89,6 +79,7 @@ export function TodosJogos() {
             case '27': if (mataMataString >= 4) return 'Quartas de Final';
             case '28': if (mataMataString >= 2) return 'SemiFinal';
             case '29': if (mataMataString >= 1) return 'Final';
+            case '50': if (mataMataString >= 1) return '3º e 4º';
         
             default: return `Rodada ${valor}`;
         }
@@ -232,7 +223,7 @@ export function TodosJogos() {
             <View>
                 <View style={styles.row}>
                     <BaseButton onPress={() => navigation.goBack()}>
-                        <Icon name="arrow-u-left-top-bold" size={30} color="#434343" style={styles.chevronDown} />
+                        <Icon name="arrow-u-left-top" size={30} color="#434343" style={styles.chevronDown} />
                     </BaseButton>
                     <View style={styles.info}>
                         {torneio && <>

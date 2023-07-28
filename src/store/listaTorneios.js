@@ -36,7 +36,7 @@ export const estaduais = [
         primaryColorHex: "#004990",
         secondaryColorHex: "#d1a02f",
         id: 372,
-        container: <CopaGrupos mataMataString={4}/>,
+        container: <CopaGrupos mataMataString={4} eliminatoriaVertical='ladoLado' scroll={false}/>,
         legenda: [
             {
                 cor: 'bolinhaAzulEscuro',
@@ -64,7 +64,7 @@ export const estaduais = [
         primaryColorHex: "#bd8542",
         secondaryColorHex: "#e8cd86",
         id: 378,
-        container: <CopaGrupos mataMataString={4}/>,
+        container: <CopaGrupos mataMataString={4} eliminatoriaVertical='ladoLado' scroll={false}/>,
         legenda: [
             {
                 cor: 'bolinhaAzulEscuro',
@@ -122,7 +122,7 @@ export const estaduais = [
         primaryColorHex: "#86bc38",
         secondaryColorHex: "#30629c",
         id: 382,
-        container: <CopaGrupos mataMataString={4} limitaString={13}/>,
+        container: <CopaGrupos mataMataString={4} eliminatoriaVertical='ladoLado' scroll={false}/>,
         legenda: [
             {
                 cor: 'bolinhaAzulEscuro',
@@ -140,7 +140,7 @@ export const estaduais = [
         primaryColorHex: "#0e3189",
         secondaryColorHex: "#189b34",
         id: 381,
-        container: <CopaGrupos mataMataString={4} limitaString={13}/>,
+        container: <CopaGrupos mataMataString={4} eliminatoriaVertical='ladoLado' scroll={false}/>,
         legenda: [
             {
                 cor: 'bolinhaAzulEscuro',
@@ -158,7 +158,7 @@ export const estaduais = [
         primaryColorHex: "#0b4c7a",
         secondaryColorHex: "#eea722",
         id: 11670,
-        container: <CopaGrupos mataMataString={4} limitaString={13}/>,
+        container: <CopaGrupos mataMataString={4} eliminatoriaVertical='ladoLado' scroll={false}/>,
         legenda: [
             {
                 cor: 'bolinhaAzulEscuro',
@@ -258,7 +258,7 @@ export const brasileiros = [
         primaryColorHex: "#033bbe",
         secondaryColorHex: "#a5863b",
         id: 1596,
-        container: <CopaGrupos mataMataString={4} limitaString={13}/>,
+        container: <CopaGrupos mataMataString={4} limitaString={13} eliminatoriaVertical='ladoLado' scroll={false}/>,
         legenda: [
             {
                 cor: 'bolinhaAzulEscuro',
@@ -305,7 +305,25 @@ export const brasileiros = [
     // }
 ];
 
+export const mundo = [
+    {
+        name: "Copa do Mundo",
+        slug: "copa-do-mundo",
+        primaryColorHex: "#033bbe",
+        secondaryColorHex: "#a5863b",
+        id: 16,
+        container: <CopaGrupos mataMataString={4} eliminatoriaVertical='ladoLado' scroll={false}/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Oitavas de Final',
+            },
+        ],
+    },
+];
+
 
 export const listaTorneios = [
     ...brasileiros,
+    ...mundo,
 ];

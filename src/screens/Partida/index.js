@@ -22,16 +22,9 @@ import { setCarregarJogos, setIntervalo } from '@/src/store/action';
 import { JogoAtivo } from "@/src/components/Jogo";
 import { Lista } from "@/src/components/Lista";
 import { Tabs } from "@/src/components/Tabs";
+import { Spinner } from "@/src/components/Spinner";
 
 export function Partida() {
-    useFocusEffect(() => {
-        NavigationBar.setBackgroundColorAsync(theme.colors.fundo);
-
-        return () => {
-            NavigationBar.setBackgroundColorAsync(theme.colors.nav);
-        };
-    });
-
     const route = useRoute();
     const params = route.params;
     const idPartida = params ? params.idPartida : null;
@@ -44,6 +37,7 @@ export function Partida() {
     const [jogo, setJogo] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
     const [abas, setAbas] = useState(null);
+    const [intervaloLocal, setIntervaloLocal] = useState(null);
 
     async function fetchData() {
         const jogoAgora = await evento(idPartida);
@@ -73,7 +67,7 @@ export function Partida() {
             index: 2,
             tipo: 3,
             title: 'Outros',
-            content: (highlights && jogoAgora.venue && jogoAgora.referee) ? {
+            content: (highlights || jogoAgora.venue || jogoAgora.referee) ? {
                 jogoAgora: jogoAgora,
                 highlights: highlights,
             } : null,
@@ -95,6 +89,8 @@ export function Partida() {
         if (jogoAgora.status.type == 'inprogress') {
             const interval = setInterval(async () => {
                 const jogoAtualizado = await evento(jogoAgora.id);
+                console.log(jogoAtualizado);
+                console.log(interval);
                 setJogo(jogoAtualizado);
                 if (jogoAtualizado.status.type != 'inprogress') {
                     clearInterval(interval);
@@ -115,7 +111,14 @@ export function Partida() {
     useEffect(() => {
         setRefreshing(true);
         fetchData();
-        dispatch(setCarregarJogos(false))
+        dispatch(setCarregarJogos(false));
+        return () => {
+            if (intervaloLocal) {
+              clearInterval(intervaloLocal);
+              console.log(intervaloLocal);
+            }
+            console.log('FUI');
+        };
     }, []);
 
     const renderAbas = (content, title, index, completo) => {
@@ -134,7 +137,7 @@ export function Partida() {
         }
     };
 
-    return (
+    return jogo ? (
         <View style={styles.container}>
             <View>
                 {jogo && <JogoAtivo jogo={jogo}/>}
@@ -143,7 +146,7 @@ export function Partida() {
                 {abas && <Tabs data={abas} render={renderAbas} indexInicial={0} id='jogo'/>}
             </ScrollView>
         </View>
-    );
+    ): <Spinner fundoPreto />;
 }
 
 export function Erro() {
@@ -212,11 +215,11 @@ export function Estatistica({estatistica}) {
             {linha && <View style={styles.linhaPH}></View>}
             <View style={styles.rowEstatistica}>
                 <View style={styles.bolinhaNum}>
-                    <Text style={styles[texto]}>{item.away}</Text>
+                    <Text style={styles[texto]}>{item.home}</Text>
                 </View>
                 <Text style={styles.txtEstatisticasNome}>{titulo}</Text>
                 <View style={styles.bolinhaNum}>
-                    <Text style={styles[texto]}>{item.home}</Text>
+                    <Text style={styles[texto]}>{item.away}</Text>
                 </View>
             </View>
         </View>);

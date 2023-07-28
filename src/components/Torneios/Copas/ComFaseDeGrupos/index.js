@@ -9,7 +9,7 @@ import { torneio, torneioMataMata, getSeasons } from '@/src/store/store';
 import { limitarString } from "@/src/Utils/LimitarString";
 import { Lista } from "@/src/components/Lista";
 import { styles } from "./styles";
-import { Eliminatoria } from "./Eliminatoria/index";
+import { Eliminatoria } from "@/src/components/Torneios/Eliminatoria";
 import { seasons } from '@/src/store/api';
 import { listaTorneios } from "@/src/store/listaTorneios";
 import { Spinner } from "@/src/components/Spinner";

@@ -35,7 +35,7 @@ export const stylesFuturo = StyleSheet.create({
     },
     txtTime: {
         color: theme.colors.texto[100],
-        fontSize: theme.font.size[6],
+        fontSize: theme.font.size[4],
     },
     img: {
         height: 50,
@@ -69,7 +69,6 @@ export const stylesFuturo = StyleSheet.create({
     jogo: {
         flexDirection: 'row',
         alignItems: 'center',
-        // gap: 10,
     },
     campeonato: {
         height: 60,
@@ -81,17 +80,12 @@ export const stylesFuturo = StyleSheet.create({
         height: 50,
         width: 50,
     },
-    jogoRolando: {
-        paddingBottom: 10,
-        // backgroundColor: 'red',
-    },
     timesUltimoJogo(vertical) {
         return {
             flex: 1,
             flexDirection: vertical?'column':'row',
             alignItems: 'center',
             justifyContent: 'center',
-            // gap: 5,
         };
     },
     times: {
@@ -105,7 +99,6 @@ export const stylesFuturo = StyleSheet.create({
         gap: 5,
     },
     timeCasa: {
-        // width: '20%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
@@ -113,7 +106,6 @@ export const stylesFuturo = StyleSheet.create({
         gap: 5,
     },
     timeVisitante: {
-        // width: '20%',
         flexDirection: 'row',
         alignItems: 'center',
         gap: 5,
@@ -170,7 +162,7 @@ export const stylesAtivo = StyleSheet.create({
     },
     txtTime: {
         color: theme.colors.texto[100],
-        fontSize: theme.font.size[6],
+        fontSize: theme.font.size[2],
     },
     img: {
         height: 50,
@@ -184,7 +176,6 @@ export const stylesAtivo = StyleSheet.create({
     },
     lista: {
         borderColor: '#ffffff0d',
-        // borderColor: 'transparent',
         paddingVertical: 10,
         borderTopWidth: 0.5,
         borderBottomWidth: 0.5,
@@ -204,7 +195,6 @@ export const stylesAtivo = StyleSheet.create({
     jogo: {
         flexDirection: 'row',
         alignItems: 'center',
-        // gap: 10,
     },
     campeonato: {
         height: 60,
@@ -218,29 +208,47 @@ export const stylesAtivo = StyleSheet.create({
     },
     jogoRolando(valor) {
         return {
-            height: valor?valor:100,
-            paddingBottom: 10,
+            height: valor?valor:null,
+            paddingVertical: 13,
+            alignItems: 'center',
+            justifyContent: 'center',
         };
     },
-    placarPenaltis(valor) {
-        return {
+    placarPenaltis(valor, vertical, direita) {
+        let p = {};
+        p = vertical ? {
             position: 'absolute',
-            top: ((valor?valor:100)/2)+7,
+            top: 0,
+            bottom: 0,
+            left: direita?22:1,
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+        } : {
+            position: 'absolute',
+            // top: ((valor?valor:100)/2)+5,
+            top: 25,
+            bottom: 0,
             right: 0,
             left: 0,
             flex: 1,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 5,
+            gap: 1,
         }
+
+        return p;
     },
-    timesUltimoJogo: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 5,
+    timesUltimoJogo(vertical) {
+        return {
+            flex: 0,
+            flexDirection: vertical?'column':'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: vertical?-3:0,
+            // backgroundColor: 'red',
+        };
     },
     times: {
         width: '100%',
@@ -252,19 +260,20 @@ export const stylesAtivo = StyleSheet.create({
         justifyContent: 'center',
         gap: 5,
     },
-    timeCasa: {
-        width: '20%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        fontSize: 20,
-        gap: 5,
+    timeCasa(vertical) {
+        return {
+            flexDirection: (vertical) ? null : 'row',
+            alignItems: 'center',
+            gap: vertical?0:3,
+            // backgroundColor: 'red',
+        };
     },
-    timeVisitante: {
-        width: '20%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 5,
+    timeVisitante(vertical) {
+        return {
+            flexDirection: (vertical) ? null : 'row',
+            alignItems: 'center',
+            gap: vertical?0:3,
+        };
     },
     imgLista(valor) {
         return {
@@ -279,7 +288,28 @@ export const stylesAtivo = StyleSheet.create({
         transform: [{ rotate: '90deg'}]
     },
     cartaoVermelhoContainer: {
+        position: 'absolute',
         flexDirection: 'row',
         gap: -1,
+    },
+    cartaoVermelhoContainerEsquerda(vertical) {
+        return {
+            position: 'absolute',
+            flexDirection: 'row',
+            top: vertical ? -12 : null,
+            left: vertical ? null : -10,
+            gap: -1,
+            alignSelf: vertical?null:'flex-end',
+        };
+    },
+    cartaoVermelhoContainerDireita(vertical) {
+        return {
+            position: 'absolute',
+            flexDirection: 'row',
+            bottom: vertical ? -12 : null,
+            right: vertical ? null : -10,
+            gap: -1,
+            alignSelf: vertical?null:'flex-end',
+        };
     },
 })

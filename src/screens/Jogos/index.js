@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
 import { BaseButton } from "react-native-gesture-handler";
 import { jogosDepois, proximoJogo, evento } from '@/src/store/store';
@@ -15,8 +15,6 @@ import { setCarregarJogos, setIntervalo } from '@/src/store/action';
 import { JogoAtivo } from "@/src/components/Jogo";
 
 export function Jogos() {
-    NavigationBar.setBackgroundColorAsync(theme.colors.nav);
-
 	const navigation = useNavigation();
     const route = useRoute();
     const dispatch = useDispatch();

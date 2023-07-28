@@ -13,8 +13,6 @@ import { Lista } from "@/src/components/Lista";
 import { Spinner } from "@/src/components/Spinner";
 
 export function Tabela() {
-    NavigationBar.setBackgroundColorAsync(theme.colors.nav);
-
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
     const [carregando, setCarregando] = useState(true);

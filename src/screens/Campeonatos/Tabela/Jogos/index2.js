@@ -12,14 +12,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 
 export function Jogos() {
-    useFocusEffect(() => {
-        NavigationBar.setBackgroundColorAsync(theme.colors.fundo);
-
-        return () => {
-            NavigationBar.setBackgroundColorAsync(theme.colors.nav);
-        };
-    });
-
 	const navigation = useNavigation();
     const route = useRoute();
     const dispatch = useDispatch();

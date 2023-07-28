@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { View, Text, Image, TouchableHighlight, useWindowDimensions } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { urlTime } from '@/src/store/api';
 import { styles } from "./styles";
@@ -50,14 +51,14 @@ export function AuthRoutes() {
 
     const renderTabBar = props => (
         <View style={styles.container}>
-            <TouchableHighlight onPress={() => navigation.navigate('Times')} underlayColor="transparent">
+            <TouchableHighlight onPress={() => navigation.navigate('Times')} underlayColor="#00000030">
                 <View style={styles.logo}>
                     <Image
                         style={styles.img}
                         resizeMode="center"
                         source={{ uri: `${urlTime}${meuTime && meuTime.id}/image` }}
                     />
-                    <Text style={styles.txtLogo}>{meuTime && meuTime.shortName}</Text>
+                    {layout.width > 350 && <Text style={styles.txtLogo}>{meuTime && meuTime.shortName}</Text>}
                 </View>
             </TouchableHighlight>
             <TabBar
@@ -65,7 +66,11 @@ export function AuthRoutes() {
                 labelStyle={styles.labelStyle}
                 indicatorStyle={styles.ativo}
                 style={styles.navContainer}
+                tabStyle={styles.tabContainer}
             />
+            <TouchableHighlight onPress={() => navigation.navigate('Times')} underlayColor="#00000030">
+                <Icon name="cog" size={20} color="#000" />
+            </TouchableHighlight>
         </View>
     );
 

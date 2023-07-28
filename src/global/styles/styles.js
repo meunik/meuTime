@@ -176,7 +176,7 @@ export const styles = StyleSheet.create({
     },
     chevronDown: {
         marginRight: 5,
-        paddingLeft: 20,
+        paddingLeft: 15,
         paddingVertical: 10,
     },
     jogoRolando: {

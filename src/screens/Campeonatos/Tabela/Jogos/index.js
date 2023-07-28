@@ -5,7 +5,6 @@ import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/nativ
 import { Text, View, Image, FlatList, RefreshControl, StyleSheet } from 'react-native';
 import { brasileiraoJogosDepois, brasileiraoJogosAntes, brasileiraoRodada } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
-import { setBackgroundColorAsync } from 'expo-navigation-bar';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { theme } from "@/src/global/styles/theme";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -14,14 +13,6 @@ import { Lista } from "@/src/components/Lista";
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 
 export function Jogos() {
-    useFocusEffect(() => {
-        setBackgroundColorAsync(theme.colors.fundo);
-
-        return () => {
-            setBackgroundColorAsync(theme.colors.nav);
-        };
-    });
-
 	const navigation = useNavigation();
     const route = useRoute();
     const dispatch = useDispatch();

@@ -8,14 +8,6 @@ import { styles } from "./styles";
 import { theme } from "@/src/global/styles/theme";
 
 export function Artilheiros({ route }) {
-    useFocusEffect(() => {
-        NavigationBar.setBackgroundColorAsync(theme.colors.fundo);
-
-        return () => {
-            NavigationBar.setBackgroundColorAsync(theme.colors.nav);
-        };
-    });
-
     const params = route.params;
 
     const [artilheiros, setArtilheiros] = useState(null);

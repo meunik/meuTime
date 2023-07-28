@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -12,30 +12,29 @@ import { setMeuTime, setCarregarJogos } from '@/src/store/action';
 
 import { styles } from "./styles";
 import { theme } from "@/src/global/styles/theme";
+import { Spinner } from "@/src/components/Spinner";
 
 export function Times({ route }) {
-    useFocusEffect(() => {
-        NavigationBar.setBackgroundColorAsync(theme.colors.fundo);
-
-        return () => {
-            NavigationBar.setBackgroundColorAsync(theme.colors.nav);
-        };
-    });
-
     const params = route.params;
 	const navigation = useNavigation();
 
     const listaTimes = useSelector(state => state.listaTimes);
     const meuTime = useSelector(state => state.meuTime);
     const carregarJogos = useSelector(state => state.carregarJogos);
+    const [load, setLoad] = useState(false);
     const dispatch = useDispatch();
+
+    const trocarTime = async (item) => {
+        dispatch(setMeuTime(item));
+        dispatch(setCarregarJogos(true));
+        navigation.navigate('inicial');
+    };
 
     const renderOpcoes = ({ item, index }) => (
         <BaseButton onPress={async () => {
-            dispatch(setMeuTime(item));
-            dispatch(setCarregarJogos(true));
-            navigation.navigate('inicial');
-        }}>
+                setLoad(true);
+                trocarTime(item)
+            }}>
             <View style={styles.lista}>
                 <Image
                     style={styles.img}
@@ -50,7 +49,10 @@ export function Times({ route }) {
     return (
         <View style={styles.container}>
             <Text style={styles.txtInfo}>Selecione seu Time</Text>
-                    
+
+            {load && <View style={styles.containerSpinner}>
+                <Spinner />
+            </View>}
             <FlatList
                 contentContainerStyle={styles.contentContainerStyle}
                 data={listaTimes}

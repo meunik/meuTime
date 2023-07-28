@@ -12,7 +12,7 @@ export function JogoFuturo ({
     vertical = false,
 }) {
     return (
-        <View style={{...stylesFuturo.jogoRolando, height: altura?altura:100,}}>
+        <View style={{height: altura?altura:100}}>
             <View style={stylesFuturo.timesUltimoJogo(vertical)}>
                 <View style={stylesFuturo.timeCasa}>
                     <SvgUri
@@ -56,18 +56,15 @@ export function JogoAtivo ({
     tempo = true,
     tamanhoImg = 0,
     altura = 0,
+    vertical = false,
+    direita = false,
 }) {
     return jogo ? (
         <View style={stylesAtivo.jogoRolando(altura)}>
-            {titulo && <View style={stylesAtivo.topo}>
-                <Text style={{ color: jogo.tournament.uniqueTournament.secondaryColorHex, ...stylesAtivo.txtcampeonato }}>
-                    {tituloJogo(jogo)}
-                </Text>
-            </View>}
-            <View style={stylesAtivo.timesUltimoJogo}>
+            <View style={stylesAtivo.timesUltimoJogo(vertical)}>
 
-                <View style={stylesAtivo.timeCasa}>
-                    <View style={stylesAtivo.cartaoVermelhoContainer}>
+                <View style={stylesAtivo.timeCasa(vertical)}>
+                    <View style={stylesAtivo.cartaoVermelhoContainerEsquerda(vertical)}>
                         {jogo.homeRedCards && (() => {
                             const items = [];
                             for (let i = 0; i < jogo.homeRedCards; i++) {
@@ -83,13 +80,12 @@ export function JogoAtivo ({
                     <Text style={stylesAtivo.txtTime}>{jogo.homeScore.display}</Text>
                 </View>
 
-                <Text style={stylesAtivo.txtX}>x</Text>
+                <View style={stylesFuturo.centralizado}>
+                    <Icon name="close" size={15} color="#969696"/>
+                </View>
 
-                <View style={stylesAtivo.timeVisitante}>
-                    <Text style={stylesAtivo.txtTime}>{jogo.awayScore.display}</Text>
-                    <Image style={stylesAtivo.imgLista(tamanhoImg)} resizeMode="center" source={{ uri: `${urlBase}team/${jogo.awayTeam.id}/image` }} />
-                    {nomes && <Text style={stylesAtivo.txtTime}>{jogo.awayTeam.nameCode}</Text>}
-                    <View style={stylesAtivo.cartaoVermelhoContainer}>
+                <View style={stylesAtivo.timeVisitante(vertical)}>
+                    <View style={stylesAtivo.cartaoVermelhoContainerDireita(vertical)}>
                         {jogo.awayRedCards && (() => {
                         const items = [];
                         for (let i = 0; i < jogo.awayRedCards; i++) {
@@ -100,12 +96,19 @@ export function JogoAtivo ({
                         return items;
                         })()}
                     </View>
+                    <Text style={stylesAtivo.txtTime}>{jogo.awayScore.display}</Text>
+                    <Image style={stylesAtivo.imgLista(tamanhoImg)} resizeMode="center" source={{ uri: `${urlBase}team/${jogo.awayTeam.id}/image` }} />
+                    {nomes && <Text style={stylesAtivo.txtTime}>{jogo.awayTeam.nameCode}</Text>}
                 </View>
 
             </View>
             {((jogo.status.code == 500)||(jogo.status.code == 120))&&
-            <View style={stylesAtivo.placarPenaltis(altura)}>
-                <Text style={stylesAtivo.txtPenaltis}>({jogo.homeScore.current-jogo.homeScore.display} x {jogo.awayScore.current-jogo.awayScore.display})</Text>
+            <View style={stylesAtivo.placarPenaltis(altura, vertical, direita)}>
+                <Text style={stylesAtivo.txtPenaltis}>{jogo.homeScore.current-jogo.homeScore.display}</Text>
+                <View style={stylesFuturo.centralizado}>
+                    <Icon name="close" size={7} color="#969696"/>
+                </View>
+                <Text style={stylesAtivo.txtPenaltis}>{jogo.awayScore.current-jogo.awayScore.display}</Text>
             </View>}
             {tempo && <View style={stylesAtivo.rodape}>
                 <Text style={stylesAtivo.txtTempo}>{tempoJogo(jogo)}</Text>
