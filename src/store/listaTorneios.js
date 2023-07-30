@@ -320,6 +320,20 @@ export const mundo = [
             },
         ],
     },
+    {
+        name: "Copa do Mundo Feminina",
+        slug: "copa-do-mundo-feminina",
+        primaryColorHex: "#033bbe",
+        secondaryColorHex: "#a5863b",
+        id: 290,
+        container: <CopaGrupos mataMataString={4} eliminatoriaVertical='ladoLado' scroll={false}/>,
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Oitavas de Final',
+            },
+        ],
+    },
 ];
 
 
