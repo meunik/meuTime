@@ -78,7 +78,7 @@ export function Tabela() {
                             </View>
                         </BaseButton>}
                     </View>
-                    <View>
+                    <View style={styles.boxLegenda}>
                         <Text style={styles.txtLegenda}>Libertadores <View style={styles.bolinhaLiberta}></View></Text>
                         <Text style={styles.txtLegenda}>Pré Libertadores <View style={styles.bolinhaPreLiberta}></View></Text>
                         <Text style={styles.txtLegenda}>Sulamericana <View style={styles.bolinhaSula}></View></Text>

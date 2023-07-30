@@ -30,11 +30,16 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         width: 15,
     },
+    boxLegenda: {
+        // flexDirection: 'row',
+        justifyContent: 'flex-end',
+        gap: 0,
+    },
     txtLegenda: {
         color: theme.colors.texto[300],
         fontSize: theme.font.size.legendas,
         textAlign: 'right',
-        paddingHorizontal: 10,
+        // paddingHorizontal: 10,
     },
     txtPosicao(item) {
         let cor = '#fff';
@@ -108,6 +113,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 10,
         paddingTop: 5,
+        gap: 5,
     },
     lista: {
         flexDirection: 'row',
@@ -160,32 +166,28 @@ export const styles = StyleSheet.create({
         borderRadius: 50,
         width: 6,
         height: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignSelf: 'center',
     },
     bolinhaPreLiberta: {
         backgroundColor: '#45a1f3',
         borderRadius: 50,
         width: 6,
         height: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignSelf: 'center',
     },
     bolinhaSula: {
         backgroundColor: '#3bb552',
         borderRadius: 50,
         width: 6,
         height: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignSelf: 'center',
     },
     bolinhaRebaixados: {
         backgroundColor: '#ef5158',
         borderRadius: 50,
         width: 6,
         height: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignSelf: 'center',
     },
     contentContainerStyle: {
         paddingBottom: theme.contentContainerStyle.paddingBottom,

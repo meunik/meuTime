@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
@@ -106,16 +106,13 @@ export function Jogos() {
 
         </View>
     );
-    // console.log(jogo);
 
     return (
         <View style={styles.container}>
-            {jogo && <BaseButton onPress={() => navigation.navigate('Partida', { idPartida: jogo.id })}>
+            {jogo ? <BaseButton onPress={() => navigation.navigate('Partida', { idPartida: jogo.id })}>
                 <JogoAtivo jogo={jogo}/>
-            </BaseButton>}
-            {/* <View>
-                {jogo && <JogoAtivo jogo={jogo}/>}
-            </View> */}
+            </BaseButton>:null}
+
             <FlatList
                 contentContainerStyle={styles.contentContainerStyle}
                 data={futurosJogos}
