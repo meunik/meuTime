@@ -44,10 +44,6 @@ export function Copa({
 
         setTabela(await torneio(torneioId, season.id));
         setMataMata(await torneioMataMata(torneioId, season.id));
-        // console.log(tabela);
-        console.log('---------- grupos ----------');
-        console.log(mataMata);
-        // console.log(desabilitarMataMata);
 
         setCarregando(false);
         setRefreshing(false);

@@ -85,6 +85,7 @@ export const MataMata = ({item, vertical = false}) => {
 }
 
 export const MataMataLadoLado = ({item}) => {
+    console.log(item);
     return (
         <View>
             {/* Final */}
@@ -145,16 +146,20 @@ export function ExibeJogo ({
     vertical = false,
     direita = false, // false = esquerda
 }) {
+    let eventIds = null;
+    if (item.eventIds) eventIds = item.eventIds;
+    else if (item.events) eventIds = item.events;
+
     const eventos = () => {
         return (<View style={vertical ? styles.row(direita) : styles.rowFinal}>
-            {item.eventIds && <Jogos
-                id={item.eventIds[0]}
+            {eventIds && <Jogos
+                id={eventIds[0]}
                 vertical={vertical}
                 final={final}
                 direita={direita}
             />}
-            {(item.eventIds.length > 1) && <Jogos
-                id={item.eventIds[1]}
+            {(eventIds && eventIds.length > 1) && <Jogos
+                id={eventIds[1]}
                 vertical={vertical}
                 final={final}
                 direita={direita}
@@ -176,7 +181,7 @@ export function ExibeJogo ({
             {(item.rightParticipant?.winner && final) && <Icon name="trophy" size={20} color="#dbb234" style={styles.campeaoRight}/>}
         </View>
         <View>
-            {(item.eventIds.length > 0) ? eventos() : simulaEventos()}
+            {(eventIds && eventIds.length > 0) ? eventos() : simulaEventos()}
         </View>
     </View>);
 }
