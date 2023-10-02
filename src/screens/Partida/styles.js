@@ -14,6 +14,11 @@ export const styles = StyleSheet.create({
         paddingTop: 10,
         gap: 10,
     },
+    voltar: {
+        marginRight: 5,
+        paddingLeft: 15,
+        paddingVertical: 10,
+    },
     lista: {
         paddingVertical: 10,
         borderTopWidth: 0.5,

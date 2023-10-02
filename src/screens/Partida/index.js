@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
-import { Text, View, Image, ScrollView, TouchableOpacity, Linking, Dimensions, RefreshControl } from 'react-native';
+import { Text, View, Image, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { BaseButton } from "react-native-gesture-handler";
 import { urlBase } from '@/src/store/api';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -29,6 +30,7 @@ export function Partida() {
     const params = route.params;
     const idPartida = params ? params.idPartida : null;
 
+	const navigation = useNavigation();
     const meuTime = useSelector(state => state.meuTime);
     const carregarJogos = useSelector(state => state.carregarJogos);
     const intervalo = useSelector(state => state.intervalo);
@@ -139,6 +141,9 @@ export function Partida() {
 
     return jogo ? (
         <View style={styles.container}>
+            <BaseButton onPress={() => navigation.goBack()}>
+                <Icon name="arrow-u-left-top" size={30} color="#434343" style={styles.voltar} />
+            </BaseButton>
             <View>
                 {jogo && <JogoAtivo jogo={jogo}/>}
             </View>
