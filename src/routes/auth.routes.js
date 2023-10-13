@@ -14,6 +14,7 @@ import { TodosJogos } from "@/src/components/TodosJogos";
 import { Jogos } from "@/src/screens/Jogos";
 import { Campeonatos } from "@/src/screens/Campeonatos";
 import { Artilheiros as BrasileiraoArtilheiros } from "@/src/screens/Campeonatos/Tabela/Artilheiros";
+import { Artilheiros } from "@/src/screens/Artilheiros";
 import { Jogos as BrasileiraoJogos } from "@/src/screens/Campeonatos/Tabela/Jogos";
 import { Times } from "@/src/screens/Times";
 import { Partida } from "@/src/screens/Partida";
@@ -117,6 +118,10 @@ export function AuthRoutes() {
                 <Screen
                     name="BrasileiraoArtilheiros"
                     component={BrasileiraoArtilheiros}
+                />
+                <Screen
+                    name="Artilheiros"
+                    component={Artilheiros}
                 />
                 <Screen
                     name="Times"

@@ -85,7 +85,6 @@ export const MataMata = ({item, vertical = false}) => {
 }
 
 export const MataMataLadoLado = ({item}) => {
-    console.log(item);
     return (
         <View>
             {/* Final */}

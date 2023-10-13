@@ -5,7 +5,7 @@ import { View, Text, Image, ScrollView, RefreshControl } from 'react-native';
 import { BaseButton } from "react-native-gesture-handler";
 import { urlBase } from '@/src/store/api';
 import { setSeason } from '@/src/store/action';
-import { torneio, torneioMataMata, getSeasons } from '@/src/store/store';
+import { torneio, torneioMataMata, torneioArtilheiros, getSeasons } from '@/src/store/store';
 import { limitarString } from "@/src/Utils/LimitarString";
 import { Lista } from "@/src/components/Lista";
 import { styles } from "./styles";
@@ -28,6 +28,7 @@ export function Copa({
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
     const [mataMata, setMataMata] = useState(null);
+    const [artilheiros, setArtilheiros] = useState(null);
     const [carregando, setCarregando] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const torneioId = useSelector(state => state.torneioId);
@@ -38,16 +39,19 @@ export function Copa({
         if (!refresh) {
             setTabela(null);
             setMataMata(null);
+            setArtilheiros(null);
         }
         let season = await getSeasons(torneioId);
         dispatch(setSeason(season));
 
         setTabela(await torneio(torneioId, season.id));
         setMataMata(await torneioMataMata(torneioId, season.id));
+        setArtilheiros(await torneioArtilheiros(torneioId, season.id));
 
         setCarregando(false);
         setRefreshing(false);
     };
+    // console.log(artilheiros && artilheiros.length);
 
     const onRefresh = () => {
         setRefreshing(true);
@@ -97,6 +101,17 @@ export function Copa({
             })}>
                 <View style={styles.btn}>
                     <Text style={styles.txtLink}>Jogos</Text>
+                </View>
+            </BaseButton>}
+            {tabela && (artilheiros && artilheiros.length > 0) && <BaseButton onPress={() => navigation.navigate('Artilheiros', {
+                campeonatoNome: tabela.name,
+                campeonato: tabela,
+                torneioId: torneioId,
+                seasonId: season.id,
+                artilheiros: artilheiros,
+            })}>
+                <View style={styles.btn}>
+                    <Text style={styles.txtLink}>Artilheiros</Text>
                 </View>
             </BaseButton>}
 

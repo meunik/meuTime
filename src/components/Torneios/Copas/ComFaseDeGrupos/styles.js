@@ -6,6 +6,11 @@ export const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: theme.colors.fundo,
     },
+    voltar: {
+        marginRight: 5,
+        paddingLeft: 15,
+        paddingVertical: 10,
+    },
     txt: {
         color: theme.colors.texto[100],
         fontSize: theme.font.size[4],
