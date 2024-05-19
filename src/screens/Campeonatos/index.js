@@ -46,7 +46,7 @@ export function Campeonatos() {
     useEffect(() => {
         setRefreshing(true);
         fetchDataTabela();
-    }, [meuTime, torneioId]);
+    }, [meuTime, torneioId, torneio, torneioStorage]);
 
     const [isViewVisible, setIsViewVisible] = useState(false);
     const [animation] = useState(new Animated.Value(0));
@@ -105,13 +105,16 @@ export function Campeonatos() {
 
         const padrao = (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.txtInfo}>Indisponível no momento</Text>
+                <Text style={styles.txtInfo}>Selecione o Torneio apertando o botão "Selecione o torneio" na parte superior da tela.</Text>
             </View>
         );
 
         if (torneio) {
             filtrado = listaTorneios.filter(item => item.id == torneio.id);
-            return (filtrado[0]) ? filtrado[0].container : padrao;
+            if (filtrado[0]) {
+                const Componente = filtrado[0].container;
+                return <Componente params={filtrado[0].params} />;
+            } else return padrao;
         }
 
         return padrao;
@@ -145,7 +148,21 @@ export function Campeonatos() {
     const ListarTodos = () => {
         const items = [];
         for (let i = 0; i < listaTorneios.length; i++) {
-            items.push(
+            if (listaTorneios[i].categoria) items.push(
+                <TouchableOpacity key={'listaTorneios'+i} onPress={() => {}}>
+                    <View style={{
+                        ...styles.infoSelect,
+                        justifyContent: 'center',
+                        paddingVertical: 10,
+                        paddingTop: (i == 0) ? 10 : 30
+                    }}>
+                        <Icon name="format-list-text" size={25} color="#434343" style={styles.chevronDown} />
+                        <Text style={styles.txtInfoTodos}>{listaTorneios[i] && listaTorneios[i].name}</Text>
+                    </View>
+                </TouchableOpacity>
+            )
+                
+            else items.push(
                 <TouchableOpacity key={'listaTorneios'+i} onPress={() => selecionaTorneio(listaTorneios[i])}>
                     <View style={styles.infoSelect}>
                         {listaTorneios[i] && <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${listaTorneios[i].id}/image/dark` }} />}
@@ -233,7 +250,7 @@ export function Campeonatos() {
                 </TouchableOpacity>
             </View>
 
-            {exibeTorneio()}
+            {!refreshing && exibeTorneio()}
         </View>
     );
 }

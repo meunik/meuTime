@@ -6,6 +6,9 @@ import { BaseButton } from "react-native-gesture-handler";
 import { jogosDepois, proximoJogo, evento } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import moment from 'moment';
+import 'moment/locale/pt-br';
+moment.locale('pt-br');
+
 import * as NavigationBar from 'expo-navigation-bar';
 import { styles } from "./styles";
 import { theme } from "@/src/global/styles/theme";
@@ -98,7 +101,7 @@ export function Jogos() {
             </View>
             <View style={styles.rodape}>
                 <Text style={styles.txtData}>
-                    {moment.unix(item.startTimestamp).format('DD/MM/YYYY')}
+                    {moment.unix(item.startTimestamp).format('ddd DD/MM/YYYY')}
                     {' - '}
                     {moment.unix(item.startTimestamp).format('HH:mm')}
                 </Text>

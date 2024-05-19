@@ -63,10 +63,6 @@ export const styles = StyleSheet.create({
         }
     },
     btn: {
-        // backgroundColor: '#343a40',
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // borderColor: '#ffffff0d',
         borderWidth: 0.5,
         borderColor: '#ffffff',
         paddingVertical: 5,

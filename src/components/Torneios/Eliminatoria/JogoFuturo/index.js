@@ -15,11 +15,7 @@ export function JogoFuturo ({
         <View style={{height: altura?altura:100}}>
             <View style={stylesFuturo.timesUltimoJogo(vertical)}>
                 <View style={stylesFuturo.timeCasa}>
-                    <SvgUri
-                        height={(tamanhoImg)?tamanhoImg:40}
-                        width={(tamanhoImg)?tamanhoImg:40}
-                        resizeMode="center" source={{ uri: `https://www.sofascore.com/static/images/placeholders/team.svg` }}
-                    />
+                    <Image style={stylesAtivo.imgLista(tamanhoImg)} resizeMode="center" source={require('/assets/team.png')} />
                 </View>
 
                 <View style={stylesFuturo.centralizado}>
@@ -27,11 +23,7 @@ export function JogoFuturo ({
                 </View>
 
                 <View style={stylesFuturo.timeVisitante}>
-                    <SvgUri
-                        height={(tamanhoImg)?tamanhoImg:40}
-                        width={(tamanhoImg)?tamanhoImg:40}
-                        resizeMode="center" source={{ uri: `https://www.sofascore.com/static/images/placeholders/team.svg` }}
-                    />
+                    <Image style={stylesAtivo.imgLista(tamanhoImg)} resizeMode="center" source={require('/assets/team.png')} />
                 </View>
             </View>
         </View>

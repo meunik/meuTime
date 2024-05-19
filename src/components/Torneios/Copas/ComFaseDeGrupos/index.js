@@ -14,17 +14,17 @@ import { seasons } from '@/src/store/api';
 import { listaTorneios } from "@/src/store/listaTorneios";
 import { Spinner } from "@/src/components/Spinner";
 
-export function Copa({
-    campeaoGrupos = false,
-    mataMataString = 0,
-    limitaString = 14,
-    legenda = null,
-    desabilitarGrupos = false,
-    desabilitarMataMata = false,
-    desabilitarBtnJogos = false,
-    eliminatoriaVertical = 'horizontal',
-    scroll = true,
-}) {
+export function Copa({params = null}) {
+	const campeaoGrupos = (params && params.campeaoGrupos) ? params.campeaoGrupos : false;
+	const mataMataString = (params && params.mataMataString) ? params.mataMataString : 0;
+	const limitaString = (params && params.limitaString) ? params.limitaString : 14;
+	const legenda = (params && params.legenda) ? params.legenda : null;
+	const desabilitarGrupos = (params && params.desabilitarGrupos) ? params.desabilitarGrupos : false;
+	const desabilitarMataMata = (params && params.desabilitarMataMata) ? params.desabilitarMataMata : false;
+	const desabilitarBtnJogos = (params && params.desabilitarBtnJogos) ? params.desabilitarBtnJogos : false;
+	const eliminatoriaVertical = (params && params.eliminatoriaVertical) ? params.eliminatoriaVertical : 'horizontal';
+	const scroll = (params && params.scroll) ? params.scroll : true;
+
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
     const [mataMata, setMataMata] = useState(null);
@@ -51,7 +51,6 @@ export function Copa({
         setCarregando(false);
         setRefreshing(false);
     };
-    // console.log(artilheiros && artilheiros.length);
 
     const onRefresh = () => {
         setRefreshing(true);

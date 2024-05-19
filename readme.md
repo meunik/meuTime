@@ -7,5 +7,8 @@ Um app feito com React Native parar acompanhar informações básicas e cotidian
 # start server
 - npx expo start
 
+<!-- "expo": "~48.0.18", -->
+<!-- "expo": "~49", -->
+
 # build
 - eas build -p android

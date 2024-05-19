@@ -41,17 +41,13 @@ export const styles = StyleSheet.create({
         textAlign: 'right',
         // paddingHorizontal: 10,
     },
-    txtPosicao(item) {
+    txtPosicao(item, legenda = null) {
         let cor = '#fff';
-        if (item.promotion) {
-            switch (item.promotion.id) {
-                case 20: cor = '#000'; break;
-                case 19: cor = '#fff'; break;
-                case 21: cor = '#000'; break;
-                case 3: cor = '#000'; break;
-            
-                default: cor = '#fff'; break;
-            }
+        if (item.promotion && legenda) {
+            try {
+                filtrado = legenda.filter(leg => leg.id == item.promotion.id);
+                cor = filtrado[0].textHexa;
+            } catch (error) {}
         }
         return {
             color: cor,
@@ -61,12 +57,8 @@ export const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: '#ffffff20',
         borderRadius: 10,
-        // backgroundColor: '#ffffff30',
-        // flexDirection: 'row',
-        // justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 5,
-        // paddingHorizontal: 15,
         borderRadius: 10,
     },
     linksContainer: {
@@ -140,17 +132,13 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 5,
     },
-    posicao(item) {
+    posicao(item, legenda = null) {
         let cor = '#333';
-        if (item.promotion) {
-            switch (item.promotion.id) {
-                case 19: cor = '#004fd9'; break; // Libertadores
-                case 20: cor = '#45a1f3'; break; // Pré-Libertadores
-                case 21: cor = '#3bb552'; break; // Sulamericana
-                case 3: cor = '#ef5158'; break; // Rebaixamento
-            
-                default: cor = '#333'; break;
-            }
+        if (item.promotion && legenda) {
+            try {
+                filtrado = legenda.filter(leg => leg.id == item.promotion.id);
+                cor = filtrado[0].hexa;
+            } catch (error) {}
         }
         return {
             backgroundColor: cor,
@@ -161,33 +149,14 @@ export const styles = StyleSheet.create({
             alignItems: 'center',
         }
     },
-    bolinhaLiberta: {
-        backgroundColor: '#004fd9',
-        borderRadius: 50,
-        width: 6,
-        height: 6,
-        alignSelf: 'center',
-    },
-    bolinhaPreLiberta: {
-        backgroundColor: '#45a1f3',
-        borderRadius: 50,
-        width: 6,
-        height: 6,
-        alignSelf: 'center',
-    },
-    bolinhaSula: {
-        backgroundColor: '#3bb552',
-        borderRadius: 50,
-        width: 6,
-        height: 6,
-        alignSelf: 'center',
-    },
-    bolinhaRebaixados: {
-        backgroundColor: '#ef5158',
-        borderRadius: 50,
-        width: 6,
-        height: 6,
-        alignSelf: 'center',
+    bolinha(hexa) {
+        return {
+            backgroundColor: hexa,
+            borderRadius: 50,
+            width: 6,
+            height: 6,
+            alignSelf: 'center',
+        }
     },
     contentContainerStyle: {
         paddingBottom: theme.contentContainerStyle.paddingBottom,

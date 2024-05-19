@@ -118,17 +118,19 @@ export const styles = StyleSheet.create({
         gap: 5,
     },
     timeCasa: {
-        width: '20%',
+        width: '50%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
+        // backgroundColor: 'red',
         fontSize: 20,
         gap: 5,
     },
     timeVisitante: {
-        width: '20%',
+        width: '50%',
         flexDirection: 'row',
         alignItems: 'center',
+        // backgroundColor: 'red',
         gap: 5,
     },
     imgLista(valor) {

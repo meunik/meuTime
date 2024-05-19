@@ -12,7 +12,7 @@ import { styles } from "./styles";
 import { Lista } from "@/src/components/Lista";
 import { Spinner } from "@/src/components/Spinner";
 
-export function Tabela() {
+export function Tabela({params = null}) {
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
     const [carregando, setCarregando] = useState(true);
@@ -42,8 +42,8 @@ export function Tabela() {
     const renderTabela = (item, key) => (
         <View key={key} style={styles.lista}>
             <View style={styles.time}>
-                <View style={styles.posicao(item)}>
-                    <Text style={styles.txtPosicao(item)}>{item.position}</Text>
+                <View style={styles.posicao(item, params && params.legenda)}>
+                    <Text style={styles.txtPosicao(item, params && params.legenda)}>{item.position}</Text>
                 </View>
                 <Image style={styles.imgTime} resizeMode="center" source={{ uri: `${urlBase}team/${item.team.id}/image` }} />
                 <Text style={styles.txt}>{item.team.shortName}</Text>
@@ -58,6 +58,23 @@ export function Tabela() {
             </View>
         </View>
     );
+
+    function legenda() {
+        return (
+            <View style={styles.boxLegenda}>
+                
+                {params && params.legenda && (() => {
+                    const items = [];
+                    params.legenda.forEach((index, key) => items.push(
+                        <Text key={key} style={styles.txtLegenda}>
+                            {index.texto} <View style={styles.bolinha(index.hexa)}></View>
+                        </Text>
+                    ));
+                    return items;
+                })()}
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>
@@ -78,12 +95,7 @@ export function Tabela() {
                             </View>
                         </BaseButton>}
                     </View>
-                    <View style={styles.boxLegenda}>
-                        <Text style={styles.txtLegenda}>Libertadores <View style={styles.bolinhaLiberta}></View></Text>
-                        <Text style={styles.txtLegenda}>Pré Libertadores <View style={styles.bolinhaPreLiberta}></View></Text>
-                        <Text style={styles.txtLegenda}>Sulamericana <View style={styles.bolinhaSula}></View></Text>
-                        <Text style={styles.txtLegenda}>Rebaixamento <View style={styles.bolinhaRebaixados}></View></Text>
-                    </View>
+                    {legenda()}
                 </View>
                 <View style={styles.listaInfo}>
                     <View style={styles.time}>

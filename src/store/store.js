@@ -10,6 +10,9 @@ import {
     urlBrasileirao,
 } from '@/src/store/api';
 
+
+export const getTimes = async(id, season)=> await request(`${urlTorneio(id, season)}statistics/info`, 'teams');
+
 export const getSeasons = async(id)=> await request(urlSeason(id), 'seasons', true);
 
 //sobre a pertida

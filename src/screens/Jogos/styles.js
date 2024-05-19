@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
         backgroundColor: theme.colors.fundo,
         // backgroundColor: theme.colors.background(),
         // backgroundColor: '#000000d9',
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
     },
     txtLogo: {
         color: theme.colors.texto[100],
@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
     },
     campeonato: {
         height: 60,
-        width: 40,
+        width: 50,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -115,7 +115,7 @@ export const styles = StyleSheet.create({
         gap: 5,
     },
     timeCasa: {
-        width: '45%',
+        width: '50%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
@@ -123,7 +123,7 @@ export const styles = StyleSheet.create({
         gap: 5,
     },
     timeVisitante: {
-        width: '45%',
+        width: '50%',
         flexDirection: 'row',
         alignItems: 'center',
         gap: 5,

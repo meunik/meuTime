@@ -17,7 +17,7 @@ export const urlChannel = (id, idEvento) => `${urlEventos}tv/channel/${id}/event
 export const urlSeason = (id) => `${urlBase}unique-tournament/${id}/seasons`;
 // export const urlTorneio = (id, season) => `${urlBase}unique-tournament/${id}/season/${seasons[id]['season']}/`;
 export const urlTorneio = (id, season) => `${urlBase}unique-tournament/${id}/season/${season}/`;
-
+/*
 export const seasons = {
     92: { // Cariocao
         season: 47664,
@@ -209,6 +209,7 @@ export const seasons = {
         ],
     },
 };
+*/
 
 export {
     api,

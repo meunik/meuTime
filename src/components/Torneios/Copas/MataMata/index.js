@@ -27,12 +27,11 @@ import {
     torneioRodada,
 } from '@/src/store/store';
 
-export function Copa({
-    mataMataString = 0,
-    somenteMataMata = false,
-    nomeTimes = false,
-    somenteFinal = false,
-}) {
+export function Copa({params = null}) {
+	const mataMataString = (params && params.mataMataString) ? params.mataMataString : 0;
+	const somenteMataMata = (params && params.somenteMataMata) ? params.somenteMataMata : false;
+	const nomeTimes = (params && params.nomeTimes) ? params.nomeTimes : false;
+	const somenteFinal = (params && params.somenteFinal) ? params.somenteFinal : false;
 
 	const navigation = useNavigation();
 
@@ -51,8 +50,6 @@ export function Copa({
         let season = await getSeasons(torneioId);
         dispatch(setSeason(season));
         setMataMata(await torneioMataMata(torneioId, season.id));
-        console.log('---------- mataMata ----------');
-        console.log(mataMata);
 
         if (!somenteMataMata) {
             const jogosPassado = await torneioJogosAntes(torneioId, season.id);

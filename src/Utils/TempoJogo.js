@@ -1,4 +1,6 @@
 import moment from 'moment';
+import 'moment/locale/pt-br';
+moment.locale('pt-br');
 
 export function tempoJogo(jogo) {
     const inicio = jogo.time.currentPeriodStartTimestamp;
@@ -50,7 +52,7 @@ export function tempoJogo(jogo) {
         case 120: tempo = 'Encerrado'; break;
     
         default:
-            tempo = moment.unix(jogo.startTimestamp).format('DD/MM/YYYY')+' - '+moment.unix(jogo.startTimestamp).format('HH:mm');
+            tempo = moment.unix(jogo.startTimestamp).format('ddd DD/MM/YYYY')+' - '+moment.unix(jogo.startTimestamp).format('HH:mm');
             break;
     }
 

@@ -74,12 +74,6 @@ export function Partida() {
                 highlights: highlights,
             } : null,
         };
-        
-        // console.log(jogoAgora);
-        // console.log(escalacao);
-        // console.log(tecnicos);
-        // console.log(estatisticas);
-        // console.log(highlights);
 
         setJogo(jogoAgora);
         setAbas([
@@ -91,8 +85,6 @@ export function Partida() {
         if (jogoAgora.status.type == 'inprogress') {
             const interval = setInterval(async () => {
                 const jogoAtualizado = await evento(jogoAgora.id);
-                console.log(jogoAtualizado);
-                console.log(interval);
                 setJogo(jogoAtualizado);
                 if (jogoAtualizado.status.type != 'inprogress') {
                     clearInterval(interval);
@@ -115,11 +107,7 @@ export function Partida() {
         fetchData();
         dispatch(setCarregarJogos(false));
         return () => {
-            if (intervaloLocal) {
-              clearInterval(intervaloLocal);
-              console.log(intervaloLocal);
-            }
-            console.log('FUI');
+            if (intervaloLocal) clearInterval(intervaloLocal);
         };
     }, []);
 
