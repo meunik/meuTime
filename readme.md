@@ -12,3 +12,5 @@ Um app feito com React Native parar acompanhar informações básicas e cotidian
 
 # build
 - eas build -p android
+- eas build -p android --profile preview
+- eas build -p android --profile production

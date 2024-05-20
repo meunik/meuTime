@@ -104,7 +104,7 @@ export function Campeonatos() {
         dispatch(setTorneioId(torneio?.id));
 
         const padrao = (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }}>
                 <Text style={styles.txtInfo}>Selecione o Torneio apertando o botão "Selecione o torneio" na parte superior da tela.</Text>
             </View>
         );
