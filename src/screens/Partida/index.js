@@ -151,6 +151,12 @@ export function Erro() {
 }
 
 export function Estatistica({estatistica}) {
+    const [passesHome, setPassesHome] = useState(null);
+    const [passesAway, setPassesAway] = useState(null);
+
+    const [passesHomePorcent, setPassesHomePorcent] = useState(null);
+    const [passesAwayPorcent, setPassesAwayPorcent] = useState(null);
+    
     if (!estatistica) return <Erro />;
 
     const all = estatistica[0].groups;
@@ -168,6 +174,8 @@ export function Estatistica({estatistica}) {
             case "Shots on target": titulo = 'Finalizações no gol'; break;
             case "Shots off target": titulo = 'Finalizações para fora'; break;
             // case "Blocked shots": titulo = 'Blocked shots'; break;
+
+            // case "Expected goals": titulo = 'Expectativas de Gols'; break;
 
             case "Corner kicks": titulo = 'Escanteios'; linha = true; break;
             case "Offsides": titulo = 'Impedimentos'; break;
@@ -191,6 +199,8 @@ export function Estatistica({estatistica}) {
             case "Accurate passes": titulo = 'Passes certos'; texto = 'txtMenor'; break;
             case "Long balls": titulo = 'Bolas longas'; texto = 'txtMenor'; break;
             case "Crosses": titulo = 'Cruzamentos'; texto = 'txtMenor'; break;
+            case "Duels": titulo = 'Duelos'; texto = 'txtMenor'; break;
+            // case "Recoveries": titulo = 'Recuperações'; texto = 'txtMenor'; linha = true; break;
 
             case "Dribbles": titulo = 'Dribles'; texto = 'txtMenor'; linha = true; break;
             case "Possession lost": titulo = 'Perda da posse de bola'; break;
@@ -204,15 +214,31 @@ export function Estatistica({estatistica}) {
             default: titulo = null; break;
         }
 
+        if (item.name == 'Passes') {
+            if (item.home) setPassesHome(item.home);
+            if (item.away) setPassesAway(item.away);
+        }
+
+        if (item.name == 'Accurate passes') {
+            setPassesHomePorcent(Math.floor((item.home / passesHome) * 100))
+            setPassesAwayPorcent(Math.floor((item.away / passesAway) * 100))
+        }
+
         return titulo && (<View key={key}>
             {linha && <View style={styles.linhaPH}></View>}
             <View style={styles.rowEstatistica}>
                 <View style={styles.bolinhaNum}>
-                    <Text style={styles[texto]}>{item.home}</Text>
+                    <Text style={styles[texto]}>
+                        {item.home}
+                        {(passesHomePorcent && (item.name == 'Accurate passes')) && ` (${passesHomePorcent}%)`}
+                    </Text>
                 </View>
                 <Text style={styles.txtEstatisticasNome}>{titulo}</Text>
                 <View style={styles.bolinhaNum}>
-                    <Text style={styles[texto]}>{item.away}</Text>
+                    <Text style={styles[texto]}>
+                        {item.away}
+                        {(passesAwayPorcent && (item.name == 'Accurate passes')) && ` (${passesAwayPorcent}%)`}
+                    </Text>
                 </View>
             </View>
         </View>);

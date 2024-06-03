@@ -27,7 +27,9 @@ export function Artilheiros({ route }) {
         fetchDataArtilheiro();
     }, []);
 
-    const renderArtihleiro = ({ item, index }) => (
+    const renderArtihleiro = ({ item, index }) => {
+        // console.log(item);
+        return(
         <View style={styles.lista}>
             <View style={styles.time}>
                 <View style={styles.posicao}>
@@ -43,7 +45,7 @@ export function Artilheiros({ route }) {
                 <Text style={{...styles.txtPontos, width: 17}}>{item.bigChancesMissed}</Text>
             </View>
         </View>
-    );
+    )};
 
     return (
         <View style={styles.container}>

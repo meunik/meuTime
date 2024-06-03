@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[100],
         fontSize: theme.font.size[1],
         textAlign: 'center',
-        width: 15,
+        width: 22,
     },
     txtInfo: {
         color: theme.colors.texto[300],
@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[300],
         fontSize: theme.font.size[1],
         textAlign: 'center',
-        width: 15,
+        width: 22,
     },
     txtLegenda: {
         color: theme.colors.texto[300],

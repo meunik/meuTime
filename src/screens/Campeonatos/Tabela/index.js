@@ -6,7 +6,7 @@ import { View, Text, Image, FlatList, RefreshControl } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 import { theme } from "@/src/global/styles/theme";
 import { setSeason } from '@/src/store/action';
-import { torneio, getSeasons } from '@/src/store/store';
+import { torneio, torneioArtilheiros, getSeasons } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import { Lista } from "@/src/components/Lista";
@@ -15,6 +15,7 @@ import { Spinner } from "@/src/components/Spinner";
 export function Tabela({params = null}) {
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
+    const [artilheiros, setArtilheiros] = useState(null);
     const [carregando, setCarregando] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const torneioId = useSelector(state => state.torneioId);
@@ -26,6 +27,7 @@ export function Tabela({params = null}) {
         dispatch(setSeason(season));
 
         setTabela(await torneio(torneioId, season.id, true));
+        setArtilheiros(await torneioArtilheiros(torneioId, season.id));
         setCarregando(false);
         setRefreshing(false);
     };
@@ -81,14 +83,18 @@ export function Tabela({params = null}) {
             <View>
                 <View style={styles.listaInfo}>
                     <View style={styles.linksContainer}>
-                        {tabela && <BaseButton onPress={() => navigation.navigate('BrasileiraoArtilheiros', {
+                        {tabela && (artilheiros && artilheiros.length > 0) && <BaseButton onPress={() => navigation.navigate('Artilheiros', {
                             campeonatoNome: tabela.name,
                             campeonato: tabela.tournament,
+                            torneioId: torneioId,
+                            seasonId: season.id,
+                            artilheiros: artilheiros,
                         })}>
                             <View style={styles.btn}>
                                 <Text style={styles.txtLink}>Ver Artilheiros</Text>
                             </View>
                         </BaseButton>}
+
                         {tabela && <BaseButton onPress={() => navigation.navigate('TodosJogos')}>
                             <View style={styles.btn}>
                                 <Text style={styles.txtLink}>Jogos</Text>

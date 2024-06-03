@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
 import { brasileiraoArtilheiros } from '@/src/store/store';
+import { limitarString } from "@/src/Utils/LimitarString";
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import { theme } from "@/src/global/styles/theme";
@@ -12,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export function Artilheiros({ route }) {
     const params = route.params;
+	const limitaString = 13;
 
 	const navigation = useNavigation();
     const [artilheiros, setArtilheiros] = useState(params.artilheiros);
@@ -30,7 +32,6 @@ export function Artilheiros({ route }) {
     useEffect(() => {
         // fetchDataArtilheiro();
     }, []);
-    // console.log(params.campeonato);
 
     const renderArtihleiro = ({ item, index }) => (
         <View style={styles.lista}>
@@ -39,7 +40,8 @@ export function Artilheiros({ route }) {
                     <Text style={styles.txtPosicao}>{index + 1}</Text>
                 </View>
                 <Image style={styles.imgTime} resizeMode="center" source={{ uri: `${urlBase}team/${item.team.id}/image` }} />
-                <Text style={styles.txt}>{item.player.name}</Text>
+                <Text style={styles.txt}>{limitarString(item.player.name, limitaString)}</Text>
+                {/* <Text style={styles.txt}>{item.player.name}</Text> */}
             </View>
             <View style={styles.pontos}>
                 <Text style={styles.txtPontos}>{item.goals}</Text>
@@ -57,7 +59,13 @@ export function Artilheiros({ route }) {
                     <BaseButton onPress={() => navigation.goBack()}>
                         <Icon name="arrow-u-left-top" size={30} color="#434343" style={styles.voltar} />
                     </BaseButton>
-                    {/* {params && <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${params.campeonato.uniqueTournament.id}/image/dark` }} />} */}
+                    {(params && params.campeonato.uniqueTournament) && 
+                        <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${params.campeonato.uniqueTournament.id}/image/dark` }} />}
+                    {(
+                        params && 
+                        (Array.isArray(params.campeonato) && 
+                        params.campeonato[0].tournament.uniqueTournament)
+                    ) && <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${params.campeonato[0].tournament.uniqueTournament.id}/image/dark` }} />}
                     <View>
                         <Text style={styles.txtInfo}>Artilheiros</Text>
                         {/* <Text style={styles.txtInfo}>{params && params.campeonatoNome}</Text> */}
