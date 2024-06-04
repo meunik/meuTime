@@ -70,6 +70,12 @@ export function TodosJogos() {
             console.error(error);
         }
     };
+    console.log(torneio);
+    console.log(rodadaNumero);
+    console.log(rodada);
+    console.log(tabs);
+    console.log("------------------");
+    console.log("------------------");
 
     function stringRodada(valor) {
         if (mataMataString == 0) return `Rodada ${valor}`;
@@ -232,15 +238,11 @@ export function TodosJogos() {
                         </>}
                     </View>
                 </View>
-                {/* <BaseButton onPress={() => {
-                    console.log('teste');
-                    console.log(rodada);
-                    setRodadaNumero(13)
-                }}>
+                <BaseButton onPress={() => setRodadaNumero(rodada)}>
                     <View style={styles.btn}>
-                        <Text style={styles.txtLink}>Rodada Atual</Text>
+                        <Text style={styles.txtLink}>Ir para rodada atual</Text>
                     </View>
-                </BaseButton> */}
+                </BaseButton>
             </View>
 
             {((tabs.length > 0) && rodadaNumero && !carregando) 
