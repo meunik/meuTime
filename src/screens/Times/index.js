@@ -7,7 +7,12 @@ import * as NavigationBar from 'expo-navigation-bar';
 import { Text, View, Image, FlatList, RefreshControl } from 'react-native';
 import { urlTime } from '@/src/store/api';
 import { getTimes, getSeasons, brasileiraoArtilheiros } from '@/src/store/store';
-import { listaInternacionais } from "@/src/store/listaTimes";
+import {
+    listaInternacionais,
+    listaSelecoesEuropa,
+    listaSelecoesAmerica,
+    listaSelecoesAfrica
+} from "@/src/store/listaTimes";
 
 import { setMeuTime, setCarregarJogos } from '@/src/store/action';
 
@@ -56,11 +61,33 @@ export function Times({ route }) {
                 id: 't2',
             },
             ...listaInternacionais,
+            {
+                name: "Seleções da Europa",
+                slug: "categoria",
+                categoria: true,
+                id: 't3',
+            },
+            ...listaSelecoesEuropa,
+            {
+                name: "Seleções da América",
+                slug: "categoria",
+                categoria: true,
+                id: 't4',
+            },
+            ...listaSelecoesAmerica,
+            {
+                name: "Seleções da Africa",
+                slug: "categoria",
+                categoria: true,
+                id: 't5',
+            },
+            ...listaSelecoesAfrica,
         ]);
         setRefreshing(false);
     };
 
     const trocarTime = async (item) => {
+        setRefreshing(true);
         dispatch(setMeuTime(item));
         dispatch(setCarregarJogos(true));
         navigation.navigate('inicial');
@@ -87,7 +114,10 @@ export function Times({ route }) {
             <Text style={styles.txtInfoTodos}>{item && item.name}</Text>
         </View>)
 
-        else return (<BaseButton onPress={async () => { setLoad(true); trocarTime(item); }}>
+        else return (<BaseButton onPress={async () => {
+            setLoad(true);
+            setTimeout(() => trocarTime(item), 0);
+        }}>
             <View style={styles.lista}>
                 <Image
                     style={styles.img}

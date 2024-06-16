@@ -154,5 +154,193 @@ export const listaInternacionais = [
         shortName: "Boca Juniors",
         nameCode: "BOC",
         id: 3202,
+    },
+];
+
+
+export const listaSelecoesEuropa = [
+    {
+        name: "Germany",
+        slug: "germany",
+        shortName: "Germany",
+        nameCode: "GER",
+        id: 4711,
+    },
+    {
+        name: "Croatia",
+        slug: "croatia",
+        shortName: "Croatia",
+        nameCode: "CRO",
+        id: 4715,
+    },
+    {
+        name: "Italy",
+        slug: "italy",
+        shortName: "Italy",
+        nameCode: "ITA",
+        id: 4707,
+    },
+    {
+        name: "Spain",
+        slug: "spain",
+        shortName: "Spain",
+        nameCode: "ESP",
+        id: 4698,
+    },    
+    {
+        name: "Denmark",
+        slug: "denmark",
+        shortName: "Denmark",
+        nameCode: "DEN",
+        id: 4476,
+    },
+    {
+        name: "England",
+        slug: "england",
+        shortName: "England",
+        nameCode: "ENG",
+        id: 4713,
+    },
+    {
+        name: "France",
+        slug: "france",
+        shortName: "France",
+        nameCode: "FRA",
+        id: 4481,
+    },
+    {
+        name: "Belgium",
+        slug: "belgium",
+        shortName: "Belgium",
+        nameCode: "BEL",
+        id: 4717,
+    },
+    {
+        name: "Portugal",
+        slug: "portugal",
+        shortName: "Portugal",
+        nameCode: "POR",
+        id: 4704,
+    },
+];
+
+export const listaSelecoesAmerica = [
+    {
+        name: "Brazil",
+        slug: "brazil",
+        shortName: "Brazil",
+        nameCode: "BRA",
+        id: 4748,
+    },
+    {
+        name: "Argentina",
+        slug: "argentina",
+        shortName: "Argentina",
+        nameCode: "ARG",
+        id: 4819,
+    },
+    {
+        name: "Canada",
+        slug: "canada",
+        shortName: "Canada",
+        nameCode: "CAN",
+        id: 4752,
+    },
+    {
+        name: "Chile",
+        slug: "chile",
+        shortName: "Chile",
+        nameCode: "CHI",
+        id: 4754,
+    },
+    {
+        name: "Peru",
+        slug: "peru",
+        shortName: "Peru",
+        nameCode: "PER",
+        id: 4790,
+    },
+    {
+        name: "Ecuador",
+        slug: "ecuador",
+        shortName: "Ecuador",
+        nameCode: "ECU",
+        id: 4757,
+    },
+    {
+        name: "Mexico",
+        slug: "mexico",
+        shortName: "Mexico",
+        nameCode: "MEX",
+        id: 4781,
+    },
+    {
+        name: "Venezuela",
+        slug: "venezuela",
+        shortName: "Venezuela",
+        nameCode: "VEN",
+        id: 4722,
+    },
+
+    
+    {
+        name: "Bolivia",
+        slug: "bolivia",
+        shortName: "Bolivia",
+        nameCode: "BOL",
+        id: 4746,
+    },
+    {
+        name: "Panama",
+        slug: "panama",
+        shortName: "Panama",
+        nameCode: "PAN",
+        id: 5164,
+    },
+    {
+        name: "Uruguay",
+        slug: "uruguay",
+        shortName: "Uruguay",
+        nameCode: "URU",
+        id: 4725,
+    },
+    {
+        name: "USA",
+        slug: "usa",
+        shortName: "USA",
+        nameCode: "USA",
+        id: 4724,
+    },
+    {
+        name: "Colombia",
+        slug: "colombia",
+        shortName: "Colombia",
+        nameCode: "COL",
+        id: 4820,
+    },
+    {
+        name: "Costa Rica",
+        slug: "costa-rica",
+        shortName: "Costa Rica",
+        nameCode: "CRC",
+        id: 4756,
+    },
+    {
+        name: "Paraguay",
+        slug: "paraguay",
+        shortName: "Paraguay",
+        nameCode: "PAR",
+        id: 4789,
+    }
+];
+
+
+export const listaSelecoesAfrica = [
+    {
+        name: "Jamaica",
+        slug: "jamaica",
+        shortName: "Jamaica",
+        nameCode: "JAM",
+        id: 4769,
     }
 ];

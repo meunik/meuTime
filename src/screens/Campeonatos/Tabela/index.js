@@ -6,7 +6,7 @@ import { View, Text, Image, FlatList, RefreshControl } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 import { theme } from "@/src/global/styles/theme";
 import { setSeason } from '@/src/store/action';
-import { torneio, torneioArtilheiros, getSeasons } from '@/src/store/store';
+import { torneio, torneioArtilheiros, torneioUltimosEventos, getSeasons } from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import { Lista } from "@/src/components/Lista";
@@ -16,6 +16,7 @@ export function Tabela({params = null}) {
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
     const [artilheiros, setArtilheiros] = useState(null);
+    const [eventos, setEventos] = useState(null);
     const [carregando, setCarregando] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const torneioId = useSelector(state => state.torneioId);
@@ -26,8 +27,12 @@ export function Tabela({params = null}) {
         let season = await getSeasons(torneioId);
         dispatch(setSeason(season));
 
-        setTabela(await torneio(torneioId, season.id, true));
+        const table = await torneio(torneioId, season.id, true);
+        setTabela(table);
         setArtilheiros(await torneioArtilheiros(torneioId, season.id));
+        const ultimosEventos = await torneioUltimosEventos(torneioId, season.id);
+        if (table?.tournament && ultimosEventos) setEventos(ultimosEventos[table.tournament.id]);
+
         setCarregando(false);
         setRefreshing(false);
     };
@@ -41,7 +46,29 @@ export function Tabela({params = null}) {
         fetchDataTabela();
     }, []);
 
-    const renderTabela = (item, key) => (
+    const renderTabela = (item, key) => {
+        const cincoEventos = [];
+        /**
+         * 1 = Vitória
+         * 2 = Derrota
+         * 3 = Empate
+         */
+        if (item?.team && eventos) {
+            const timeEventos = eventos[item.team.id];
+            timeEventos.forEach(evento => {
+                if (evento.winnerCode == 1) {
+                    if (evento.homeTeam.id == item.team.id) cincoEventos.push(1);
+                    if (evento.awayTeam.id == item.team.id) cincoEventos.push(2);
+                }
+                if (evento.winnerCode == 2) {
+                    if (evento.homeTeam.id == item.team.id) cincoEventos.push(2);
+                    if (evento.awayTeam.id == item.team.id) cincoEventos.push(1);
+                }
+                if (evento.winnerCode == 3) cincoEventos.push(3);
+            });
+        }
+        
+        return (
         <View key={key} style={styles.lista}>
             <View style={styles.time}>
                 <View style={styles.posicao(item, params && params.legenda)}>
@@ -50,16 +77,25 @@ export function Tabela({params = null}) {
                 <Image style={styles.imgTime} resizeMode="center" source={{ uri: `${urlBase}team/${item.team.id}/image` }} />
                 <Text style={styles.txt}>{item.team.shortName}</Text>
             </View>
-            <View style={styles.pontos}>
-                <Text style={styles.txtPontos}>{item.points}</Text>
-                <Text style={styles.txtPontos}>{item.matches}</Text>
-                <Text style={styles.txtPontos}>{item.wins}</Text>
-                <Text style={styles.txtPontos}>{item.draws}</Text>
-                <Text style={styles.txtPontos}>{item.losses}</Text>
-                <Text style={{...styles.txtPontos, width: 20}}>{item.scoresFor - item.scoresAgainst}</Text>
+            <View style={styles.pontosDiv}>
+                {!!cincoEventos.length && <View style={styles.pontos}>
+                    <Text style={styles.bolinhaEvento(cincoEventos[0])}></Text>
+                    <Text style={styles.bolinhaEvento(cincoEventos[1])}></Text>
+                    <Text style={styles.bolinhaEvento(cincoEventos[2])}></Text>
+                    <Text style={styles.bolinhaEvento(cincoEventos[3])}></Text>
+                    <Text style={styles.bolinhaEvento(cincoEventos[4])}></Text>
+                </View>}
+                <View style={styles.pontos}>
+                    <Text style={styles.txtPontos}>{item.points}</Text>
+                    <Text style={styles.txtPontos}>{item.matches}</Text>
+                    <Text style={styles.txtPontos}>{item.wins}</Text>
+                    <Text style={styles.txtPontos}>{item.draws}</Text>
+                    <Text style={styles.txtPontos}>{item.losses}</Text>
+                    <Text style={{...styles.txtPontos, width: 20}}>{item.scoresFor - item.scoresAgainst}</Text>
+                </View>
             </View>
         </View>
-    );
+    )};
 
     function legenda() {
         return (
@@ -110,13 +146,25 @@ export function Tabela({params = null}) {
                         </View>
                         <Text style={styles.txtInfo}>Times</Text>
                     </View>
-                    <View style={styles.pontos}>
-                        <Text style={styles.txtInfoPontos}>P</Text>
-                        <Text style={styles.txtInfoPontos}>J</Text>
-                        <Text style={styles.txtInfoPontos}>V</Text>
-                        <Text style={styles.txtInfoPontos}>E</Text>
-                        <Text style={styles.txtInfoPontos}>D</Text>
-                        <Text style={{...styles.txtInfoPontos, width: 20}}>SG</Text>
+                    <View style={styles.pontosDiv}>
+                        <View style={styles.pontos}>
+                            <Text style={styles.bolinhaEvento(1)}></Text>
+                            <Text style={styles.txtLegenda}>Vitória</Text>
+                            <Text style={styles.txtLegenda}>|</Text>
+                            <Text style={styles.bolinhaEvento(2)}></Text>
+                            <Text style={styles.txtLegenda}>Derrota</Text>
+                            <Text style={styles.txtLegenda}>|</Text>
+                            <Text style={styles.bolinhaEvento(3)}></Text>
+                            <Text style={styles.txtLegenda}>Empate</Text>
+                        </View>
+                        <View style={styles.pontos}>
+                            <Text style={styles.txtInfoPontos}>P</Text>
+                            <Text style={styles.txtInfoPontos}>J</Text>
+                            <Text style={styles.txtInfoPontos}>V</Text>
+                            <Text style={styles.txtInfoPontos}>E</Text>
+                            <Text style={styles.txtInfoPontos}>D</Text>
+                            <Text style={{...styles.txtInfoPontos, width: 20}}>SG</Text>
+                        </View>
                     </View>
                 </View>
             </View>

@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Image, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, Image, ScrollView, RefreshControl, FlatList } from 'react-native';
 import { BaseButton } from "react-native-gesture-handler";
 import { urlBase } from '@/src/store/api';
 import { setSeason } from '@/src/store/action';
-import { torneio, torneioMataMata, torneioArtilheiros, getSeasons } from '@/src/store/store';
+import {
+    torneio,
+    torneioMataMata,
+    torneioArtilheiros,
+    getSeasons,
+    torneioJogosDepois,
+    torneioJogosAntes,
+    torneioRodada
+} from '@/src/store/store';
 import { limitarString } from "@/src/Utils/LimitarString";
 import { Lista } from "@/src/components/Lista";
 import { styles } from "./styles";
 import { Eliminatoria } from "@/src/components/Torneios/Eliminatoria";
-import { seasons } from '@/src/store/api';
 import { listaTorneios } from "@/src/store/listaTorneios";
 import { Spinner } from "@/src/components/Spinner";
+import { JogoAtivo } from "@/src/components/Jogo";
 
 export function Copa({params = null}) {
 	const campeaoGrupos = (params && params.campeaoGrupos) ? params.campeaoGrupos : false;
@@ -29,6 +37,7 @@ export function Copa({params = null}) {
     const [tabela, setTabela] = useState(null);
     const [mataMata, setMataMata] = useState(null);
     const [artilheiros, setArtilheiros] = useState(null);
+    const [jogosRodada, setJogosRodada] = useState(null);
     const [carregando, setCarregando] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const torneioId = useSelector(state => state.torneioId);
@@ -47,6 +56,16 @@ export function Copa({params = null}) {
         setTabela(await torneio(torneioId, season.id));
         setMataMata(await torneioMataMata(torneioId, season.id));
         setArtilheiros(await torneioArtilheiros(torneioId, season.id));
+        
+        const jogosDepois = await torneioJogosDepois(torneioId, season.id);
+        const jogosAntes = await torneioJogosAntes(torneioId, season.id);
+        const rodada = await torneioRodada(torneioId, season.id);
+        let depois = jogosDepois ? jogosDepois?.events : [];
+        let antes = jogosAntes ? jogosAntes?.events : [];
+        round = rodada?.round;
+        depois = depois.filter(item => item.roundInfo.round == round);
+        antes = antes.filter(item => item.roundInfo.round == round);
+        setJogosRodada([...antes, ...depois]);
 
         setCarregando(false);
         setRefreshing(false);
@@ -83,6 +102,12 @@ export function Copa({params = null}) {
             </View>
         );
     }
+
+    const renderJogos = ({ item, index }) => (
+        <BaseButton onPress={() => navigation.navigate('Partida', { idPartida: item.id })}>
+            <JogoAtivo jogo={item} campeonato={true} tamanhoImg={30} altura={117} />
+        </BaseButton>
+    );
 
     return (
         <ScrollView
@@ -139,10 +164,25 @@ export function Copa({params = null}) {
                         renderItem={renderTabela}
                         legenda={legenda}
                         torneioId={torneioId}
+                        jogosRodada={jogosRodada}
                     />
                 ));
                 return items;
             })() : <Spinner /> )}
+
+            {jogosRodada && (
+                <>
+                    <View style={styles.jogosRodada}>
+                        <Text style={styles.txtTitulo}>Jogos da Rodada</Text>
+                    </View>
+                    <FlatList
+                        contentContainerStyle={styles.contentContainerStyle}
+                        data={jogosRodada}
+                        renderItem={renderJogos}
+                        keyExtractor={(item) => item.id.toString()}
+                    />
+                </>
+            )}
         </ScrollView>
     );
 }

@@ -17,6 +17,14 @@ export const styles = StyleSheet.create({
     },
     txtX: {
         color: theme.colors.texto[300],
+        paddingHorizontal: 10,
+    },
+    txtTitulo: {
+        color: theme.colors.texto[100],
+        paddingHorizontal: 10,
+        marginTop: 20,
+        paddingVertical: 10,
+        fontSize: theme.font.size[5],
     },
     txtPontos: {
         color: theme.colors.texto[100],
@@ -48,6 +56,10 @@ export const styles = StyleSheet.create({
         fontSize: theme.font.size.legendas,
         textAlign: 'right',
         // paddingHorizontal: 10,
+    },
+    jogosRodada: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     nomeTabela: {
         marginTop: 30,

@@ -47,9 +47,10 @@ export function tempoJogo(jogo) {
         case 33: tempo = 'Intervalo Prorrogação'; break;
         case 34: tempo = 'Penaltis'; break;
         case 50: tempo = 'Penaltis'; break;
+        case 60: tempo = 'Adiado'; break;
         case 70: tempo = 'Cancelado'; break;
-        case 100: tempo = 'Encerrado'; break;
-        case 120: tempo = 'Encerrado'; break;
+        // case 100: tempo = 'Encerrado'; break;
+        // case 120: tempo = 'Encerrado'; break;
     
         default:
             tempo = moment.unix(jogo.startTimestamp).format('ddd DD/MM/YYYY')+' - '+moment.unix(jogo.startTimestamp).format('HH:mm');

@@ -462,6 +462,45 @@ export const mundo = [
         ],
     },
     {
+        name: "EURO",
+        slug: "european-championship",
+        primaryColorHex: "#293cdb",
+        secondaryColorHex: "#00ba5d",
+        id: 1,
+        container: CopaGrupos,
+        params: {
+            mataMataString: 4,
+            eliminatoriaVertical: 'ladoLado',
+            scroll: false,
+        },
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Oitavas de Final',
+            },
+        ],
+    },
+    {
+        name: "Copa América",
+        slug: "copa-america",
+        primaryColorHex: "#0A2357",
+        secondaryColorHex: "#F70F17",
+        id: 133,
+        container: CopaGrupos,
+        params: {
+            mataMataString: 4,
+            eliminatoriaVertical: 'ladoLado',
+            scroll: false,
+        },
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Oitavas de Final',
+            },
+        ],
+    },
+
+    {
         name: "Premier League",
         slug: "premier-league",
         primaryColorHex: "#3c1c5a",

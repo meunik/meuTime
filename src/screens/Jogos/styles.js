@@ -53,6 +53,7 @@ export const styles = StyleSheet.create({
         paddingVertical: 10,
         borderTopWidth: 0.5,
         borderBottomWidth: 0.5,
+        height: 117,
     },
     topo: {
         flexDirection: 'row',
@@ -141,5 +142,24 @@ export const styles = StyleSheet.create({
     cartaoVermelhoContainer: {
         flexDirection: 'row',
         gap: -1,
+    },
+    btn: {
+        borderWidth: 0.5,
+        borderColor: '#ffffff20',
+        borderRadius: 10,
+        alignItems: 'center',
+        paddingVertical: 5,
+        borderRadius: 10,
+        height: 35,
+        marginBottom: 10,
+    },
+    txtLink: {
+        color: theme.colors.texto.btn,
+        fontSize: theme.font.size[2],
+    },
+    verMaisBtn: {
+        padding: 10,
+        backgroundColor: 'lightgrey',
+        alignItems: 'center',
     },
 })

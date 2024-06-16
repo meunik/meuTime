@@ -11,9 +11,7 @@ export function Lista({
     ids = '',
     infoAdd = null,
 }) {
-    if (!data) {
-        return null;
-    }
+    if (!data) return null;
     if (!renderItem) {
         console.error(`Erro no 'renderItem'`);
         return null;

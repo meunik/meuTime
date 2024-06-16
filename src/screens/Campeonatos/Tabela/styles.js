@@ -130,6 +130,10 @@ export const styles = StyleSheet.create({
     pontos: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'flex-end',
+        gap: 5,
+    },
+    pontosDiv: {
         gap: 5,
     },
     posicao(item, legenda = null) {
@@ -152,6 +156,22 @@ export const styles = StyleSheet.create({
     bolinha(hexa) {
         return {
             backgroundColor: hexa,
+            borderRadius: 50,
+            width: 6,
+            height: 6,
+            alignSelf: 'center',
+        }
+    },
+    bolinhaEvento(status) {
+        let cor = 'transparent';
+        switch (status) {
+            case 1: cor = '#3bb552'; break;
+            case 2: cor = '#ef5158'; break;
+            case 3: cor = '#fff'; break;
+            default: cor = 'transparent'; break;
+        }
+        return {
+            backgroundColor: cor,
             borderRadius: 50,
             width: 6,
             height: 6,

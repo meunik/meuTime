@@ -25,8 +25,9 @@ export const getChannel = async(id, idEvento)=> await request(`${urlChannel(id, 
 
 export const time = async(id)=> await request(`${id}`, 'team');
 export const img = async(id)=> await request(`${id}/image`);
-export const jogosDepois = async(id)=> await request(`${id}/events/next/0`, 'events');
-export const jogosAntes = async(id)=> await request(`${id}/events/last/0`, 'events');
+export const jogosDepois = async(id, num=0)=> await request(`${id}/events/next/${num}`);
+export const jogosAntes = async(id, num=0)=> await request(`${id}/events/last/${num}`);
+// export const jogosAntes = async(id, num=0)=> await request(`${id}/events/last/${num}`, 'events');
 export const torneios = async(id)=> await request(`${id}/unique-tournaments`, 'uniqueTournaments');
 export const jogadores = async(id)=> await request(`${id}/players`, 'players');
 
@@ -44,6 +45,7 @@ export const torneioMataMata = async(id, season)=> await request(`${urlTorneio(i
 export const torneioJogosDepois = async(id, season, num=0)=> await request(`${urlTorneio(id, season)}events/next/${num}`);
 export const torneioJogosAntes = async(id, season, num=0)=> await request(`${urlTorneio(id, season)}events/last/${num}`);
 export const torneioRodada = async(id, season)=> await request(`${urlTorneio(id, season)}rounds`, 'currentRound');
+export const torneioUltimosEventos = async(id, season)=> await request(`${urlTorneio(id, season)}team-events/total`, 'tournamentTeamEvents');
 
 export const brasileiraoInfo = async()=> await request(`${urlBase}unique-tournament/325`);
 export const brasileirao = async()=> await request(`${urlBrasileirao}standings/total`, 'standings', true);

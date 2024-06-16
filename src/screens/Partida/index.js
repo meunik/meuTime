@@ -133,7 +133,7 @@ export function Partida() {
                 <Icon name="arrow-u-left-top" size={30} color="#434343" style={styles.voltar} />
             </BaseButton>
             <View>
-                {jogo && <JogoAtivo jogo={jogo}/>}
+                {jogo && <JogoAtivo jogo={jogo} bordas={false} altura={117} />}
             </View>
             <ScrollView contentContainerStyle={styles.contentContainerStyle}>
                 {abas && <Tabs data={abas} render={renderAbas} indexInicial={0} id='jogo'/>}

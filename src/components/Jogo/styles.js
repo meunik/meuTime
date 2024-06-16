@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
     },
     campeonato: {
         height: 60,
-        width: 40,
+        width: 50,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -81,16 +81,19 @@ export const styles = StyleSheet.create({
         height: 50,
         width: 50,
     },
-    jogoRolando(valor) {
+    jogoRolando(valor, bordas) {
         return {
             height: valor?valor:100,
-            paddingBottom: 10,
+            borderColor: bordas?'#ffffff0d':'transparent',
+            paddingVertical: 10,
+            borderTopWidth: 0.5,
+            borderBottomWidth: 0.5,
         };
     },
     placarPenaltis(valor) {
         return {
             position: 'absolute',
-            top: ((valor?valor:100)/2)+7,
+            top: ((valor?valor:100)/2)+9,
             right: 0,
             left: 0,
             flex: 1,
@@ -104,8 +107,6 @@ export const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
-        gap: 5,
     },
     times: {
         width: '100%',
@@ -122,7 +123,6 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        // backgroundColor: 'red',
         fontSize: 20,
         gap: 5,
     },
@@ -130,7 +130,6 @@ export const styles = StyleSheet.create({
         width: '50%',
         flexDirection: 'row',
         alignItems: 'center',
-        // backgroundColor: 'red',
         gap: 5,
     },
     imgLista(valor) {
