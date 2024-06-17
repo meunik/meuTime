@@ -6,6 +6,7 @@ import { BaseButton } from "react-native-gesture-handler";
 import { urlBase } from '@/src/store/api';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icone from 'react-native-vector-icons/FontAwesome';
 import * as NavigationBar from 'expo-navigation-bar';
 import { styles } from "./styles";
 import { theme } from "@/src/global/styles/theme";
@@ -15,6 +16,7 @@ import {
     getEscalacao,
     getTecnicos,
     getEstatisticas,
+    getIncidents,
     getHighlights,
     getChannel,
 } from '@/src/store/store';
@@ -24,6 +26,7 @@ import { JogoAtivo } from "@/src/components/Jogo";
 import { Lista } from "@/src/components/Lista";
 import { Tabs } from "@/src/components/Tabs";
 import { Spinner } from "@/src/components/Spinner";
+import { limitarString } from "@/src/Utils/LimitarString";
 
 export function Partida() {
     const route = useRoute();
@@ -46,7 +49,78 @@ export function Partida() {
         const escalacao = await getEscalacao(idPartida);
         const tecnicos = await getTecnicos(idPartida);
         const estatisticas = await getEstatisticas(idPartida);
+        const incidents = await getIncidents(idPartida);
         const highlights = await getHighlights(idPartida);
+
+        let incidentsPlayers = {};
+        if (incidents) {
+            incidents.forEach(incident => {
+                if (incident.incidentType == 'substitution') {
+                    if (incident.playerIn) {
+                        if (incidentsPlayers[incident.playerIn.id]) {
+                            incidentsPlayers[incident.playerIn.id].entrou = true;
+                            incidentsPlayers[incident.playerIn.id].por = incident.playerOut.shortName;
+                        } else {
+                            incidentsPlayers[incident.playerIn.id] = {
+                                entrou: true,
+                                por: incident.playerOut.shortName
+                            };
+                        }
+                    }
+                    if (incident.playerOut) {
+                        if (incidentsPlayers[incident.playerOut.id]) {
+                            incidentsPlayers[incident.playerOut.id].saiu = true;
+                            incidentsPlayers[incident.playerOut.id].por = incident.playerIn.shortName;
+                        } else {
+                            incidentsPlayers[incident.playerOut.id] = {
+                                saiu: true,
+                                por: incident.playerIn.shortName
+                            };
+                        }
+                    }
+                }
+
+                if (incident.player) {
+                    let player = incidentsPlayers[incident.player.id]??{};
+
+                    if ((incident.incidentType == 'card') && (incident.player)) {
+                        if (incident.incidentClass == 'yellow')
+                            player.cartaoAmarelo = player.cartaoAmarelo ? player.cartaoAmarelo+1 : 1;
+
+                        if (incident.incidentClass == 'red')
+                            player.cartaoVermelho = player.cartaoVermelho ? player.cartaoVermelho+1 : 1;
+
+                        if (incident.incidentClass == 'yellowRed') {
+                            player.cartaoAmarelo = player.cartaoAmarelo ? player.cartaoAmarelo+1 : 1;
+                            player.cartaoVermelho = player.cartaoVermelho ? player.cartaoVermelho+1 : 1;
+                        }
+                    }
+
+                    if ((incident.incidentType == 'goal') && incident.player)
+                        player.gol = player.gol ? player.gol+1 : 1;
+
+                    incidentsPlayers[incident.player.id] = {
+                        ...incidentsPlayers[incident.player.id],
+                        ...player
+                    };
+                }
+            });
+        }
+
+        if (escalacao) {
+            let fora = escalacao.away.players
+            let casa = escalacao.home.players
+            fora.sort((a, b) => a.substitute - b.substitute);
+            fora = fora.map(obj => {
+                return (incidentsPlayers[obj.player.id]) ? { ...obj, ...incidentsPlayers[obj.player.id] } : obj;
+            });
+            casa.sort((a, b) => a.substitute - b.substitute);
+            casa = casa.map(obj => {
+                return (incidentsPlayers[obj.player.id]) ? { ...obj, ...incidentsPlayers[obj.player.id] } : obj;
+            });
+            escalacao.away.players = fora;
+            escalacao.home.players = casa;
+        }
 
         const estatisticasObj = {
             index: 0,
@@ -278,19 +352,66 @@ export function Escalacao({content}) {
                 <View style={styles.rowEscalacaoJogador}>
                     {info.esquerda && <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}player/${item.player.id}/image` }} />}
 
-                    <Text style={
-                        (info.esquerda) ? styles.txtEscalacaoNomeEsquerda : styles.txtEscalacaoNomeDireita
-                    }>{item.player.shortName}</Text>
-                    
+                    <View style={{
+                        ...styles.divEscalacaoNome, 
+                        alignItems: (info.esquerda) ? 'flex-end' : 'flex-start'
+                    }}>
+                        <Text style={{
+                            ...styles.txtEscalacaoNome, 
+                            textAlign: (info.esquerda) ? 'left' : 'right'
+                        }}>{limitarString(item.player.shortName, 16)}</Text>
+                        <View style={{
+                            ...styles.divInfoEscalacao, 
+                            textAlign: (info.esquerda) ? 'left' : 'right',
+                            justifyContent: (info.esquerda) ? 'flex-start' : 'flex-end',
+                            flexDirection: (info.esquerda) ? 'row' : 'row-reverse',
+                        }}>
+                            {item.por && <Text style={{
+                                ...styles.infoEscalacaoNome, 
+                                textAlign: (info.esquerda) ? 'left' : 'right'
+                            }}>
+                                ({!info.esquerda && <Icon name="swap-horizontal-bold" size={10} color="#fff" style={styles.gol}/>}
+                                {limitarString(item.por, (item.statistics?.goals)?13-(item.statistics.goals*2):13)}
+                                {info.esquerda && <Icon name="swap-horizontal-bold" size={10} color="#fff" style={styles.gol}/>})
+                            </Text>}
+
+                            {item.statistics?.goals ? Array.from({ length: item.statistics.goals ?? 0 }, (_, i) => (
+                                <Icone key={i} name="soccer-ball-o" size={10} color="#fff" style={styles.gol}/>
+                            )) : null}
+
+                            {(item.cartaoAmarelo || item.cartaoVermelho) && <View style={styles.cartaoDiv}>
+                                {item.cartaoAmarelo ? Array.from({ length: item.cartaoAmarelo ?? 0 }, (_, i) => (
+                                    <Icon key={'homeRedCards'+i} name="card" size={10} color="#d9af00" style={styles.cartao} />
+                                )) : null}
+                                {item.cartaoVermelho ? Array.from({ length: item.cartaoVermelho ?? 0 }, (_, i) => (
+                                    <Icon key={'homeRedCards'+i} name="card" size={10} color="#e35c47" style={styles.cartao} />
+                                )) : null}
+                            </View>}
+
+                            <Text style={{
+                                ...styles.infoEscalacaoNome, 
+                                textAlign: (info.esquerda) ? 'left' : 'right'
+                            }}>({item.shirtNumber})</Text>
+                        </View>
+                    </View>
+
                     {(info.esquerda == false) && <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}player/${item.player.id}/image` }} />}
                 </View>
-                {(key == 11) && <View style={styles.linha}></View>}
+                {(key == 10) && <View style={styles.linha}></View>}
             </View>
         );
     }
 
     return (
         <View style={styles.tabsContainer}>
+            <View style={styles.rowTecnicos}>
+                <View style={styles.rowTecnico}>
+                    <Text style={styles.infoEsquerda}>{escalacao.home.formation}</Text>
+                </View>
+                <View style={styles.rowTecnico}>
+                    <Text style={styles.infoDireita}>{escalacao.away.formation}</Text>
+                </View>
+            </View>
             <View style={styles.rowTecnicos}>
                 <View style={styles.rowTecnico}>
                     <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}manager/${tecnicos.homeManager.id}/image` }} />

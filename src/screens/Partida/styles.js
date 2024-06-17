@@ -14,6 +14,9 @@ export const styles = StyleSheet.create({
         paddingTop: 10,
         gap: 10,
     },
+    gol: {
+        alignSelf: 'center',
+    },
     voltar: {
         marginRight: 5,
         paddingLeft: 15,
@@ -59,16 +62,25 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[100],
         fontSize: theme.font.size[1],
     },
-    txtEscalacaoNomeEsquerda: {
+
+    divEscalacaoNome: {
+        gap: 2,
+    },
+    txtEscalacaoNome: {
         color: theme.colors.texto[100],
         fontSize: theme.font.size[1],
-        textAlign: 'left',
     },
-    txtEscalacaoNomeDireita: {
-        color: theme.colors.texto[100],
-        fontSize: theme.font.size[1],
-        textAlign: 'right',
+    divInfoEscalacao: {
+        alignItems: 'center',
+        gap: 2,
     },
+    infoEscalacaoNome: {
+        color: theme.colors.texto[300],
+        fontSize: theme.font.size[1]-3,
+        alignItems: 'center',
+        alignSelf: 'center',
+    },
+
     bolinhaNum: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -93,16 +105,31 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         gap: 5,
     },
+
+    infoEsquerda: {
+        color: theme.colors.texto[300],
+        fontSize: theme.font.size[1],
+        textAlign: 'left',
+        flex: 1,
+    },
+    infoDireita: {
+        color: theme.colors.texto[300],
+        fontSize: theme.font.size[1],
+        textAlign: 'right',
+        flex: 1,
+    },
+    
     txtTecnicosNomeEsquerda: {
         color: theme.colors.texto[100],
-        fontSize: theme.font.size[1],
-        // textAlign: 'left',
+        fontSize: theme.font.size[1]+2,
+        fontWeight: 'bold',
     },
     txtTecnicosNomeDireita: {
         color: theme.colors.texto[100],
-        fontSize: theme.font.size[1],
-        // textAlign: 'right',
+        fontSize: theme.font.size[1]+2,
+        fontWeight: 'bold',
     },
+
     rowTecnicos: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -181,5 +208,12 @@ export const styles = StyleSheet.create({
     },
     contentContainerStyle: {
         paddingBottom: theme.contentContainerStyle.paddingBottom,
+    },
+    cartao: {
+        transform: [{ rotate: '90deg'}]
+    },
+    cartaoDiv: {
+        flexDirection: 'row',
+        gap: -1,
     },
 })
