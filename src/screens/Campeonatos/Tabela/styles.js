@@ -53,6 +53,17 @@ export const styles = StyleSheet.create({
             color: cor,
         }
     },
+    txtTitulo: {
+        color: theme.colors.texto[100],
+        paddingHorizontal: 10,
+        marginTop: 20,
+        paddingVertical: 10,
+        fontSize: theme.font.size[5],
+    },
+    jogosRodada: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     btn: {
         borderWidth: 0.5,
         borderColor: '#ffffff20',

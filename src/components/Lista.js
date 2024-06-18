@@ -6,6 +6,8 @@ export function Lista({
     renderItem,
     style = null,
     contentContainerStyle = null,
+    listHeaderComponent = null,
+    listFooterComponent = null,
     refreshControl = null,
     scroll = false,
     ids = '',
@@ -26,11 +28,13 @@ export function Lista({
                 contentContainerStyle={contentContainerStyle}
                 refreshControl={refreshControl}
             >
+                {listHeaderComponent && listHeaderComponent}
                 {data && (() => {
                     const items = [];
                     keys.forEach((key, index) => items.push(renderItem(data[key], `${ids}${index}`, infoAdd)));
                     return items;
                 })()}
+                {listFooterComponent && listFooterComponent}
             </ScrollView>
         );
     } else {

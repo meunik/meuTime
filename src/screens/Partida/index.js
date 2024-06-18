@@ -375,6 +375,10 @@ export function Escalacao({content}) {
                                 {info.esquerda && <Icon name="swap-horizontal-bold" size={10} color="#fff" style={styles.gol}/>})
                             </Text>}
 
+                            {item.statistics?.ownGoals ? Array.from({ length: item.statistics.ownGoals ?? 0 }, (_, i) => (
+                                <Icone key={i} name="soccer-ball-o" size={10} color="#e35c47" style={styles.gol}/>
+                            )) : null}
+
                             {item.statistics?.goals ? Array.from({ length: item.statistics.goals ?? 0 }, (_, i) => (
                                 <Icone key={i} name="soccer-ball-o" size={10} color="#fff" style={styles.gol}/>
                             )) : null}

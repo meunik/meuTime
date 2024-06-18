@@ -6,16 +6,26 @@ import { View, Text, Image, FlatList, RefreshControl } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 import { theme } from "@/src/global/styles/theme";
 import { setSeason } from '@/src/store/action';
-import { torneio, torneioArtilheiros, torneioUltimosEventos, getSeasons } from '@/src/store/store';
+import {
+    torneio,
+    torneioArtilheiros,
+    torneioUltimosEventos,
+    getSeasons,
+    torneioJogosDepois,
+    torneioJogosAntes,
+    torneioRodada
+} from '@/src/store/store';
 import { urlBase } from '@/src/store/api';
 import { styles } from "./styles";
 import { Lista } from "@/src/components/Lista";
 import { Spinner } from "@/src/components/Spinner";
+import { JogoAtivo } from "@/src/components/Jogo";
 
 export function Tabela({params = null}) {
 	const navigation = useNavigation();
     const [tabela, setTabela] = useState(null);
     const [artilheiros, setArtilheiros] = useState(null);
+    const [jogosRodada, setJogosRodada] = useState(null);
     const [eventos, setEventos] = useState(null);
     const [carregando, setCarregando] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -32,6 +42,17 @@ export function Tabela({params = null}) {
         setArtilheiros(await torneioArtilheiros(torneioId, season.id));
         const ultimosEventos = await torneioUltimosEventos(torneioId, season.id);
         if (table?.tournament && ultimosEventos) setEventos(ultimosEventos[table.tournament.id]);
+        
+        const jogosDepois = await torneioJogosDepois(torneioId, season.id);
+        const jogosAntes = await torneioJogosAntes(torneioId, season.id);
+        const rodada = await torneioRodada(torneioId, season.id);
+        let depois = jogosDepois ? jogosDepois?.events : [];
+        let antes = jogosAntes ? jogosAntes?.events : [];
+        round = rodada?.round;
+        depois = depois.filter(item => item.roundInfo.round == round);
+        antes = antes.filter(item => item.roundInfo.round == round);
+        const rodadaJogos = [...antes, ...depois];
+        setJogosRodada(rodadaJogos);
 
         setCarregando(false);
         setRefreshing(false);
@@ -114,60 +135,14 @@ export function Tabela({params = null}) {
         );
     }
 
+    const renderJogos = (item, key) => (
+        <BaseButton key={key} onPress={() => navigation.navigate('Partida', { idPartida: item.id })}>
+            <JogoAtivo jogo={item} campeonato={true} tamanhoImg={30} altura={117} />
+        </BaseButton>
+    );
+
     return (
         <View style={styles.container}>
-            <View>
-                <View style={styles.listaInfo}>
-                    <View style={styles.linksContainer}>
-                        {tabela && (artilheiros && artilheiros.length > 0) && <BaseButton onPress={() => navigation.navigate('Artilheiros', {
-                            campeonatoNome: tabela.name,
-                            campeonato: tabela.tournament,
-                            torneioId: torneioId,
-                            seasonId: season.id,
-                            artilheiros: artilheiros,
-                        })}>
-                            <View style={styles.btn}>
-                                <Text style={styles.txtLink}>Ver Artilheiros</Text>
-                            </View>
-                        </BaseButton>}
-
-                        {tabela && <BaseButton onPress={() => navigation.navigate('TodosJogos')}>
-                            <View style={styles.btn}>
-                                <Text style={styles.txtLink}>Jogos</Text>
-                            </View>
-                        </BaseButton>}
-                    </View>
-                    {legenda()}
-                </View>
-                <View style={styles.listaInfo}>
-                    <View style={styles.time}>
-                        <View>
-                            <Text style={styles.txtInfo}>#</Text>
-                        </View>
-                        <Text style={styles.txtInfo}>Times</Text>
-                    </View>
-                    <View style={styles.pontosDiv}>
-                        <View style={styles.pontos}>
-                            <Text style={styles.bolinhaEvento(1)}></Text>
-                            <Text style={styles.txtLegenda}>Vitória</Text>
-                            <Text style={styles.txtLegenda}>|</Text>
-                            <Text style={styles.bolinhaEvento(2)}></Text>
-                            <Text style={styles.txtLegenda}>Derrota</Text>
-                            <Text style={styles.txtLegenda}>|</Text>
-                            <Text style={styles.bolinhaEvento(3)}></Text>
-                            <Text style={styles.txtLegenda}>Empate</Text>
-                        </View>
-                        <View style={styles.pontos}>
-                            <Text style={styles.txtInfoPontos}>P</Text>
-                            <Text style={styles.txtInfoPontos}>J</Text>
-                            <Text style={styles.txtInfoPontos}>V</Text>
-                            <Text style={styles.txtInfoPontos}>E</Text>
-                            <Text style={styles.txtInfoPontos}>D</Text>
-                            <Text style={{...styles.txtInfoPontos, width: 20}}>SG</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
             {(tabela && !carregando) ? <Lista
                 scroll={true}
                 contentContainerStyle={styles.contentContainerStyle}
@@ -178,6 +153,74 @@ export function Tabela({params = null}) {
                         refreshing={refreshing}
                         onRefresh={onRefresh}
                     />
+                }
+                listHeaderComponent={
+                    <View>
+                        <View style={styles.listaInfo}>
+                            <View style={styles.linksContainer}>
+                                {tabela && (artilheiros && artilheiros.length > 0) && <BaseButton onPress={() => navigation.navigate('Artilheiros', {
+                                    campeonatoNome: tabela.name,
+                                    campeonato: tabela.tournament,
+                                    torneioId: torneioId,
+                                    seasonId: season.id,
+                                    artilheiros: artilheiros,
+                                })}>
+                                    <View style={styles.btn}>
+                                        <Text style={styles.txtLink}>Artilheiros</Text>
+                                    </View>
+                                </BaseButton>}
+
+                                {tabela && <BaseButton onPress={() => navigation.navigate('TodosJogos')}>
+                                    <View style={styles.btn}>
+                                        <Text style={styles.txtLink}>Todos os Jogos</Text>
+                                    </View>
+                                </BaseButton>}
+                            </View>
+                            {legenda()}
+                        </View>
+                        <View style={styles.listaInfo}>
+                            <View style={styles.time}>
+                                <View>
+                                    <Text style={styles.txtInfo}>#</Text>
+                                </View>
+                                <Text style={styles.txtInfo}>Times</Text>
+                            </View>
+                            <View style={styles.pontosDiv}>
+                                <View style={styles.pontos}>
+                                    <Text style={styles.bolinhaEvento(1)}></Text>
+                                    <Text style={styles.txtLegenda}>Vitória</Text>
+                                    <Text style={styles.txtLegenda}>|</Text>
+                                    <Text style={styles.bolinhaEvento(2)}></Text>
+                                    <Text style={styles.txtLegenda}>Derrota</Text>
+                                    <Text style={styles.txtLegenda}>|</Text>
+                                    <Text style={styles.bolinhaEvento(3)}></Text>
+                                    <Text style={styles.txtLegenda}>Empate</Text>
+                                </View>
+                                <View style={styles.pontos}>
+                                    <Text style={styles.txtInfoPontos}>P</Text>
+                                    <Text style={styles.txtInfoPontos}>J</Text>
+                                    <Text style={styles.txtInfoPontos}>V</Text>
+                                    <Text style={styles.txtInfoPontos}>E</Text>
+                                    <Text style={styles.txtInfoPontos}>D</Text>
+                                    <Text style={{...styles.txtInfoPontos, width: 20}}>SG</Text>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                }
+                listFooterComponent={
+                    jogosRodada && (
+                        <>
+                            <View style={styles.jogosRodada}>
+                                <Text style={styles.txtTitulo}>Jogos da Rodada</Text>
+                            </View>
+                            <Lista
+                                contentContainerStyle={styles.contentContainerStyle}
+                                data={jogosRodada}
+                                renderItem={renderJogos}
+                            />
+                        </>
+                    )
                 }
             /> : <Spinner />}
         </View>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -84,12 +84,14 @@ export function Times({ route }) {
             ...listaSelecoesAfrica,
         ]);
         setRefreshing(false);
+        setLoad(false);
     };
 
     const trocarTime = async (item) => {
         setRefreshing(true);
         dispatch(setMeuTime(item));
         dispatch(setCarregarJogos(true));
+        setLoad(false);
         navigation.navigate('inicial');
     };
 
@@ -132,14 +134,16 @@ export function Times({ route }) {
     return (
         <View style={styles.container}>
             <View style={styles.infoContainer}>
-                <BaseButton onPress={() => navigation.goBack()}>
+                {meuTime && <BaseButton onPress={() => {
+                    if (navigation.canGoBack()) navigation.goBack()
+                    else trocarTime(meuTime)
+                }}>
                     <Icon name="arrow-u-left-top" size={30} color="#434343" style={styles.voltar} />
-                </BaseButton>
+                </BaseButton>}
                 <View style={styles.info}>
                     <Text style={styles.txtInfo}>Selecione seu Time</Text>
                 </View>
             </View>
-            {/* <Text style={styles.txtInfo}>Selecione seu Time</Text> */}
 
             {load && <View style={styles.containerSpinner}>
                 <Spinner />

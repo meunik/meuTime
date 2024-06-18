@@ -103,8 +103,8 @@ export function Copa({params = null}) {
         );
     }
 
-    const renderJogos = ({ item, index }) => (
-        <BaseButton onPress={() => navigation.navigate('Partida', { idPartida: item.id })}>
+    const renderJogos = (item, key) => (
+        <BaseButton key={key} onPress={() => navigation.navigate('Partida', { idPartida: item.id })}>
             <JogoAtivo jogo={item} campeonato={true} tamanhoImg={30} altura={117} />
         </BaseButton>
     );
@@ -175,11 +175,10 @@ export function Copa({params = null}) {
                     <View style={styles.jogosRodada}>
                         <Text style={styles.txtTitulo}>Jogos da Rodada</Text>
                     </View>
-                    <FlatList
+                    <Lista
                         contentContainerStyle={styles.contentContainerStyle}
                         data={jogosRodada}
                         renderItem={renderJogos}
-                        keyExtractor={(item) => item.id.toString()}
                     />
                 </>
             )}
