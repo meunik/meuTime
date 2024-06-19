@@ -70,12 +70,6 @@ export function TodosJogos() {
             console.error(error);
         }
     };
-    console.log(torneio);
-    console.log(rodadaNumero);
-    console.log(rodada);
-    console.log(tabs);
-    console.log("------------------");
-    console.log("------------------");
 
     function stringRodada(valor) {
         if (mataMataString == 0) return `Rodada ${valor}`;

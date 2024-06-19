@@ -145,45 +145,7 @@ export function Jogos() {
     }, [carregarJogos]);
 
     const renderItem = ({ item, index }) => !item.status.code ? (
-        <View style={styles.lista}>
-            <View style={styles.topo}>
-                <Text style={{ ...styles.txtcampeonato, color: item.tournament.uniqueTournament.secondaryColorHex }}>
-                    {item.tournament.uniqueTournament.name}
-                    {(item.tournament.id == 83)?` - ${item.roundInfo.round}ª Rodada`:''}
-                </Text>
-            </View>
-
-            <View style={styles.jogo}>
-
-                <View style={styles.campeonato}>
-                    <Image style={styles.imgCampeonato} resizeMode="center" source={{ uri: `${urlBase}unique-tournament/${item.tournament.uniqueTournament.id}/image/dark` }} />
-                </View>
-                <View style={styles.times}>
-
-                    <View style={styles.timeCasa}>
-                        <Text style={styles.txtTime}>{item.homeTeam.nameCode}</Text>
-                        <Image style={styles.imgLista} resizeMode="center" source={{ uri: `${urlBase}team/${item.homeTeam.id}/image` }} />
-                    </View>
-
-                    <Text style={styles.txtX}>x</Text>
-
-                    <View style={styles.timeVisitante}>
-                        <Image style={styles.imgLista} resizeMode="center" source={{ uri: `${urlBase}team/${item.awayTeam.id}/image` }} />
-                        <Text style={styles.txtTime}>{item.awayTeam.nameCode}</Text>
-                    </View>
-
-                </View>
-
-            </View>
-            <View style={styles.rodape}>
-                <Text style={styles.txtData}>
-                    {moment.unix(item.startTimestamp).format('ddd DD/MM/YYYY')}
-                    {' - '}
-                    {moment.unix(item.startTimestamp).format('HH:mm')}
-                </Text>
-            </View>
-
-        </View>
+        <JogoAtivo jogo={item} campeonato={true} altura={117} />
     ) : (
         <BaseButton onPress={() => navigation.navigate('Partida', { idPartida: item.id })}>
             <JogoAtivo jogo={item} campeonato={true} tamanhoImg={30} altura={117} />

@@ -22,6 +22,10 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[200],
         fontSize: theme.font.size[1],
     },
+    txtEstadio: {
+        color: theme.colors.texto[100],
+        fontSize: theme.font.size[1]-1,
+    },
     txtX: {
         color: theme.colors.texto[300],
     },
@@ -30,7 +34,7 @@ export const styles = StyleSheet.create({
         fontSize: theme.font.size[1] - 2,
     },
     txtcampeonato: {
-        color: theme.colors.texto[200],
+        color: theme.colors.texto[100],
         fontSize: theme.font.size[1],
     },
     txtTime: {
@@ -64,7 +68,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 5,
+        gap: 3,
     },
     jogo: {
         flexDirection: 'row',

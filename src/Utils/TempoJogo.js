@@ -2,6 +2,10 @@ import moment from 'moment';
 import 'moment/locale/pt-br';
 moment.locale('pt-br');
 
+const maiuscula = (txt) => {
+    return txt.charAt(0).toUpperCase() + txt.slice(1);
+}
+
 export function tempoJogo(jogo) {
     const inicio = jogo.time.currentPeriodStartTimestamp;
 
@@ -53,7 +57,7 @@ export function tempoJogo(jogo) {
         // case 120: tempo = 'Encerrado'; break;
     
         default:
-            tempo = moment.unix(jogo.startTimestamp).format('ddd DD/MM/YYYY')+' - '+moment.unix(jogo.startTimestamp).format('HH:mm');
+            tempo = maiuscula(moment.unix(jogo.startTimestamp).format('ddd DD/MM/YYYY'))+' - '+moment.unix(jogo.startTimestamp).format('HH:mm');
             break;
     }
 

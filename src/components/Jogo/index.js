@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { urlBase } from '@/src/store/api';
 import { tempoJogo } from "@/src/Utils/TempoJogo";
 import { styles } from "./styles";
+import { evento } from '@/src/store/store';
+import { limitarString } from "@/src/Utils/LimitarString";
 
 const tituloJogo = (jogo) => {
     const campeonato = jogo.tournament.uniqueTournament.name;
@@ -26,11 +28,33 @@ export function JogoAtivo ({
     altura = 0,
     campeonato = false,
     bordas = true,
+    estadio = true,
 }) {
+    const [event, setEvent] = useState(null);
+
+    useEffect(() => {
+        const buscarEvento = async () => {
+            if (estadio) {
+                const eventoData = await evento(jogo.id);
+                setEvent(eventoData);
+            }
+        };
+
+        buscarEvento();
+    }, [jogo.id]);
+
+    const estadioFormat = (nome) => {
+        let retorno = nome;
+        if (nome.includes("Estádio do")) retorno = nome.replace("Estádio do", "");
+        else if (nome.includes("Estádio ")) retorno = nome.replace("Estádio ", "");
+        else retorno = nome;
+        return limitarString(retorno, 25)
+    }
+
     return jogo ? (
         <View style={styles.jogoRolando(altura, bordas)}>
             {titulo && <View style={styles.topo}>
-                <Text style={{ color: jogo.tournament.uniqueTournament.secondaryColorHex, ...styles.txtcampeonato }}>
+                <Text style={{ ...styles.txtcampeonato, color: jogo.tournament.uniqueTournament.secondaryColorHex }}>
                     {tituloJogo(jogo)}
                 </Text>
             </View>}
@@ -84,6 +108,7 @@ export function JogoAtivo ({
                 <Text style={styles.txtPenaltis}>({jogo.homeScore.current-jogo.homeScore.display} x {jogo.awayScore.current-jogo.awayScore.display})</Text>
             </View>}
             {tempo && <View style={styles.rodape}>
+                {estadio && event && event.venue && event.venue.stadium.name && <Text style={styles.txtEstadio}>{estadioFormat(event.venue.stadium.name)} -</Text>}
                 <Text style={styles.txtTempo}>{tempoJogo(jogo)}</Text>
             </View>}
         </View>

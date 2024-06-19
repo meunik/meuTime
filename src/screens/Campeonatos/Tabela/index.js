@@ -135,11 +135,12 @@ export function Tabela({params = null}) {
         );
     }
 
-    const renderJogos = (item, key) => (
+    const renderJogos = (item, key) => {
+        return (
         <BaseButton key={key} onPress={() => navigation.navigate('Partida', { idPartida: item.id })}>
             <JogoAtivo jogo={item} campeonato={true} tamanhoImg={30} altura={117} />
         </BaseButton>
-    );
+    )};
 
     return (
         <View style={styles.container}>
