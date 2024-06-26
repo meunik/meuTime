@@ -20,6 +20,7 @@ export const getEscalacao = async(id)=> await request(`${urlEvento(id)}lineups`)
 export const getTecnicos = async(id)=> await request(`${urlEvento(id)}managers`);
 export const getEstatisticas = async(id)=> await request(`${urlEvento(id)}statistics`, 'statistics');
 export const getIncidents = async(id)=> await request(`${urlEvento(id)}incidents`, 'incidents');
+export const getComments = async(id)=> await request(`${urlEvento(id)}comments/pt`, 'comments');
 export const getHighlights = async(id)=> await request(`${urlEvento(id)}highlights`, 'highlights');
 export const getChannel = async(id, idEvento)=> await request(`${urlChannel(id, idEvento)}`, 'tvChannelVotes');
 

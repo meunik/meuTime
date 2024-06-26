@@ -74,25 +74,45 @@ export function Jogos() {
 
             setPassadoJogos(false);
             setPassadoNum(0);
+            setTimeout(() => {
+                if (flatListRef.current) flatListRef.current.scrollToOffset({ offset: 1, animated: true });
+            }, 0);
         }
+
+        if (!passado) setTimeout(() => {
+            if (jogoAgora.status.type === 'inprogress') att(jogoAgora);
+        }, 5000);
 
         setJogo(jogoAgora);
         setJogoAnteriorSeguinte(jogoUltimoProx);
-
-        if (jogoUltimoProx.previousEvent.status.type == 'inprogress') {
-            const interval = setInterval(async () => {
-                const jogoAtualizado = await evento(jogoAgora.id);
-                setJogo(jogoAtualizado);
-                if (jogoAtualizado.status.type != 'inprogress') {
-                    clearInterval(interval);
-                }
-            }, 1000);
-            dispatch(setIntervalo(interval))
-        }
-        clearInterval(intervalo);
-
         setRefreshing(false);
     };
+
+    const isFocusedRef = useRef(false);
+    const attRodando = useRef(false);
+    useFocusEffect(
+        React.useCallback(() => {
+            setRefreshing(true);
+            isFocusedRef.current = true;
+            fetchData();
+            return () => isFocusedRef.current = false;
+        }, [meuTime])
+    );
+
+    async function att(jogoAgora = false) {
+        if (attRodando.current) return;
+        attRodando.current = true;
+
+        let jogoAtualizado = await evento(jogoAgora.id);
+        setJogo(jogoAtualizado);
+
+        setTimeout(async () => {
+            attRodando.current = false;
+            if (jogoAtualizado.status.type === 'inprogress' && isFocusedRef.current && !attRodando.current) await att(jogoAtualizado);
+        }, 5000);
+
+        return jogoAtualizado;
+    }
 
     const onRefresh = async () => {
         setRefreshing(true);
@@ -136,13 +156,13 @@ export function Jogos() {
         setRefreshing(false);
     };
     
-    useEffect(() => {
-        if (carregarJogos) {
-            setRefreshing(true);
-            fetchData();
-            dispatch(setCarregarJogos(false))
-        }
-    }, [carregarJogos]);
+    // useEffect(() => {
+    //     if (carregarJogos) {
+    //         setRefreshing(true);
+    //         fetchData();
+    //         dispatch(setCarregarJogos(false))
+    //     }
+    // }, [carregarJogos]);
 
     const renderItem = ({ item, index }) => !item.status.code ? (
         <JogoAtivo jogo={item} campeonato={true} altura={117} />

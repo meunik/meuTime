@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Text, View, Image, ScrollView, TouchableOpacity, Linking } from 'react-native';
@@ -27,6 +27,7 @@ import { Lista } from "@/src/components/Lista";
 import { Tabs } from "@/src/components/Tabs";
 import { Spinner } from "@/src/components/Spinner";
 import { limitarString } from "@/src/Utils/LimitarString";
+import ptBr from "@/src/Utils/ptBr";
 
 export function Partida() {
     const route = useRoute();
@@ -48,64 +49,54 @@ export function Partida() {
         const jogoAgora = await evento(idPartida);
         const escalacao = await getEscalacao(idPartida);
         const tecnicos = await getTecnicos(idPartida);
-        const estatisticas = await getEstatisticas(idPartida);
-        const incidents = await getIncidents(idPartida);
         const highlights = await getHighlights(idPartida);
 
+        const abasDados = await setArrayTabs(escalacao, highlights, jogoAgora, tecnicos);
+
+        setJogo(jogoAgora);
+        setAbas(abasDados);
+
+        setTimeout(() => {
+            if (jogoAgora.status.type == 'inprogress') att(escalacao, highlights, tecnicos, intervaloLocal);
+        }, 5000);
+
+        setRefreshing(false);
+    };
+
+    const isFocusedRef = useRef(false);
+    const attRodando = useRef(false);
+    useFocusEffect(
+        React.useCallback(() => {
+            setRefreshing(true);
+            isFocusedRef.current = true;
+            fetchData();
+            return () => isFocusedRef.current = false;
+        }, [])
+    );
+
+    async function att(escalacao, highlights, tecnicos, interval) {
+        if (attRodando.current) return;
+        attRodando.current = true;
+        
+        let jogoAtualizado = await evento(idPartida);
+        setJogo(jogoAtualizado);
+        setAbas(await setArrayTabs(escalacao, highlights, tecnicos));
+
+        setTimeout(async () => {
+            attRodando.current = false;
+            if (jogoAtualizado.status.type === 'inprogress' && isFocusedRef.current && !attRodando.current)
+                await att(escalacao, highlights, tecnicos, interval);
+        }, 5000);
+
+        return jogoAtualizado;
+    }
+
+    async function setArrayTabs(escalacao, highlights, jogoAgora, tecnicos) {
+        const estatisticas = await getEstatisticas(idPartida);
+        const incidents = await getIncidents(idPartida);
+
         let incidentsPlayers = {};
-        if (incidents) {
-            incidents.forEach(incident => {
-                if (incident.incidentType == 'substitution') {
-                    if (incident.playerIn) {
-                        if (incidentsPlayers[incident.playerIn.id]) {
-                            incidentsPlayers[incident.playerIn.id].entrou = true;
-                            incidentsPlayers[incident.playerIn.id].por = incident.playerOut.shortName;
-                        } else {
-                            incidentsPlayers[incident.playerIn.id] = {
-                                entrou: true,
-                                por: incident.playerOut.shortName
-                            };
-                        }
-                    }
-                    if (incident.playerOut) {
-                        if (incidentsPlayers[incident.playerOut.id]) {
-                            incidentsPlayers[incident.playerOut.id].saiu = true;
-                            incidentsPlayers[incident.playerOut.id].por = incident.playerIn.shortName;
-                        } else {
-                            incidentsPlayers[incident.playerOut.id] = {
-                                saiu: true,
-                                por: incident.playerIn.shortName
-                            };
-                        }
-                    }
-                }
-
-                if (incident.player) {
-                    let player = incidentsPlayers[incident.player.id]??{};
-
-                    if ((incident.incidentType == 'card') && (incident.player)) {
-                        if (incident.incidentClass == 'yellow')
-                            player.cartaoAmarelo = player.cartaoAmarelo ? player.cartaoAmarelo+1 : 1;
-
-                        if (incident.incidentClass == 'red')
-                            player.cartaoVermelho = player.cartaoVermelho ? player.cartaoVermelho+1 : 1;
-
-                        if (incident.incidentClass == 'yellowRed') {
-                            player.cartaoAmarelo = player.cartaoAmarelo ? player.cartaoAmarelo+1 : 1;
-                            player.cartaoVermelho = player.cartaoVermelho ? player.cartaoVermelho+1 : 1;
-                        }
-                    }
-
-                    if ((incident.incidentType == 'goal') && incident.player)
-                        player.gol = player.gol ? player.gol+1 : 1;
-
-                    incidentsPlayers[incident.player.id] = {
-                        ...incidentsPlayers[incident.player.id],
-                        ...player
-                    };
-                }
-            });
-        }
+        if (incidents) incidentsPlayers = await setIncidentsPlayers(incidents);
 
         if (escalacao) {
             let fora = escalacao.away.players
@@ -129,9 +120,16 @@ export function Partida() {
             content: estatisticas || null,
         };
 
-        const escalacaoObj = {
+        const incidentsObj = {
             index: 1,
             tipo: 2,
+            title: 'Histórico',
+            content: incidents || null,
+        };
+
+        const escalacaoObj = {
+            index: 2,
+            tipo: 3,
             title: 'Escalação',
             content: (escalacao && tecnicos) ? {
                 escalacao: escalacao,
@@ -140,8 +138,8 @@ export function Partida() {
         };
 
         const outrosObj = {
-            index: 2,
-            tipo: 3,
+            index: 3,
+            tipo: 4,
             title: 'Outros',
             content: (highlights || jogoAgora.venue || jogoAgora.referee) ? {
                 jogoAgora: jogoAgora,
@@ -149,48 +147,90 @@ export function Partida() {
             } : null,
         };
 
-        setJogo(jogoAgora);
-        setAbas([
+        return [
             estatisticasObj,
+            incidentsObj,
             escalacaoObj,
             outrosObj,
-        ]);
+        ];
+    }
 
-        if (jogoAgora.status.type == 'inprogress') {
-            const interval = setInterval(async () => {
-                const jogoAtualizado = await evento(jogoAgora.id);
-                setJogo(jogoAtualizado);
-                if (jogoAtualizado.status.type != 'inprogress') {
-                    clearInterval(interval);
+    async function setIncidentsPlayers(incidents) {
+        let incidentsPlayers = {};
+        incidents.forEach(incident => {
+            if (incident.incidentType == 'substitution') {
+                if (incident.playerIn) {
+                    if (incidentsPlayers[incident.playerIn.id]) {
+                        incidentsPlayers[incident.playerIn.id].entrou = true;
+                        incidentsPlayers[incident.playerIn.id].por = incident.playerOut.shortName;
+                    } else {
+                        incidentsPlayers[incident.playerIn.id] = {
+                            entrou: true,
+                            por: incident.playerOut.shortName
+                        };
+                    }
                 }
-            }, 1000);
-            dispatch(setIntervalo(interval))
-        }
-        clearInterval(intervalo);
+                if (incident.playerOut) {
+                    if (incidentsPlayers[incident.playerOut.id]) {
+                        incidentsPlayers[incident.playerOut.id].saiu = true;
+                        incidentsPlayers[incident.playerOut.id].por = incident.playerIn.shortName;
+                    } else {
+                        incidentsPlayers[incident.playerOut.id] = {
+                            saiu: true,
+                            por: incident.playerIn.shortName
+                        };
+                    }
+                }
+            }
 
-        setRefreshing(false);
-    };
+            if (incident.player) {
+                let player = incidentsPlayers[incident.player.id]??{};
+
+                if ((incident.incidentType == 'card') && (incident.player)) {
+                    if (incident.incidentClass == 'yellow')
+                        player.cartaoAmarelo = player.cartaoAmarelo ? player.cartaoAmarelo+1 : 1;
+
+                    if (incident.incidentClass == 'red')
+                        player.cartaoVermelho = player.cartaoVermelho ? player.cartaoVermelho+1 : 1;
+
+                    if (incident.incidentClass == 'yellowRed') {
+                        player.cartaoAmarelo = player.cartaoAmarelo ? player.cartaoAmarelo+1 : 1;
+                        player.cartaoVermelho = player.cartaoVermelho ? player.cartaoVermelho+1 : 1;
+                    }
+                }
+
+                if ((incident.incidentType == 'goal') && incident.player)
+                    player.gol = player.gol ? player.gol+1 : 1;
+
+                incidentsPlayers[incident.player.id] = {
+                    ...incidentsPlayers[incident.player.id],
+                    ...player
+                };
+            }
+        });
+        return incidentsPlayers;
+    }
 
     const onRefresh = () => {
         setRefreshing(true);
         fetchData();
     };
     
-    useEffect(() => {
-        setRefreshing(true);
-        fetchData();
-        dispatch(setCarregarJogos(false));
-        return () => {
-            if (intervaloLocal) clearInterval(intervaloLocal);
-        };
-    }, []);
+    // useEffect(() => {
+    //     setRefreshing(true);
+    //     fetchData();
+    //     dispatch(setCarregarJogos(false));
+    //     return () => {
+    //         if (intervaloLocal) clearInterval(intervaloLocal);
+    //     };
+    // }, []);
 
     const renderAbas = (content, title, index, completo) => {
         switch (completo.tipo) {
             case 1: return <Estatistica estatistica={content}/>;
-            // case 2: return <Escalacao escalacao={content.escalacao} tecnicos={content.tecnicos}/>;
-            case 2: return <Escalacao content={content}/>;
-            case 3: return <Outros content={content}/>;
+            case 2: return <Incidents content={content}/>;
+            case 3: return <Escalacao content={content}/>;
+            case 4: return <Outros content={content}/>;
         
             default:
                 return (
@@ -203,7 +243,7 @@ export function Partida() {
 
     return jogo ? (
         <View style={styles.container}>
-            <BaseButton onPress={() => navigation.goBack()}>
+            <BaseButton onPress={() => navigation.goBack()} style={styles.btnVoltar}>
                 <Icon name="arrow-u-left-top" size={30} color="#434343" style={styles.voltar} />
             </BaseButton>
             <View>
@@ -356,16 +396,27 @@ export function Escalacao({content}) {
                         ...styles.divEscalacaoNome, 
                         alignItems: (info.esquerda) ? 'flex-end' : 'flex-start'
                     }}>
-                        <Text style={{
-                            ...styles.txtEscalacaoNome, 
-                            textAlign: (info.esquerda) ? 'left' : 'right'
-                        }}>{limitarString(item.player.shortName, 16)}</Text>
+                        <View style={{flexDirection: (info.esquerda) ? 'row' : 'row-reverse', gap: 3, alignItems: 'center'}}>
+                            {/* GOLEIRO */}
+                            {(item.position == 'G') && <View style={{...styles.gkDiv, flexDirection: (info.esquerda) ? 'row' : 'row-reverse'}}>
+                                <Icone name="soccer-ball-o" size={10} color="#bfbfbf" style={styles.gol}/>
+                                {(info.esquerda)
+                                ? <Icon name="hand-back-right" size={10} color="#fff" style={{transform: [{ rotate: '45deg'}]}} />
+                                : <Icon name="hand-back-left" size={10} color="#fff" style={{transform: [{ rotate: '320deg'}]}} />}
+                            </View>}
+
+                            <Text style={{
+                                ...styles.txtEscalacaoNome, 
+                                textAlign: (info.esquerda) ? 'left' : 'right'
+                            }}>{limitarString(item.player.shortName, 16)}</Text>
+                        </View>
                         <View style={{
                             ...styles.divInfoEscalacao, 
                             textAlign: (info.esquerda) ? 'left' : 'right',
                             justifyContent: (info.esquerda) ? 'flex-start' : 'flex-end',
                             flexDirection: (info.esquerda) ? 'row' : 'row-reverse',
                         }}>
+                            {/* SUBSTITUIÇÕES */}
                             {item.por && <Text style={{
                                 ...styles.infoEscalacaoNome, 
                                 textAlign: (info.esquerda) ? 'left' : 'right'
@@ -375,14 +426,17 @@ export function Escalacao({content}) {
                                 {info.esquerda && <Icon name="swap-horizontal-bold" size={10} color="#fff" style={styles.gol}/>})
                             </Text>}
 
+                            {/* GOL CONTRA */}
                             {item.statistics?.ownGoals ? Array.from({ length: item.statistics.ownGoals ?? 0 }, (_, i) => (
                                 <Icone key={i} name="soccer-ball-o" size={10} color="#e35c47" style={styles.gol}/>
                             )) : null}
 
+                            {/* GOL */}
                             {item.statistics?.goals ? Array.from({ length: item.statistics.goals ?? 0 }, (_, i) => (
                                 <Icone key={i} name="soccer-ball-o" size={10} color="#fff" style={styles.gol}/>
                             )) : null}
 
+                            {/* CARTÕES */}
                             {(item.cartaoAmarelo || item.cartaoVermelho) && <View style={styles.cartaoDiv}>
                                 {item.cartaoAmarelo ? Array.from({ length: item.cartaoAmarelo ?? 0 }, (_, i) => (
                                     <Icon key={'homeRedCards'+i} name="card" size={10} color="#d9af00" style={styles.cartao} />
@@ -392,6 +446,7 @@ export function Escalacao({content}) {
                                 )) : null}
                             </View>}
 
+                            {/* NÚMERO NA CAMISA */}
                             <Text style={{
                                 ...styles.infoEscalacaoNome, 
                                 textAlign: (info.esquerda) ? 'left' : 'right'
@@ -420,10 +475,16 @@ export function Escalacao({content}) {
                 <View style={styles.rowTecnico}>
                     <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}manager/${tecnicos.homeManager.id}/image` }} />
 
-                    <Text style={styles.txtTecnicosNomeEsquerda}>{tecnicos.homeManager.shortName}</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center', gap: 3}}>
+                        <Icon name="clipboard-edit" size={10} color="#fff" />
+                        <Text style={styles.txtTecnicosNomeEsquerda}>{limitarString(tecnicos.homeManager.shortName, 16)}</Text>
+                    </View>
                 </View>
                 <View style={styles.rowTecnico}>
-                    <Text style={styles.txtTecnicosNomeDireita}>{tecnicos.awayManager.shortName}</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center', gap: 3}}>
+                        <Text style={styles.txtTecnicosNomeDireita}>{limitarString(tecnicos.awayManager.shortName, 16)}</Text>
+                        <Icon name="clipboard-edit" size={10} color="#fff" />
+                    </View>
                     
                     <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}manager/${tecnicos.awayManager.id}/image` }} />
                 </View>
@@ -518,6 +579,204 @@ export function Outros({content}) {
                     />
                 </View>}
             </View>
+        </View>
+    );
+}
+
+export function Incidents({content}) {
+    if (!content) return <Erro />;
+    const wIcon = 23;
+    const wTime = 25;
+
+    function substitution(item) {
+        return (<View style={{flexDirection: (item.isHome)?'row':'row-reverse', gap: 5}}>
+            {(item.incidentClass == 'regular') && <View style={{flexDirection: 'row', width: wIcon, justifyContent: 'center'}}>
+                <Icon name="swap-horizontal-bold" size={20} color='#7a84ff' style={styles.gol} />
+            </View>}
+            {(item.incidentClass == 'injury') && <View style={{flexDirection: 'row', position: 'relative', width: wIcon, justifyContent: 'center'}}>
+                <Icon name="swap-horizontal-bold" size={20} color='#7a84ff' style={styles.gol} />
+                <Text style={{fontSize: 11, fontWeight: 'bold', color: '#e35c47', position: 'absolute', bottom: 0, right: 4}}>+</Text>
+            </View>}
+            <View style={{flexDirection: 'row', justifyContent: 'center', width: wTime}}>
+                <Text style={styles.txtIncidentsTempo}>{item.time}</Text>
+                {item.addedTime && <Text style={styles.txtAcrescimos}>+{item.addedTime}</Text>}
+            </View>
+            <View style={styles.linhaVert}></View>
+            <Icon name="arrow-up-bold" size={10} color='#46c252' style={styles.gol} />
+            <Text style={styles.txtEntrou}>{limitarString(item.playerIn.shortName, 16)}</Text>
+            <Text style={styles.txtIncidentsTempo}>-</Text>
+            <Icon name="arrow-down-bold" size={10} color='#e35c47' style={styles.gol} />
+            <Text style={styles.txtSaiu}>{limitarString(item.playerOut.shortName, 16)}</Text>
+        </View>)
+    }
+
+    function golsTipos(tipo) {
+        switch (tipo) {
+            case 'penalty': return <View style={{flexDirection: 'row', position: 'relative', width: wIcon, justifyContent: 'center'}}>
+                <Icon name="checkbox-blank-outline" size={25} color="#46c252" style={{alignSelf: 'center', height: 15, position: 'absolute', top: 0}}/>
+                <Icone name="soccer-ball-o" size={10} color="#46c252" style={{position: 'absolute', bottom: 0}}/>
+            </View>
+
+            case 'missed': return <View style={{flexDirection: 'row', position: 'relative', width: wIcon, justifyContent: 'center'}}>
+                <Icon name="checkbox-blank-outline" size={25} color="#e35c47" style={{alignSelf: 'center', height: 15, position: 'absolute', top: 0}}/>
+                <Icone name="close" size={12} color="#e35c47" style={{position: 'absolute', bottom: 0}}/>
+            </View>
+
+            case 'ownGoal': return <View style={{flexDirection: 'row', width: wIcon, justifyContent: 'center'}}>
+                <Icone name="soccer-ball-o" size={20} color="#e35c47" style={styles.gol}/>
+            </View>
+
+            case 'regular': return <View style={{flexDirection: 'row', width: wIcon, justifyContent: 'center'}}>
+                <Icone name="soccer-ball-o" size={20} color="#46c252" style={styles.gol}/>
+            </View>
+        
+            default: return <View style={{flexDirection: 'row', width: wIcon, justifyContent: 'center'}}>
+                <Icone name="soccer-ball-o" size={20} color="#46c252" style={styles.gol}/>
+            </View>
+        }
+    }
+
+    function goal(item, placar = true) {
+        return (<View style={{flexDirection: (item.isHome)?'row':'row-reverse', gap: 5}}>
+            {golsTipos(item.incidentClass)}
+            <View style={{flexDirection: 'row', justifyContent: 'center', width: wTime}}>
+                <Text style={styles.txtIncidentsTempo}>{item.time}</Text>
+                {item.addedTime && <Text style={styles.txtAcrescimos}>+{item.addedTime}</Text>}
+            </View>
+            <View style={styles.linhaVert}></View>
+            <View style={{flexDirection: 'row'}}>
+                {(ptBr[item.incidentClass])
+                ?<Text style={styles.txtIncidents}>{ptBr[item.incidentClass]} </Text>
+                :<Text style={styles.txtIncidents}>{ptBr[item.incidentType]} </Text>}
+                {placar && <>
+                    <Text style={styles.txtEstatisticasNome}>(</Text>
+                    <Text style={{...styles.txtEstatisticasNome, color: '#7a84ff', fontWeight: 'bold'}}>{item.homeScore}</Text>
+                    <Text style={styles.txtIncidents}>x</Text>
+                    <Text style={{...styles.txtEstatisticasNome, color: '#7a84ff', fontWeight: 'bold'}}>{item.awayScore}</Text>
+                    <Text style={styles.txtEstatisticasNome}>) </Text>
+                </>}
+                <Icone name="soccer-ball-o" size={10} color="#fff" style={styles.assistIcon}/>
+                <Text style={styles.txtIncidents}>{limitarString(item.player.shortName, 18)}</Text>
+                <Text style={styles.infoEscalacaoNome}> ({item.player.jerseyNumber})</Text>
+                {(item.assist1) && <><Icon name="shoe-cleat" size={10} color="#bfbfbf" style={{...styles.assistIcon, transform: [{ rotate: '320deg'}]}}/>
+                <Text style={styles.infoEscalacaoNome}>{limitarString(item.assist1.shortName, 15)}</Text></>}
+            </View>
+        </View>)
+    }
+
+    function penaltyShootout(item) {
+        return (<View style={{flexDirection: (item.isHome)?'row':'row-reverse', gap: 5}}>
+            {(item.description == 'Scored')
+            ?<View style={{flexDirection: 'row', position: 'relative', width: wIcon, justifyContent: 'center'}}>
+                <Icon name="checkbox-blank-outline" size={25} color="#46c252" style={{alignSelf: 'center', height: 15, position: 'absolute', top: 0}}/>
+                <Icone name="soccer-ball-o" size={10} color="#46c252" style={{position: 'absolute', bottom: 0}}/>
+            </View>
+            :<View style={{flexDirection: 'row', position: 'relative', width: wIcon, justifyContent: 'center'}}>
+                <Icon name="checkbox-blank-outline" size={25} color="#e35c47" style={{alignSelf: 'center', height: 15, position: 'absolute', top: 0}}/>
+                <Icone name="close" size={12} color="#e35c47" style={{position: 'absolute', bottom: 0}}/>
+            </View>}
+            <View style={styles.linhaVert}></View>
+            <View style={{flexDirection: 'row'}}>
+                <Text style={styles.txtEstatisticasNome}> (</Text>
+                <Text style={{...styles.txtEstatisticasNome, color: '#7a84ff', fontWeight: 'bold'}}>{item.homeScore}</Text>
+                <Text style={styles.txtIncidents}>x</Text>
+                <Text style={{...styles.txtEstatisticasNome, color: '#7a84ff', fontWeight: 'bold'}}>{item.awayScore}</Text>
+                <Text style={styles.txtEstatisticasNome}>) </Text>
+                <Text style={styles.txtIncidents}>{item.player.shortName}</Text>
+                <Text style={styles.txtEstatisticasNome}> ({item.player.jerseyNumber})</Text>
+            </View>
+        </View>)
+    }
+
+    function card(item) {
+        return (<View style={{flexDirection: (item.isHome)?'row':'row-reverse', gap: 5}}>
+            {(item.incidentClass == 'red') && <View style={{flexDirection: 'row', width: wIcon, justifyContent: 'center'}}>
+                <Icon name="card" size={20} color="#e35c47" style={styles.cartao} />
+            </View>}
+            {(item.incidentClass == 'yellow') && <View style={{flexDirection: 'row', width: wIcon, justifyContent: 'center'}}>
+                <Icon name="card" size={20} color="#d9af00" style={styles.cartao} />
+            </View>}
+            {(item.incidentClass == 'yellowRed') && <><View style={{flexDirection: 'row', width: wIcon, justifyContent: 'center', height: 20}}>
+                <Icon name="card" size={17} color="#d9af00" style={{...styles.cartao, position: 'absolute', bottom: 0, left: 1}} />
+                <Icon name="card" size={17} color="#e35c47" style={{...styles.cartao, position: 'absolute', top: 0, right: 1}} />
+            </View></>}
+            <View style={{flexDirection: 'row', justifyContent: 'center', width: wTime}}>
+                <Text style={styles.txtIncidentsTempo}>{item.time}</Text>
+                {item.addedTime && <Text style={styles.txtAcrescimos}>+{item.addedTime}</Text>}
+            </View>
+            <View style={styles.linhaVert}></View>
+            {item.player && <Text style={styles.txtIncidents}>{item.player?.shortName}</Text>}
+            {item.manager && <Text style={styles.txtIncidents}>{item.manager?.shortName}</Text>}
+            {item.manager && <Icon style={{alignSelf: 'center'}} name="clipboard-edit" size={10} color="#fff" />}
+        </View>)
+    }
+
+    function injuryTime(item) {
+        return (<View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={styles.txtAnuncioAcrescimos}>+</Text>
+            <Text style={{...styles.txtAnuncioAcrescimos, color: '#46c252', fontWeight: 'bold'}}>{item.length}</Text>
+            <Text style={styles.txtAnuncioAcrescimos}> de acrescimos</Text>
+        </View>)
+    }
+
+    function period(item) {
+        return (<View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+            {(item.time == 45) && <Text style={styles.txtAnuncioAcrescimos}>1º tempo</Text>}
+            {(item.time == 90) && <Text style={styles.txtAnuncioAcrescimos}>2º tempo</Text>}
+            {(item.time == 120) && <Text style={styles.txtAnuncioAcrescimos}>Prorrogação</Text>}
+            {(item.time == 999) && <Text style={styles.txtAnuncioAcrescimos}>Pênaltis</Text>}
+            <Text style={styles.txtAnuncioAcrescimos}> (</Text>
+            <Text style={{...styles.txtAnuncioAcrescimos, color: '#7a84ff', fontWeight: 'bold'}}>{item.homeScore}</Text>
+            <Text style={styles.txtAnuncioAcrescimos}>x</Text>
+            <Text style={{...styles.txtAnuncioAcrescimos, color: '#7a84ff', fontWeight: 'bold'}}>{item.awayScore}</Text>
+            <Text style={styles.txtAnuncioAcrescimos}>)</Text>
+        </View>)
+    }
+
+    function varDecision(item) {
+        return (<View style={{flexDirection: (item.isHome)?'row':'row-reverse', gap: 5}}>
+            <View style={{flexDirection: 'row', position: 'relative', width: wIcon, justifyContent: 'center'}}>
+                <Icone name="tv" size={20} color="#7a84ff" />
+                <Text style={{fontSize: 7, fontWeight: 'bold', color: '#7a84ff', position: 'absolute', top: 3, left: 3}}>VAR</Text>
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'center', width: wTime}}>
+                <Text style={styles.txtIncidentsTempo}>{item.time}</Text>
+                {item.addedTime && <Text style={styles.txtAcrescimos}>+{item.addedTime}</Text>}
+            </View>
+            <View style={styles.linhaVert}></View>
+            <Text style={styles.txtIncidents}>{ptBr[`${item.incidentClass}.${item.confirmed}`]}</Text>
+        </View>)
+    }
+
+    function tipos(tipo, item) {
+        switch (tipo) {
+            case 'varDecision': return varDecision(item);
+            case 'card': return card(item);
+            case 'substitution': return substitution(item);
+            case 'goal': return goal(item);
+            case 'inGamePenalty': return goal(item, false);
+            case 'penaltyShootout': return penaltyShootout(item);
+            case 'injuryTime': return injuryTime(item); // acrescimos
+            case 'period': return period(item);
+        
+            default: return <Text style={styles.txtIncidents}>-</Text>
+        }
+    }
+
+    function renderItens(item, key) {
+        return (
+            <View key={key} style={styles.containerHistorico}>
+                {tipos(item.incidentType, item)}
+            </View>
+        );
+    }
+
+    return (
+        <View style={styles.tabsContainer}>
+            <Lista
+                data={content}
+                renderItem={renderItens}
+            />
         </View>
     );
 }

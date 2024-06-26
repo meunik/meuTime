@@ -17,6 +17,16 @@ export const styles = StyleSheet.create({
     gol: {
         alignSelf: 'center',
     },
+    assistIcon: {
+        paddingRight: 2.5,
+        alignSelf: 'center',
+    },
+    btnVoltar: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: 2,
+    },
     voltar: {
         marginRight: 5,
         paddingLeft: 15,
@@ -38,6 +48,12 @@ export const styles = StyleSheet.create({
         paddingTop: 10,
         marginBottom: 10,
     },
+    linhaVert: {
+        borderColor: '#ffffff30',
+        borderRightWidth: 0.7,
+        paddingLeft: 1,
+        marginRight: 1,
+    },
     txtTitulo: {
         color: theme.colors.texto[100],
         fontSize: theme.font.size[6],
@@ -58,9 +74,37 @@ export const styles = StyleSheet.create({
         color: theme.colors.texto[300],
         fontSize: theme.font.size[1],
     },
+    txtIncidents: {
+        color: theme.colors.texto[100],
+        fontSize: theme.font.size[1],
+    },
+    txtAnuncioAcrescimos: {
+        color: theme.colors.texto[200],
+        fontSize: theme.font.size[1],
+    },
+    txtSaiu: {
+        color: theme.colors.texto[300],
+        fontSize: theme.font.size[1],
+    },
+    txtEntrou: {
+        color: theme.colors.texto[100],
+        fontSize: theme.font.size[1],
+    },
     txtNome: {
         color: theme.colors.texto[100],
         fontSize: theme.font.size[1],
+    },
+    txtIncidentsTempo: {
+        color: theme.colors.texto[200],
+        fontSize: theme.font.size[1],
+    },
+    txtAcrescimos: {
+        color: theme.colors.texto[300],
+        fontSize: theme.font.size[1]-3,
+    },
+    txtVar: {
+        color: theme.colors.texto[100],
+        fontSize: theme.font.size[1]-3,
     },
 
     divEscalacaoNome: {
@@ -215,5 +259,26 @@ export const styles = StyleSheet.create({
     cartaoDiv: {
         flexDirection: 'row',
         gap: -1,
+    },
+    gk: {
+        transform: [{ rotate: '45deg'}]
+    },
+    gkDiv: {
+        gap: -6,
+    },
+    gkTxt: {
+        color: theme.colors.texto[100],
+        fontSize: theme.font.size[1]-6,
+        fontWeight: 'bold',
+        borderWidth: 1,
+        borderColor: '#ffffff',
+        paddingLeft: 2.5,
+        paddingRight: 1,
+        paddingTop: 2,
+        paddingBottom: 1,
+        borderRadius: 50,
+    },
+    containerHistorico: {
+        paddingVertical: 2.5,
     },
 })
