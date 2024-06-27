@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { View, Text, Image, ScrollView, RefreshControl, FlatList } from 'react-native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { View, Text, Image, ScrollView, RefreshControl } from 'react-native';
 import { BaseButton } from "react-native-gesture-handler";
 import { urlBase } from '@/src/store/api';
 import { setSeason } from '@/src/store/action';
@@ -21,6 +21,7 @@ import { Eliminatoria } from "@/src/components/Torneios/Eliminatoria";
 import { listaTorneios } from "@/src/store/listaTorneios";
 import { Spinner } from "@/src/components/Spinner";
 import { JogoAtivo } from "@/src/components/Jogo";
+import ptBr from "@/src/Utils/ptBr";
 
 export function Copa({params = null}) {
 	const campeaoGrupos = (params && params.campeaoGrupos) ? params.campeaoGrupos : false;
@@ -44,7 +45,13 @@ export function Copa({params = null}) {
     const season = useSelector(state => state.season);
     const dispatch = useDispatch();
 
+    const isFocusedRef = useRef(false);
+    const attRodando = useRef(false);
+
     const fetchDataTabela = async (refresh = false) => {
+        if (attRodando.current) return;
+        attRodando.current = true;
+
         if (!refresh) {
             setTabela(null);
             setMataMata(null);
@@ -65,7 +72,14 @@ export function Copa({params = null}) {
         round = rodada?.round;
         depois = depois.filter(item => item.roundInfo.round == round);
         antes = antes.filter(item => item.roundInfo.round == round);
-        setJogosRodada([...antes, ...depois]);
+        const rodadaJogos = [...antes, ...depois];
+        const emAndamento = rodadaJogos.filter(item => item.status.type == "inprogress");
+        setJogosRodada(rodadaJogos);
+
+        setTimeout(async () => {
+            attRodando.current = false;
+            if ((emAndamento.length > 0) && isFocusedRef.current && !attRodando.current) fetchDataTabela(true);
+        }, 15000);
 
         setCarregando(false);
         setRefreshing(false);
@@ -76,12 +90,18 @@ export function Copa({params = null}) {
         fetchDataTabela(true);
     };
 
-    useEffect(() => {
-        setCarregando(true);
-        fetchDataTabela();
-    }, [torneioId]);
+    useFocusEffect(
+        React.useCallback(() => {
+            setCarregando(true);
+            setRefreshing(true);
+            isFocusedRef.current = true;
+            fetchDataTabela();
+            return () => isFocusedRef.current = false;
+        }, [torneioId])
+    );
 
     function renderTabela(item, key) {
+        let nomeTime = ptBr[item.team.slug] || item.team.shortName;
         return (
             <View key={key} style={styles.lista}>
                 <View style={styles.time}>
@@ -89,7 +109,7 @@ export function Copa({params = null}) {
                         <Text style={styles.txtPosicao(item)}>{item.position}</Text>
                     </View>
                     <Image style={styles.imgTime} resizeMode="center" source={{ uri: `${urlBase}team/${item.team.id}/image` }} />
-                    <Text style={styles.txt}>{limitarString(item.team.shortName, limitaString)}</Text>
+                    <Text style={styles.txt}>{limitarString(nomeTime, limitaString)}</Text>
                 </View>
                 <View style={styles.pontos}>
                     <Text style={styles.txtPontos}>{item.points}</Text>

@@ -160,68 +160,172 @@ export const listaInternacionais = [
 
 export const listaSelecoesEuropa = [
     {
-        name: "Germany",
-        slug: "germany",
-        shortName: "Germany",
-        nameCode: "GER",
-        id: 4711,
+        name: "Albania",
+        slug: "albania",
+        shortName: "Albania",
+        nameCode: "ALB",
+        id: 4690
     },
     {
-        name: "Croatia",
-        slug: "croatia",
-        shortName: "Croatia",
-        nameCode: "CRO",
-        id: 4715,
-    },
-    {
-        name: "Italy",
-        slug: "italy",
-        shortName: "Italy",
-        nameCode: "ITA",
-        id: 4707,
-    },
-    {
-        name: "Spain",
-        slug: "spain",
-        shortName: "Spain",
-        nameCode: "ESP",
-        id: 4698,
-    },    
-    {
-        name: "Denmark",
-        slug: "denmark",
-        shortName: "Denmark",
-        nameCode: "DEN",
-        id: 4476,
-    },
-    {
-        name: "England",
-        slug: "england",
-        shortName: "England",
-        nameCode: "ENG",
-        id: 4713,
-    },
-    {
-        name: "France",
-        slug: "france",
-        shortName: "France",
-        nameCode: "FRA",
-        id: 4481,
+        name: "Austria",
+        slug: "austria",
+        shortName: "Austria",
+        nameCode: "AUT",
+        id: 4718
     },
     {
         name: "Belgium",
         slug: "belgium",
         shortName: "Belgium",
         nameCode: "BEL",
-        id: 4717,
+        id: 4717
+    },
+    {
+        name: "Croatia",
+        slug: "croatia",
+        shortName: "Croatia",
+        nameCode: "CRO",
+        id: 4715
+    },
+    {
+        name: "Czech Republic",
+        slug: "czech-republic",
+        shortName: "Czech Republic",
+        nameCode: "CZE",
+        id: 4714
+    },
+    {
+        name: "Denmark",
+        slug: "denmark",
+        shortName: "Denmark",
+        nameCode: "DEN",
+        id: 4476
+    },
+    {
+        name: "England",
+        slug: "england",
+        shortName: "England",
+        nameCode: "ENG",
+        id: 4713
+    },
+    {
+        name: "France",
+        slug: "france",
+        shortName: "France",
+        nameCode: "FRA",
+        id: 4481
+    },
+    {
+        name: "Georgia",
+        slug: "georgia",
+        shortName: "Georgia",
+        nameCode: "GEO",
+        id: 4763
+    },
+    {
+        name: "Germany",
+        slug: "germany",
+        shortName: "Germany",
+        nameCode: "GER",
+        id: 4711
+    },
+    {
+        name: "Hungary",
+        slug: "hungary",
+        shortName: "Hungary",
+        nameCode: "HUN",
+        id: 4709
+    },
+    {
+        name: "Italy",
+        slug: "italy",
+        shortName: "Italy",
+        nameCode: "ITA",
+        id: 4707
+    },
+    {
+        name: "Netherlands",
+        slug: "netherlands",
+        shortName: "Netherlands",
+        nameCode: "NED",
+        id: 4705
+    },
+    {
+        name: "Poland",
+        slug: "poland",
+        shortName: "Poland",
+        nameCode: "POL",
+        id: 4703
     },
     {
         name: "Portugal",
         slug: "portugal",
-        shortName: "Portugal",
-        nameCode: "POR",
-        id: 4704,
+        userCount: 959542,
+        id: 4704
     },
+    {
+        name: "Romania",
+        slug: "romania",
+        shortName: "Romania",
+        nameCode: "ROU",
+        id: 4477
+    },
+    {
+        name: "Scotland",
+        slug: "scotland",
+        shortName: "Scotland",
+        nameCode: "SCO",
+        id: 4695
+    },
+    {
+        name: "Serbia",
+        slug: "serbia",
+        shortName: "Serbia",
+        nameCode: "SRB",
+        id: 6355
+    },
+    {
+        name: "Slovakia",
+        slug: "slovakia",
+        shortName: "Slovakia",
+        nameCode: "SVK",
+        id: 4697
+    },
+    {
+        name: "Slovenia",
+        slug: "slovenia",
+        shortName: "Slovenia",
+        nameCode: "SLO",
+        id: 4484
+    },
+    {
+        name: "Spain",
+        slug: "spain",
+        shortName: "Spain",
+        nameCode: "ESP",
+        id: 4698
+    },
+    {
+        name: "Switzerland",
+        slug: "switzerland",
+        shortName: "Switzerland",
+        nameCode: "SUI",
+        id: 4699
+    },
+    {
+        name: "Turkey",
+        slug: "turkey",
+        shortName: "Turkey",
+        nameCode: "TUR",
+        id: 4700
+    },
+    {
+        name: "Ukraine",
+        slug: "ukraine",
+        shortName: "Ukraine",
+        nameCode: "UKR",
+        id: 4701
+    }
 ];
 
 export const listaSelecoesAmerica = [

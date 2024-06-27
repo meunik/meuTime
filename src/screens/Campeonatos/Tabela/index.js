@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { BaseButton } from "react-native-gesture-handler";
-import { View, Text, Image, FlatList, RefreshControl } from 'react-native';
-import * as NavigationBar from 'expo-navigation-bar';
-import { theme } from "@/src/global/styles/theme";
+import { View, Text, Image, RefreshControl } from 'react-native';
 import { setSeason } from '@/src/store/action';
 import {
     torneio,
@@ -33,7 +31,13 @@ export function Tabela({params = null}) {
     const season = useSelector(state => state.season);
     const dispatch = useDispatch();
 
+    const isFocusedRef = useRef(false);
+    const attRodando = useRef(false);
+
     const fetchDataTabela = async () => {
+        if (attRodando.current) return;
+        attRodando.current = true;
+
         let season = await getSeasons(torneioId);
         dispatch(setSeason(season));
 
@@ -52,7 +56,13 @@ export function Tabela({params = null}) {
         depois = depois.filter(item => item.roundInfo.round == round);
         antes = antes.filter(item => item.roundInfo.round == round);
         const rodadaJogos = [...antes, ...depois];
+        const emAndamento = rodadaJogos.filter(item => item.status.type == "inprogress");
         setJogosRodada(rodadaJogos);
+
+        setTimeout(async () => {
+            attRodando.current = false;
+            if ((emAndamento.length > 0) && isFocusedRef.current && !attRodando.current) fetchDataTabela();
+        }, 15000);
 
         setCarregando(false);
         setRefreshing(false);
@@ -63,9 +73,14 @@ export function Tabela({params = null}) {
         fetchDataTabela();
     };
 
-    useEffect(() => {
-        fetchDataTabela();
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            setRefreshing(true);
+            isFocusedRef.current = true;
+            fetchDataTabela();
+            return () => isFocusedRef.current = false;
+        }, [torneioId])
+    );
 
     const renderTabela = (item, key) => {
         const cincoEventos = [];

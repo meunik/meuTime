@@ -116,19 +116,22 @@ export function Times({ route }) {
             <Text style={styles.txtInfoTodos}>{item && item.name}</Text>
         </View>)
 
-        else return (<BaseButton onPress={async () => {
-            setLoad(true);
-            setTimeout(() => trocarTime(item), 0);
-        }}>
-            <View style={styles.lista}>
-                <Image
-                    style={styles.img}
-                    resizeMode="center"
-                    source={{ uri: `${urlTime}${item.id}/image` }}
-                />
-                <Text style={styles.txt}>{item.shortName}</Text>
-            </View>
-        </BaseButton>)
+        else {
+            let nomeTime = ptBr[item.slug] || item.shortName;
+            return (<BaseButton onPress={async () => {
+                setLoad(true);
+                setTimeout(() => trocarTime(item), 0);
+            }}>
+                <View style={styles.lista}>
+                    <Image
+                        style={styles.img}
+                        resizeMode="center"
+                        source={{ uri: `${urlTime}${item.id}/image` }}
+                    />
+                    <Text style={styles.txt}>{nomeTime}</Text>
+                </View>
+            </BaseButton>)
+        }
     };
 
     return (

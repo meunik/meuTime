@@ -57,7 +57,7 @@ export function Partida() {
         setAbas(abasDados);
 
         setTimeout(() => {
-            if (jogoAgora.status.type == 'inprogress') att(escalacao, highlights, tecnicos, intervaloLocal);
+            if (jogoAgora.status.type == 'inprogress') att(escalacao, highlights, tecnicos);
         }, 5000);
 
         setRefreshing(false);
@@ -74,18 +74,18 @@ export function Partida() {
         }, [])
     );
 
-    async function att(escalacao, highlights, tecnicos, interval) {
+    async function att(escalacao, highlights, tecnicos) {
         if (attRodando.current) return;
         attRodando.current = true;
         
         let jogoAtualizado = await evento(idPartida);
         setJogo(jogoAtualizado);
-        setAbas(await setArrayTabs(escalacao, highlights, tecnicos));
+        setAbas(await setArrayTabs(escalacao, highlights, jogoAtualizado, tecnicos));
 
         setTimeout(async () => {
             attRodando.current = false;
             if (jogoAtualizado.status.type === 'inprogress' && isFocusedRef.current && !attRodando.current)
-                await att(escalacao, highlights, tecnicos, interval);
+                await att(escalacao, highlights, tecnicos);
         }, 5000);
 
         return jogoAtualizado;
@@ -113,46 +113,43 @@ export function Partida() {
             escalacao.home.players = casa;
         }
 
-        const estatisticasObj = {
-            index: 0,
+        let retorno = [];
+
+        if (estatisticas) retorno.push({
+            index: retorno.length,
             tipo: 1,
             title: 'Estatísticas',
             content: estatisticas || null,
-        };
+        });
 
-        const incidentsObj = {
-            index: 1,
+        if (incidents) retorno.push({
+            index: retorno.length,
             tipo: 2,
             title: 'Histórico',
             content: incidents || null,
-        };
+        });
 
-        const escalacaoObj = {
-            index: 2,
+        if (escalacao && tecnicos) retorno.push({
+            index: retorno.length,
             tipo: 3,
             title: 'Escalação',
             content: (escalacao && tecnicos) ? {
                 escalacao: escalacao,
                 tecnicos: tecnicos,
             } : null,
-        };
+        });
 
-        const outrosObj = {
-            index: 3,
+        if (highlights || jogoAgora.venue || jogoAgora.referee) retorno.push({
+            index: retorno.length,
             tipo: 4,
             title: 'Outros',
             content: (highlights || jogoAgora.venue || jogoAgora.referee) ? {
                 jogoAgora: jogoAgora,
                 highlights: highlights,
             } : null,
-        };
+        });
 
-        return [
-            estatisticasObj,
-            incidentsObj,
-            escalacaoObj,
-            outrosObj,
-        ];
+        return retorno;
     }
 
     async function setIncidentsPlayers(incidents) {
@@ -215,15 +212,6 @@ export function Partida() {
         setRefreshing(true);
         fetchData();
     };
-    
-    // useEffect(() => {
-    //     setRefreshing(true);
-    //     fetchData();
-    //     dispatch(setCarregarJogos(false));
-    //     return () => {
-    //         if (intervaloLocal) clearInterval(intervaloLocal);
-    //     };
-    // }, []);
 
     const renderAbas = (content, title, index, completo) => {
         switch (completo.tipo) {
@@ -278,8 +266,6 @@ export function Estatistica({estatistica}) {
     function renderItens(item, key) {
         let linha = false;
         let texto = 'txtEstatisticasNum';
-        // if (txtMenor) texto = 'txtMenor';
-        // if (txtMuitoMenor) texto = 'txtMuitoMenor';
 
         switch (item.name) {
             case "Ball possession": titulo = 'Posse de bola'; break;
@@ -390,7 +376,7 @@ export function Escalacao({content}) {
         return (
             <View key={key} style={styles.lista}>
                 <View style={styles.rowEscalacaoJogador}>
-                    {info.esquerda && <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}player/${item.player.id}/image` }} />}
+                    {info.esquerda && <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}player/${item.player?.id}/image` }} />}
 
                     <View style={{
                         ...styles.divEscalacaoNome, 
@@ -408,7 +394,7 @@ export function Escalacao({content}) {
                             <Text style={{
                                 ...styles.txtEscalacaoNome, 
                                 textAlign: (info.esquerda) ? 'left' : 'right'
-                            }}>{limitarString(item.player.shortName, 16)}</Text>
+                            }}>{limitarString(item.player?.shortName, 16)}</Text>
                         </View>
                         <View style={{
                             ...styles.divInfoEscalacao, 
@@ -454,7 +440,7 @@ export function Escalacao({content}) {
                         </View>
                     </View>
 
-                    {(info.esquerda == false) && <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}player/${item.player.id}/image` }} />}
+                    {(info.esquerda == false) && <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}player/${item.player?.id}/image` }} />}
                 </View>
                 {(key == 10) && <View style={styles.linha}></View>}
             </View>
@@ -473,20 +459,20 @@ export function Escalacao({content}) {
             </View>
             <View style={styles.rowTecnicos}>
                 <View style={styles.rowTecnico}>
-                    <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}manager/${tecnicos.homeManager.id}/image` }} />
+                    <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}manager/${tecnicos.homeManager?.id}/image` }} />
 
                     <View style={{flexDirection: 'row', alignItems: 'center', gap: 3}}>
                         <Icon name="clipboard-edit" size={10} color="#fff" />
-                        <Text style={styles.txtTecnicosNomeEsquerda}>{limitarString(tecnicos.homeManager.shortName, 16)}</Text>
+                        <Text style={styles.txtTecnicosNomeEsquerda}>{limitarString(tecnicos.homeManager?.shortName, 16)}</Text>
                     </View>
                 </View>
                 <View style={styles.rowTecnico}>
                     <View style={{flexDirection: 'row', alignItems: 'center', gap: 3}}>
-                        <Text style={styles.txtTecnicosNomeDireita}>{limitarString(tecnicos.awayManager.shortName, 16)}</Text>
+                        <Text style={styles.txtTecnicosNomeDireita}>{limitarString(tecnicos.awayManager?.shortName, 16)}</Text>
                         <Icon name="clipboard-edit" size={10} color="#fff" />
                     </View>
                     
-                    <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}manager/${tecnicos.awayManager.id}/image` }} />
+                    <Image style={styles.imgEscalacao} resizeMode="center" source={{ uri: `${urlBase}manager/${tecnicos.awayManager?.id}/image` }} />
                 </View>
             </View>
             <View style={styles.rowEscalacao}>
