@@ -237,9 +237,12 @@ export function Partida() {
             <View>
                 {jogo && <JogoAtivo jogo={jogo} bordas={false} altura={117} />}
             </View>
-            <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+            {/* <ScrollView contentContainerStyle={styles.contentContainerStyle}>
                 {abas && <Tabs data={abas} render={renderAbas} indexInicial={0} id='jogo'/>}
-            </ScrollView>
+            </ScrollView> */}
+            <View style={styles.contentContainerStyle}>
+                {abas && <Tabs data={abas} render={renderAbas} indexInicial={0} id='jogo'/>}
+            </View>
         </View>
     ): <Spinner fundoPreto />;
 }
@@ -356,14 +359,11 @@ export function Estatistica({estatistica}) {
     }
 
     return (
-        <View style={styles.tabsContainer}>
+        <ScrollView contentContainerStyle={styles.tabsContainer}>
             <View style={styles.estatisticaContainer}>
-                <Lista
-                    data={all}
-                    renderItem={renderAlls}
-                />
+                <Lista data={all} renderItem={renderAlls} />
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
@@ -448,7 +448,7 @@ export function Escalacao({content}) {
     }
 
     return (
-        <View style={styles.tabsContainer}>
+        <ScrollView contentContainerStyle={styles.tabsContainer}>
             <View style={styles.rowTecnicos}>
                 <View style={styles.rowTecnico}>
                     <Text style={styles.infoEsquerda}>{escalacao.home.formation}</Text>
@@ -491,7 +491,7 @@ export function Escalacao({content}) {
                     />
                 </View>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
@@ -540,7 +540,7 @@ export function Outros({content}) {
     }
 
     return (
-        <View style={styles.tabsContainer}>
+        <ScrollView contentContainerStyle={styles.tabsContainer}>
             <View style={styles.estatisticaContainer}>
                 {content.highlights && <View style={styles.flexUm}>
                     <Text style={styles.txtTitulo}>Highlights</Text>
@@ -565,7 +565,7 @@ export function Outros({content}) {
                     />
                 </View>}
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
@@ -758,11 +758,8 @@ export function Incidents({content}) {
     }
 
     return (
-        <View style={styles.tabsContainer}>
-            <Lista
-                data={content}
-                renderItem={renderItens}
-            />
-        </View>
+        <ScrollView contentContainerStyle={styles.tabsContainer}>
+            <Lista data={content} renderItem={renderItens} />
+        </ScrollView>
     );
 }

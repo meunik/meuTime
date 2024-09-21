@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { View, Text, Image, TouchableHighlight, useWindowDimensions } from 'react-native';
+import { View, Text, Image, TouchableHighlight, useWindowDimensions, ScrollView } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -18,6 +18,8 @@ import { Artilheiros } from "@/src/screens/Artilheiros";
 import { Jogos as BrasileiraoJogos } from "@/src/screens/Campeonatos/Tabela/Jogos";
 import { Times } from "@/src/screens/Times";
 import { Partida } from "@/src/screens/Partida";
+import { TimeInfo } from "@/src/screens/TimeInfo";
+import { Rodada } from "@/src/screens/Rodada";
 
 const FirstRoute = () => (
     <Jogos />
@@ -27,9 +29,19 @@ const SecondRoute = () => (
     <Campeonatos />
 );
 
+const ThirdRoute = () => (
+    <Rodada />
+);
+
+const ForthRoute = () => (
+    <TimeInfo />
+);
+
 const renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute,
+    third: ThirdRoute,
+    // forth: ForthRoute,
 });
 
 export function AuthRoutes() {
@@ -48,6 +60,8 @@ export function AuthRoutes() {
     const [routes] = React.useState([
         { key: 'first', title: 'Jogos' },
         { key: 'second', title: 'Tabelas' },
+        { key: 'third', title: 'Rodada' },
+        // { key: 'forth', title: 'Estatisticas' },
     ]);
 
     const renderTabBar = props => (
@@ -62,13 +76,22 @@ export function AuthRoutes() {
                     {layout.width > 350 && <Text style={styles.txtLogo}>{meuTime && meuTime.shortName}</Text>}
                 </View>
             </TouchableHighlight>
-            <TabBar
+            <ScrollView horizontal={true} contentContainerStyle={styles.scrollContainer}>
+                <TabBar
+                    {...props}
+                    labelStyle={styles.labelStyle}
+                    indicatorStyle={styles.ativo}
+                    style={styles.navContainer}
+                    tabStyle={styles.tabContainer}
+                />
+            </ScrollView>
+            {/* <TabBar
                 {...props}
                 labelStyle={styles.labelStyle}
                 indicatorStyle={styles.ativo}
                 style={styles.navContainer}
                 tabStyle={styles.tabContainer}
-            />
+            /> */}
             <TouchableHighlight onPress={() => navigation.navigate('Times')} underlayColor="#00000030">
                 <Icon name="cog" size={20} color="#000" />
             </TouchableHighlight>

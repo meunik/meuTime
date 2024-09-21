@@ -4,6 +4,7 @@ import {
     urlBase,
     urlEvento,
     urlEventos,
+    urlTimeId,
     urlTorneio,
     urlSeason,
     
@@ -23,6 +24,11 @@ export const getIncidents = async(id)=> await request(`${urlEvento(id)}incidents
 export const getComments = async(id)=> await request(`${urlEvento(id)}comments/pt`, 'comments');
 export const getHighlights = async(id)=> await request(`${urlEvento(id)}highlights`, 'highlights');
 export const getChannel = async(id, idEvento)=> await request(`${urlChannel(id, idEvento)}`, 'tvChannelVotes');
+export const getEstatisticasTime = async(idTime, idTorneio, idSeason)=> await request(`${urlTimeId(idTime)}unique-tournament/${idTorneio}/season/${idSeason}/statistics/overall`, 'statistics');
+// https://www.sofascore.com/api/v1/team/1958/unique-tournament/384/season/57296/statistics/overall
+// https://www.sofascore.com/api/v1/team/1958/unique-tournament/325/season/58766/statistics/overall
+// {urlTimeId(id)} https://api.sofascore.com/api/v1/event/${id}/
+// `${urlTimeId(id)}unique-tournament/{idEvento}/season/{idSeason}/statistics/overall`
 
 export const time = async(id)=> await request(`${id}`, 'team');
 export const img = async(id)=> await request(`${id}/image`);

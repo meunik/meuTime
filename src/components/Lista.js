@@ -31,7 +31,7 @@ export function Lista({
                 {listHeaderComponent && listHeaderComponent}
                 {data && (() => {
                     const items = [];
-                    keys.forEach((key, index) => items.push(renderItem(data[key], `${ids}${index}`, infoAdd)));
+                    keys.forEach((key, index) => items.push(renderItem(data[key], `${ids}${index}`, infoAdd, key)));
                     return items;
                 })()}
                 {listFooterComponent && listFooterComponent}
@@ -41,7 +41,7 @@ export function Lista({
         return (<>
             {data && (() => {
                 const items = [];
-                keys.forEach((key, index) => items.push(renderItem(data[key], `${ids}${index}`, infoAdd)));
+                keys.forEach((key, index) => items.push(renderItem(data[key], `${ids}${index}`, infoAdd, key)));
                 return items;
             })()}
         </>);

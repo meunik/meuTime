@@ -412,6 +412,51 @@ export const mundo = [
         id: 0,
     },
     {
+        name: "Champions League",
+        slug: "uefa-champions-league",
+        primaryColorHex: "#062b5c",
+        secondaryColorHex: "#086aab",
+        id: 7,
+        container: CopaGrupos,
+        params: {
+            mataMataString: 8,
+            eliminatoriaVertical: 'ladoLado',
+            scroll: false,
+        },
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Oitavas de Final',
+            },
+            {
+                cor: 'bolinhaAzulClaro',
+                texto: 'Repescagem',
+            },
+        ],
+    },
+    {
+        name: "Europa League",
+        slug: "uefa-europa-league",
+        secondaryColorHex: "#f37d25",
+        id: 679,
+        container: CopaGrupos,
+        params: {
+            mataMataString: 8,
+            eliminatoriaVertical: 'ladoLado',
+            scroll: false,
+        },
+        legenda: [
+            {
+                cor: 'bolinhaAzulEscuro',
+                texto: 'Oitavas de Final',
+            },
+            {
+                cor: 'bolinhaAzulClaro',
+                texto: 'Repescagem',
+            },
+        ],
+    },
+    {
         name: "Mundial de Clubes",
         slug: "club-world-championship",
         primaryColorHex: "#8d1536",

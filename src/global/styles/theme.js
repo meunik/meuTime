@@ -31,6 +31,9 @@ export const theme = {
             5: 20,
             6: 22,
             7: 24,
+            8: 26,
+            9: 28,
+            10: 30,
         },
     },
     contentContainerStyle: {

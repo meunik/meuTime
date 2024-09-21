@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Defina os tipos de ações
 const SET_TIME = 'SET_TIME';
+const SET_TORNEIO_LIST = 'SET_TORNEIO_LIST';
 const SET_TORNEIO = 'SET_TORNEIO';
 const SET_TORNEIO_ID = 'SET_TORNEIO_ID';
 const SET_SEASON = 'SET_SEASON';
@@ -17,6 +18,7 @@ const SET_INTERVALO = 'SET_INTERVALO';
 // Defina o estado inicial
 const initialState = {
     meuTime: null,
+    torneioList: [],
     torneio: null,
     torneioId: null,
     season: null,
@@ -29,6 +31,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_TIME: return { ...state, meuTime: action.payload };
+        case SET_TORNEIO_LIST: return { ...state, torneioList: action.payload };
         case SET_TORNEIO: return { ...state, torneio: action.payload };
         case SET_TORNEIO_ID: return { ...state, torneioId: action.payload };
         case SET_SEASON: return { ...state, season: action.payload };

@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        paddingHorizontal: 5,
+        paddingHorizontal: 10,
         paddingBottom: 2,
         backgroundColor: theme.colors.nav,
         // backgroundColor: '#590000',
@@ -26,8 +26,8 @@ export const styles = StyleSheet.create({
         color: '#fff',
     },
     navContainer: {
-        // width: 188,
-        width: 160,
+        width: 300,
+        // width: 160,
         backgroundColor: 'transparent',
         // backgroundColor: 'red',
         elevation: 0,
@@ -36,6 +36,17 @@ export const styles = StyleSheet.create({
     },
     tabContainer: {
         marginHorizontal: -15,
+    },
+    scrollContainer: {
+        // flexDirection: 'row', // Define a direção do conteúdo como horizontal
+    },
+    item: {
+        width: 100, // Largura de cada item
+        height: 100, // Altura de cada item
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f0f0f0',
+        margin: 5,
     },
     ativo: {
         backgroundColor: '#000',

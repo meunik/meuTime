@@ -5,6 +5,10 @@ export const setMeuTime = (time) => ({
     type: 'SET_TIME',
     payload: time,
 });
+export const setTorneioList = (torneioList) => ({
+    type: 'SET_TORNEIO_LIST',
+    payload: torneioList,
+});
 export const setTorneio = (torneio) => ({
     type: 'SET_TORNEIO',
     payload: torneio,

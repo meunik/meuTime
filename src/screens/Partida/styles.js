@@ -7,6 +7,9 @@ export const styles = StyleSheet.create({
         paddingTop: (Platform.OS === 'ios') ? 0 : 10,
         backgroundColor: theme.colors.fundo,
     },
+    contentContainerStyle: {
+        flex: 1,
+    },
     tabsContainer: {
         paddingHorizontal: 20,
     },
@@ -249,9 +252,6 @@ export const styles = StyleSheet.create({
         height: 14,
         width: 14,
         borderRadius: 50,
-    },
-    contentContainerStyle: {
-        paddingBottom: theme.contentContainerStyle.paddingBottom,
     },
     cartao: {
         transform: [{ rotate: '90deg'}]
