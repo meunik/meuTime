@@ -14,7 +14,11 @@
     },
     "production": {
       "android": {
-        "buildType": "app-bundle"
+        "buildType": "app-bundle",
+        "gradleCommand": ":app:bundleRelease",
+        "env": {
+          "EXPO_PUBLIC_SUPPORT_16K_PAGE_SIZE": "true"
+        }
       }         
     }
   },

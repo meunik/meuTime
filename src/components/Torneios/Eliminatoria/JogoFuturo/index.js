@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
-import SvgUri from 'react-native-svg-uri';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { urlBase } from '@/src/store/api';
 import { tempoJogo } from "@/src/Utils/TempoJogo";
@@ -15,7 +14,7 @@ export function JogoFuturo ({
         <View style={{height: altura?altura:100}}>
             <View style={stylesFuturo.timesUltimoJogo(vertical)}>
                 <View style={stylesFuturo.timeCasa}>
-                    <Image style={stylesAtivo.imgLista(tamanhoImg)} resizeMode="center" source={require('/assets/team.png')} />
+                    <Image style={stylesAtivo.imgLista(tamanhoImg)} resizeMode="center" source={require('@/assets/team.png')} />
                 </View>
 
                 <View style={stylesFuturo.centralizado}>
@@ -23,7 +22,7 @@ export function JogoFuturo ({
                 </View>
 
                 <View style={stylesFuturo.timeVisitante}>
-                    <Image style={stylesAtivo.imgLista(tamanhoImg)} resizeMode="center" source={require('/assets/team.png')} />
+                    <Image style={stylesAtivo.imgLista(tamanhoImg)} resizeMode="center" source={require('@/assets/team.png')} />
                 </View>
             </View>
         </View>
